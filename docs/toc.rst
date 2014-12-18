@@ -6,6 +6,6 @@ Table of Contents
 
    index
    installation
-   ref/ecs_trnasform
+   ref/ecs_transform
    contributing
    release_notes

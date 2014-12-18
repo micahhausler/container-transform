@@ -9,7 +9,7 @@ def get_version():
     """
     Extracts the version number from the version.py file.
     """
-    VERSION_FILE = 'ecs_trnasform/version.py'
+    VERSION_FILE = 'ecs_transform/version.py'
     mo = re.search(r'^__version__ = [\'"]([^\'"]*)[\'"]', open(VERSION_FILE, 'rt').read(), re.M)
     if mo:
         return mo.group(1)
@@ -36,7 +36,10 @@ setup(
         'Operating System :: OS Independent',
     ],
     license='MIT',
-    install_requires=[],
+    install_requires=[
+        'PyYAML >= 3.10, < 4',
+        'six >= 1.3.0, < 2',
+    ],
     include_package_data=True,
     test_suite='nose.collector',
     tests_require=[

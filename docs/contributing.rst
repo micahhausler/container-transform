@@ -48,7 +48,7 @@ Please arrange imports with the following style
     from mock import patch
 
     # Local package imports
-    from ecs_trnasform.version import __version__
+    from ecs_transform.version import __version__
 
 Please follow `Google's python style`_ guide wherever possible.
 
@@ -69,7 +69,7 @@ Release Checklist
 
 Before a new release, please go through the following checklist:
 
-* Bump version in ecs_trnasform/version.py
+* Bump version in ecs_transform/version.py
 * Add a release note in docs/release_notes.rst
 * Git tag the version
 * Upload to pypi

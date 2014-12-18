@@ -13,7 +13,7 @@
 
 
 ecs-transform
-===============
+=============
 
 
 I have failed to provide a good README.rst in my project, and you should shun

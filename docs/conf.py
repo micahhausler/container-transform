@@ -10,7 +10,7 @@ def get_version():
     """
     Extracts the version number from the version.py file.
     """
-    VERSION_FILE = '../ecs_trnasform/version.py'
+    VERSION_FILE = '../ecs_transform/version.py'
     mo = re.search(r'^__version__ = [\'"]([^\'"]*)[\'"]', open(VERSION_FILE, 'rt').read(), re.M)
     if mo:
         return mo.group(1)
@@ -40,7 +40,7 @@ source_suffix = '.rst'
 master_doc = 'toc'
 
 # General information about the project.
-project = u'ecs_trnasform'
+project = u'ecs_transform'
 copyright = u'2014, Ambition Inc.'
 
 # The short X.Y version.
