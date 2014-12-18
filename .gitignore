@@ -1,0 +1,34 @@
+# Compiled python files
+*.pyc
+
+# Vim files
+*.swp
+*.swo
+
+# Coverage files
+.coverage
+htmlcov/
+
+# Setuptools distribution folder.
+/dist/
+/build/
+
+# Python egg metadata, regenerated from source files by setuptools.
+/*.egg-info
+/*.egg
+
+# Virtualenv
+env/
+venv/
+
+# OSX
+.DS_Store
+
+# Pycharm
+.idea/
+
+# Documentation artifacts
+docs/_build/
+
+# IPython Notebook
+.ipynb_checkpoints/
