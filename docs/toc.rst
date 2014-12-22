@@ -6,6 +6,6 @@ Table of Contents
 
    index
    installation
-   ref/ecs_transform
+   api_docs
    contributing
    release_notes

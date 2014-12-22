@@ -8,15 +8,15 @@ involves big changes, please file a ticket before making a pull request! We
 want to make sure you don't spend your time coding something that might not fit
 the scope of the project.
 
-.. _ambitioninc repository: https://github.com/ambitioninc/ecs-transform/issues
+.. _ambitioninc repository: https://github.com/ambitioninc/container-transform/issues
 
 Running the tests
 -----------------
 
 To get the source source code and run the unit tests, run::
 
-    $ git clone git://github.com/ambitioninc/ecs-transform.git
-    $ cd ecs-transform
+    $ git clone git://github.com/ambitioninc/container-transform.git
+    $ cd container-transform
     $ virtualenv env
     $ . env/bin/activate
     $ pip install nose
@@ -48,7 +48,7 @@ Please arrange imports with the following style
     from mock import patch
 
     # Local package imports
-    from ecs_transform.version import __version__
+    from container_transform.version import __version__
 
 Please follow `Google's python style`_ guide wherever possible.
 
@@ -60,8 +60,8 @@ Building the docs
 When in the project directory::
 
     $ pip install -r requirements/docs.txt
-    $ pip uninstall -y ecs-transform && python setup.py install
-    $ cd docs && make html
+    $ pip uninstall -y container-transform; python setup.py install
+    $ cd docs && make clean && make html
     $ open docs/_build/html/index.html
 
 Release Checklist
@@ -69,10 +69,11 @@ Release Checklist
 
 Before a new release, please go through the following checklist:
 
-* Bump version in ecs_transform/version.py
+* Bump version in container_transform/version.py
 * Add a release note in docs/release_notes.rst
 * Git tag the version
 * Upload to pypi
+* Incrememnt the version to ``x.x-dev``
 
 Vulnerability Reporting
 -----------------------
