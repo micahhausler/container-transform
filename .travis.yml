@@ -11,7 +11,7 @@ install:
 script:
   - flake8 .
   - python setup.py nosetests
-  - cd docs && make html
+  - cd docs && make html && cd -
   - container-transform container_transform/tests/fig.yml -v
 after_success:
   coveralls
