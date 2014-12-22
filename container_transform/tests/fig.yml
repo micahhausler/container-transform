@@ -1,0 +1,48 @@
+worker:
+  image: me/myapp
+  command: celery worker
+  mem_limit: 67108864b
+  environment:
+    - AWS_ACCESS_KEY_ID=AAAAAAAAAAAAAAAAAAAA
+    - AWS_SECRET_ACCESS_KEY=1111111111111111111111111111111111111111
+    - AWS_EC2_REGION=us-east-1
+    - BROKER_URL=redis://redis:6379/0
+    - DB_HOST=db
+    - DB_NAME=postgres
+    - DB_PAS=postgres
+    - DB_USER=postgres
+  links:
+  - db
+  - redis
+  - web
+db:
+  image: postgres:9.3
+  mem_limit: 2g
+redis:
+  image: redis:latest
+  mem_limit: 64m
+web:
+  build: .
+  command: uwsgi --json uwsgi.json
+  mem_limit: 65536k
+  environment:
+    AWS_ACCESS_KEY_ID:  AAAAAAAAAAAAAAAAAAAA
+    AWS_SECRET_ACCESS_KEY: 1111111111111111111111111111111111111111
+    AWS_EC2_REGION: us-east-1
+    BROKER_URL: redis://redis:6379/0
+    DB_HOST: db
+    DB_NAME: postgres
+    DB_PASS: postgres
+    DB_USER: postgres
+  links:
+  - db
+  - redis
+  ports:
+  - 8000
+  - 8000:8000
+  - 127.0.0.1:8001:8001
+  - 8002:192.168.59.103:8002
+  - 127.0.0.1:8003:192.168.59.103:8003
+web2:
+  image: me/myapp
+  mem_limit: 1024b

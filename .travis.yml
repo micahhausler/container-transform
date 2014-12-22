@@ -1,0 +1,17 @@
+sudo: false
+language: python
+python:
+  - '2.7'
+  - '3.3'
+  - '3.4'
+install:
+  - pip install coveralls flake8 nose>=1.3.0
+  - python setup.py install
+  - pip install -r requirements/docs.txt
+script:
+  - flake8 .
+  - python setup.py nosetests
+  - cd docs && make html && cd -
+  - container-transform container_transform/tests/fig.yml -v
+after_success:
+  coveralls

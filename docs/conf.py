@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# ecs-transform documentation build configuration file
+# container-transform documentation build configuration file
 
 import os
 import re
@@ -10,7 +10,7 @@ def get_version():
     """
     Extracts the version number from the version.py file.
     """
-    VERSION_FILE = '../ecs_trnasform/version.py'
+    VERSION_FILE = '../container_transform/version.py'
     mo = re.search(r'^__version__ = [\'"]([^\'"]*)[\'"]', open(VERSION_FILE, 'rt').read(), re.M)
     if mo:
         return mo.group(1)
@@ -40,7 +40,7 @@ source_suffix = '.rst'
 master_doc = 'toc'
 
 # General information about the project.
-project = u'ecs_trnasform'
+project = u'container_transform'
 copyright = u'2014, Ambition Inc.'
 
 # The short X.Y version.
@@ -89,7 +89,7 @@ html_show_sphinx = False
 html_show_copyright = True
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'ecs-transformdoc'
+htmlhelp_basename = 'container-transformdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -109,7 +109,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'ecs-transform.tex', u'ecs-transform Documentation',
+  ('index', 'container-transform.tex', u'container-transform Documentation',
    u'Micah  Hausler', 'manual'),
 ]
 
@@ -118,7 +118,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'ecs-transform', u'ecs-transform Documentation',
+    ('index', 'container-transform', u'container-transform Documentation',
      [u'Micah  Hausler'], 1)
 ]
 
@@ -128,7 +128,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'ecs-transform', u'ecs-transform Documentation',
-   u'Micah  Hausler', 'ecs-transform', 'A short description',
+  ('index', 'container-transform', u'container-transform Documentation',
+   u'Micah  Hausler', 'container-transform', 'A short description',
    'Miscellaneous'),
 ]
