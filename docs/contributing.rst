@@ -72,8 +72,11 @@ Before a new release, please go through the following checklist:
 * Bump version in container_transform/version.py
 * Add a release note in docs/release_notes.rst
 * Git tag the version
-* Upload to pypi
-* Incrememnt the version to ``x.x-dev``
+* Upload to pypi::
+
+    python setup.py sdist bdist_wheel upload
+
+* Increment the version to ``x.x-dev``
 
 Vulnerability Reporting
 -----------------------
