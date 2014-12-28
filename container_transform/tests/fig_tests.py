@@ -1,9 +1,10 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 import json
 
 from container_transform.fig import FigTransformer
 
 
+@skip
 class FigTransformerTests(TestCase):
 
     def setUp(self):
