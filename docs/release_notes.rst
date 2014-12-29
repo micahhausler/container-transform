@@ -1,6 +1,11 @@
 Release Notes
 =============
 
+v0.2
+----
+* Redesign of transformer classes
+* Added ability to read in ECS tasks and write fig configuration
+
 v0.1
 ----
 

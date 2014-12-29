@@ -46,3 +46,5 @@ web:
 web2:
   image: me/myapp
   mem_limit: 1024b
+  entrypoint: uwsgi
+  command: --json uwsgi.json

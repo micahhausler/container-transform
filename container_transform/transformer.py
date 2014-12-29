@@ -1,8 +1,25 @@
-from abc import ABCMeta, abstractproperty, abstractmethod
-
 import six
 
-from .schema import TransformationTypes, ARG_MAP
+from abc import ABCMeta, abstractmethod
+
+"""The BASE_SCHEMA defines the argument format the .ingest_*() and .emit_*()
+methods should produce and accept (respectively)"""
+SCHEMA = {
+    'image': str,
+    'name': str,
+    'cpu': int,  # out of 1024
+    'memory': int,  # in bytes
+    'links': list,  # This is universal across formats
+    'port_mappings': {
+        'host_ip': str,
+        'host_port': int,
+        'container_ip': str,
+        'container_port': int
+    },
+    'environment': dict,  # A simple key: value dictionary
+    'entrypoint': str,  # An unsplit string
+    'command': str,  # An unsplit string
+}
 
 
 class BaseTransformer(six.with_metaclass(ABCMeta), object):
@@ -14,88 +31,33 @@ class BaseTransformer(six.with_metaclass(ABCMeta), object):
     .. code-block:: python
 
         transformer = MyTransformer('./my-file.txt')
-        output = transformer.transform()
-        print(json.dumps(output, indent=4))
+        normalized_keys = transformer.ingest_containers()
 
     """
-    def __init__(self, filename, output_type=None):
+    def __init__(self, filename=None):
         """
         :param filename: The file to be loaded
         :type filename: str
-        :param output_type: The output type for the transformer
-        :type output_type: str
         """
-        self._filename = filename
-        self.stream = self.read_file(filename)
+        stream = None
+        if filename:
+            self._filename = filename
+            stream = self._read_file(filename)
+        self.stream = stream
 
-        self.messages = set()
-        self.output_type = output_type or TransformationTypes.ECS.value
-
-    @abstractproperty
-    def input_type(self):
-        raise NotImplementedError
-
-    def read_file(self, filename):
+    def _read_file(self, filename):
         """
         :param filename: The location of the file to read
         :type filename: str
         """
         with open(filename, 'r') as stream:
-            return self.read_stream(stream=stream)
-
-    def convert_container(self, container):
-        """
-        Converts a given dictionary to an output container definition
-
-        :type container: dict
-        :param container: The container definitions as a dictionary
-
-        :rtype: dict
-        :return: A output_type container definition
-        """
-        output = {}
-        for parameter, options in six.iteritems(ARG_MAP):
-            if options.get(self.output_type) and options.get(self.input_type):
-                container_value = container.get(options[self.input_type])
-                if container_value:
-                    # This branch covers when the input type and the output type
-                    # have a parameter valid to both
-                    if hasattr(self, 'transform_{}'.format(parameter)):
-                        func = getattr(self, 'transform_{}'.format(parameter))
-                        output[options[self.output_type]] = func(container_value)
-                    else:
-                        output[options[self.output_type]] = container_value
-            elif not options.get(self.output_type) and options.get(self.input_type):
-                container_value = container.get(options[self.input_type])
-                if container_value:
-                    # This branch covers when the input type has an parameter that the
-                    # output type does not have defined
-                    container_name = container.get('name', None)
-
-                    parameter_ignored_template = (
-                        'The output type {output_type} does not support the '
-                        'parameter \'{parameter}\'. The parameter \'{k}\': \'{v}\''
-                        ' will be ignored'
-                    )
-
-                    message = parameter_ignored_template.format(
-                        output_type=self.output_type,
-                        parameter=parameter,
-                        k=options[self.input_type],
-                        v=container_value
-                    )
-                    if container_name:
-                        message += ' for container {}.'.format(container_name)
-                    else:
-                        message += '.'
-
-                    self.messages.add(message)
-        return output
+            return self._read_stream(stream=stream)
 
     @abstractmethod
-    def read_stream(self, stream):
+    def _read_stream(self, stream):
         """
-        Override this method and parse the stream to be passed to ``self.transform()``
+        Override this method and parse the stream to be passed to
+        ``self.transform()``
 
         :param stream: A file-like object
         :type stream: file
@@ -103,51 +65,120 @@ class BaseTransformer(six.with_metaclass(ABCMeta), object):
         raise NotImplementedError
 
     @abstractmethod
-    def transform(self, input_data=None):
+    def ingest_containers(self, containers=None):
         """
-        Override this method and iteratively call ``self.convert_container()`` to transform
-        all input from the input stream to an ECS config.
+        Ingest self.stream and return a list of un-converted container
+        definitions dictionaries.
+
+        This is to normalize `where` all the container information is.
+        For example, Fig places the container name outside the rest of the
+        container definition. We need to have a 'name' key in the container
+        definition.
+
+        :rtype: list of dict
         """
         raise NotImplementedError
 
+    @staticmethod
     @abstractmethod
-    def transform_port_mappings(self, port_mappings):
+    def emit_containers(containers, verbose=True):
+        raise NotImplementedError
+
+    @staticmethod
+    @abstractmethod
+    def validate(container):
         """
-        Override this to transform port mappings
+        Validate that the container has all essential parameters and add any if
+        possible
+
+        :param container: The converted container
+        :type container: dict
+
+        :return: The container with all valid parameters
+        :rtype: dict
         """
         raise NotImplementedError
 
+    @staticmethod
+    def ingest_name(name):
+        return name
+
+    @staticmethod
+    def emit_name(name):
+        return name
+
+    @staticmethod
+    def ingest_image(image):
+        return image
+
+    @staticmethod
+    def emit_image(image):
+        return image
+
+    @staticmethod
+    def ingest_links(image):
+        return image
+
+    @staticmethod
+    def emit_links(image):
+        return image
+
+    @staticmethod
     @abstractmethod
-    def transform_cpu(self, cpu):
-        """
-        Override this to transform CPU
-        """
+    def ingest_port_mappings(port_mappings):
         raise NotImplementedError
 
+    @staticmethod
     @abstractmethod
-    def transform_memory(self, memory):
-        """
-        Override this to transform memory
-        """
+    def emit_port_mappings(port_mappings):
         raise NotImplementedError
 
+    @staticmethod
     @abstractmethod
-    def transform_environment(self, environment):
-        """
-        Override this to transform environment variables
-        """
+    def ingest_cpu(cpu):
         raise NotImplementedError
 
+    @staticmethod
     @abstractmethod
-    def transform_command(self, command):
-        """
-        Override this to transform the runtime CMD
-        """
+    def emit_cpu(cpu):
         raise NotImplementedError
 
+    @staticmethod
     @abstractmethod
-    def transform_entrypoint(self, entrypoint):
-        """
-        Override this to transform the container entrypoint
-        """
+    def ingest_memory(memory):
+        raise NotImplementedError
+
+    @staticmethod
+    @abstractmethod
+    def emit_memory(memory):
+        raise NotImplementedError
+
+    @staticmethod
+    @abstractmethod
+    def ingest_environment(environment):
+        raise NotImplementedError
+
+    @staticmethod
+    @abstractmethod
+    def emit_environment(environment):
+        raise NotImplementedError
+
+    @staticmethod
+    @abstractmethod
+    def ingest_command(command):
+        raise NotImplementedError
+
+    @staticmethod
+    @abstractmethod
+    def emit_command(command):
+        raise NotImplementedError
+
+    @staticmethod
+    @abstractmethod
+    def ingest_entrypoint(entrypoint):
+        raise NotImplementedError
+
+    @staticmethod
+    @abstractmethod
+    def emit_entrypoint(entrypoint):
         raise NotImplementedError
