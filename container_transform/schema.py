@@ -9,24 +9,6 @@ class TransformationTypes(Enum):
     FIG = 'fig'
 
 
-BASE_SCHEMA = {
-    'image': str,
-    'name': str,
-    'cpu': int,  # out of 1024
-    'memory': int,  # in bytes
-    'links': list,
-    'port_mappings': {
-        'host_ip': str,
-        'host_port': int,
-        'container_ip': str,
-        'container_port': int
-    },
-    'environment': dict,
-    'entrypoint': str,
-    'command': str,
-}
-
-
 ARG_MAP = {
     'image': {
         TransformationTypes.ECS.value: {

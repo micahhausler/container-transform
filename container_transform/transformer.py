@@ -2,6 +2,25 @@ import six
 
 from abc import ABCMeta, abstractmethod
 
+"""The BASE_SCHEMA defines the argument format the .ingest_*() and .emit_*()
+methods should produce and accept (respectively)"""
+SCHEMA = {
+    'image': str,
+    'name': str,
+    'cpu': int,  # out of 1024
+    'memory': int,  # in bytes
+    'links': list,  # This is universal across formats
+    'port_mappings': {
+        'host_ip': str,
+        'host_port': int,
+        'container_ip': str,
+        'container_port': int
+    },
+    'environment': dict,  # A simple key: value dictionary
+    'entrypoint': str,  # An unsplit string
+    'command': str,  # An unsplit string
+}
+
 
 class BaseTransformer(six.with_metaclass(ABCMeta), object):
     """

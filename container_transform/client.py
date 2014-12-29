@@ -31,9 +31,10 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 @click.version_option(__version__)
 def transform(input_file, input_type, output_type, v, q):
     """
-    Transform is a small utility to transform various docker container formats to one another.
+    container-transform is a small utility to transform various docker
+    container formats to one another.
 
-    Currently only input type is Fig and output type is EC2 Container Service
+    Default input type is fig, default output type is ECS
 
     Default is to read from STDIN if no INPUT_FILE is provided
     """

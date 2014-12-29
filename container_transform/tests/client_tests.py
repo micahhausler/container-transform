@@ -1,4 +1,4 @@
-from unittest import TestCase, skip
+from unittest import TestCase
 import json
 
 
@@ -7,7 +7,6 @@ from click.testing import CliRunner
 from container_transform.client import transform
 
 
-@skip
 class ClientTests(TestCase):
     """
     Tests for client
@@ -53,24 +52,26 @@ class ClientTests(TestCase):
                 data,
             )
 
-    def test_prompt_fig_no_verbose(self):
+    def test_prompt_fig_no_quiet(self):
         runner = CliRunner()
         with runner.isolated_filesystem():
             with open('fig.yml', 'w') as f:
                 f.write(self.fig_input)
 
-            result = runner.invoke(transform, ['fig.yml'])
+            result = runner.invoke(transform, ['fig.yml', '--no-verbose'])
             assert result.exit_code == 0
 
-            data = []
-            messages = set()
+            data = json.loads(result.output.split('\n')[0])
 
-            for line in result.output.split('\n'):
-                try:
-                    data = json.loads(line)
-                except ValueError:
-                    if bool(line):
-                        messages.add(line)
+            messages = set(result.output.split('\n')[1:])
+
+            self.assertEqual(
+                {'Container web2 is missing required parameter "cpu".',
+                 'Container web is missing required parameter "cpu".',
+                 'Container web2 is missing required parameter "image".',
+                 ''},
+                messages
+            )
 
             self.assertIn(
                 {
@@ -88,51 +89,4 @@ class ClientTests(TestCase):
                     'essential': True
                 },
                 data,
-            )
-
-            self.assertEqual(
-                len(messages),
-                1
-            )
-
-    def test_prompt_fig_verbose(self):
-
-        runner = CliRunner()
-        with runner.isolated_filesystem():
-            with open('fig.yml', 'w') as f:
-                f.write(self.fig_input)
-
-            result = runner.invoke(transform, ['fig.yml', '-v'])
-            assert result.exit_code == 0
-
-            lines = result.output.split('\n')
-
-            data = json.loads(''.join(lines[:-2]))
-
-            message = lines[-2]
-
-            self.assertIn(
-                {
-                    'name': 'web',
-                    'image': 'me/myapp',
-                    'memory': 4,
-                    'essential': True
-                },
-                data,
-            )
-            self.assertIn(
-                {
-                    'name': 'web2',
-                    'memory': 4,
-                    'essential': True
-                },
-                data,
-            )
-
-            self.assertEqual(
-                str(message),
-                (
-                    "The output type ECS does not support the parameter 'build'. "
-                    "The parameter 'build': '.' will be ignored for container web2."
-                )
             )

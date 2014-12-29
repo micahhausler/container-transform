@@ -1,5 +1,6 @@
 # Compiled python files
 *.pyc
+.eggs/*
 
 # Vim files
 *.swp
@@ -32,3 +33,7 @@ docs/_build/
 
 # IPython Notebook
 .ipynb_checkpoints/
+
+# testing files
+fig.yml
+task.json
