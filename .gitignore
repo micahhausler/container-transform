@@ -35,5 +35,5 @@ docs/_build/
 .ipynb_checkpoints/
 
 # testing files
-fig.yml
-task.json
+/fig.yml
+/task.json

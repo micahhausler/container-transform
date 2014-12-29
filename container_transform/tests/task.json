@@ -1,0 +1,152 @@
+[
+    {
+        "cpu": 200,
+        "essential": true,
+        "name": "db",
+        "memory": 2048,
+        "image": "postgres:9.3"
+    },
+    {
+        "cpu": 200,
+        "entryPoint": [
+            "uwsgi"
+        ],
+        "command": [
+            "--json",
+            "uwsgi.json"
+        ],
+        "essential": true,
+        "name": "web2",
+        "memory": 4,
+        "image": "me/myapp"
+    },
+    {
+        "cpu": 200,
+        "links": [
+            "db",
+            "redis"
+        ],
+        "portMappings": [
+            {
+                "hostPort": 8000,
+                "containerPort": 8000
+            },
+            {
+                "hostPort": 8000,
+                "containerPort": 8000
+            },
+            {
+                "hostPort": 8001,
+                "containerPort": 8001
+            },
+            {
+                "hostPort": 8002,
+                "containerPort": 8002
+            },
+            {
+                "hostPort": 8003,
+                "containerPort": 8003
+            }
+        ],
+        "memory": 64,
+        "command": [
+            "uwsgi",
+            "--json",
+            "uwsgi.json"
+        ],
+        "environment": [
+            {
+                "name": "AWS_SECRET_ACCESS_KEY",
+                "value": "1111111111111111111111111111111111111111"
+            },
+            {
+                "name": "BROKER_URL",
+                "value": "redis://redis:6379/0"
+            },
+            {
+                "name": "DB_PASS",
+                "value": "postgres"
+            },
+            {
+                "name": "DB_USER",
+                "value": "postgres"
+            },
+            {
+                "name": "AWS_EC2_REGION",
+                "value": "us-east-1"
+            },
+            {
+                "name": "AWS_ACCESS_KEY_ID",
+                "value": "AAAAAAAAAAAAAAAAAAAA"
+            },
+            {
+                "name": "DB_HOST",
+                "value": "db"
+            },
+            {
+                "name": "DB_NAME",
+                "value": "postgres"
+            }
+        ],
+        "name": "web",
+        "essential": true,
+        "image": "me/myapp"
+    },
+    {
+        "cpu": 200,
+        "links": [
+            "db",
+            "redis",
+            "web"
+        ],
+        "environment": [
+            {
+                "name": "AWS_SECRET_ACCESS_KEY",
+                "value": "1111111111111111111111111111111111111111"
+            },
+            {
+                "name": "BROKER_URL",
+                "value": "redis://redis:6379/0"
+            },
+            {
+                "name": "DB_PAS",
+                "value": "postgres"
+            },
+            {
+                "name": "DB_NAME",
+                "value": "postgres"
+            },
+            {
+                "name": "AWS_EC2_REGION",
+                "value": "us-east-1"
+            },
+            {
+                "name": "DB_USER",
+                "value": "postgres"
+            },
+            {
+                "name": "AWS_ACCESS_KEY_ID",
+                "value": "AAAAAAAAAAAAAAAAAAAA"
+            },
+            {
+                "name": "DB_HOST",
+                "value": "db"
+            }
+        ],
+        "memory": 64,
+        "command": [
+            "celery",
+            "worker"
+        ],
+        "essential": true,
+        "name": "worker",
+        "image": "me/myapp"
+    },
+    {
+        "cpu": 200,
+        "essential": true,
+        "name": "redis",
+        "memory": 64,
+        "image": "redis:latest"
+    }
+]
