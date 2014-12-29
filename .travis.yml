@@ -13,5 +13,6 @@ script:
   - python setup.py nosetests
   - cd docs && make html && cd -
   - container-transform container_transform/tests/fig.yml -v
+  - container-transform container_transform/tests/task.json --input-type ecs --output-type fig
 after_success:
   coveralls

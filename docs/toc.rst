@@ -6,6 +6,7 @@ Table of Contents
 
    index
    installation
+   usage
    api_docs
    contributing
    release_notes

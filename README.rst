@@ -4,11 +4,11 @@
 .. image:: https://coveralls.io/repos/ambitioninc/container-transform/badge.png?branch=develop
     :target: https://coveralls.io/r/ambitioninc/container-transform?branch=develop
 .. image:: https://pypip.in/v/container-transform/badge.png
-    :target: https://crate.io/packages/container-transform/
+    :target: https://pypi.python.org/pypi/container-transform/
     :alt: Latest PyPI version
 
 .. image:: https://pypip.in/d/container-transform/badge.png
-    :target: https://crate.io/packages/container-transform/
+    :target: https://pypi.python.org/pypi/container-transform/
     :alt: Number of PyPI downloads
 
 
@@ -18,6 +18,45 @@ Transform is a small utility to transform various docker container formats to on
 
 Currently only input type is Fig and output type is EC2 Container Service
 
+Quickstart
+----------
+::
+
+    $ container-transform  fig.yml -q -v
+    [
+            {
+                "memory": 1024,
+                "image": "postgres:9.3",
+                "name": "db",
+                "essential": true
+            },
+            {
+                "memory": 128,
+                "image": "redis:latest",
+                "name": "redis",
+                "essential": true
+            },
+            {
+                "name": "web",
+                "memory": 64,
+                "command": [
+                    "uwsgi",
+                    "--json",
+                    "uwsgi.json"
+                ],
+                "environment": [
+                    {
+                        "name": "AWS_ACCESS_KEY_ID",
+                        "value": "AAAAAAAAAAAAAAAAAAAA"
+                    },
+                    {
+                        "name": "AWS_SECRET_ACCESS_KEY",
+                        "value": "1111111111111111111111111111111111111111"
+                    }
+                ],
+                "essential": true
+            }
+    ]
 
 Installation
 ------------

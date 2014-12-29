@@ -54,7 +54,7 @@ exclude_patterns = ['_build']
 pygments_style = 'sphinx'
 
 intersphinx_mapping = {
-    'python': ('http://python.readthedocs.org/en/v2.7.2/', None),
+    'python': ('http://docs.python.org/3.4', None)
 }
 
 # -- Options for HTML output ----------------------------------------------

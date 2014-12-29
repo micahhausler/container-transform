@@ -3,6 +3,15 @@
 API Documentation
 =================
 
+ECSTransformer
+--------------
+
+.. automodule:: container_transform.ecs
+.. autoclass:: container_transform.ecs.ECSTransformer
+    :members:
+
+    .. automethod:: __init__
+
 FigTransformer
 --------------
 
