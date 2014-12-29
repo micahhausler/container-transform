@@ -5,82 +5,190 @@ LOG = logging.getLogger(__name__)
 
 
 class TransformationTypes(Enum):
-    ECS = 'ECS'
+    ECS = 'ecs'
     FIG = 'fig'
 
 
 ARG_MAP = {
     'image': {
-        TransformationTypes.ECS.value: 'image',
-        TransformationTypes.FIG.value: 'image',
+        TransformationTypes.ECS.value: {
+            'name': 'image',
+            'required': True,
+        },
+        TransformationTypes.FIG.value: {
+            'name': 'image',
+            'required': True,
+        },
     },
     'name': {
-        TransformationTypes.ECS.value: 'name',
-        TransformationTypes.FIG.value: None,
+        TransformationTypes.ECS.value: {
+            'name': 'name',
+            'required': True,
+        },
+        TransformationTypes.FIG.value: {
+            'name': 'name',
+            'required': True
+        },
     },
     'cpu': {
-        TransformationTypes.ECS.value: 'cpu',
-        TransformationTypes.FIG.value: None,
+        TransformationTypes.ECS.value: {
+            'name': 'cpu',
+            'required': True
+        },
+        TransformationTypes.FIG.value: {
+            'name': None,
+            'required': False
+        },
     },
     'memory': {
-        TransformationTypes.ECS.value: 'memory',
-        TransformationTypes.FIG.value: 'mem_limit',
+        TransformationTypes.ECS.value: {
+            'name': 'memory',
+            'required': True
+        },
+        TransformationTypes.FIG.value: {
+            'name': 'mem_limit',
+            'required': False,
+        },
     },
     'links': {
-        TransformationTypes.ECS.value: 'links',
-        TransformationTypes.FIG.value: 'links',
+        TransformationTypes.ECS.value: {
+            'name': 'links',
+            'required': False,
+        },
+        TransformationTypes.FIG.value: {
+            'name': 'links',
+            'required': False,
+        },
     },
     'port_mappings': {
-        TransformationTypes.ECS.value: 'portMappings',
-        TransformationTypes.FIG.value: 'ports',
+        TransformationTypes.ECS.value: {
+            'name': 'portMappings',
+            'required': False,
+        },
+        TransformationTypes.FIG.value: {
+            'name': 'ports',
+            'required': False,
+        },
     },
     'environment': {
-        TransformationTypes.ECS.value: 'environment',
-        TransformationTypes.FIG.value: 'environment',
+        TransformationTypes.ECS.value: {
+            'name': 'environment',
+            'required': False,
+        },
+        TransformationTypes.FIG.value: {
+            'name': 'environment',
+            'required': False,
+        },
     },
     'entrypoint': {
-        TransformationTypes.ECS.value: 'entryPoint',
-        TransformationTypes.FIG.value: 'entrypoint',
+        TransformationTypes.ECS.value: {
+            'name': 'entryPoint',
+            'required': False,
+        },
+        TransformationTypes.FIG.value: {
+            'name': 'entrypoint',
+            'required': False,
+        },
     },
     'command': {
-        TransformationTypes.ECS.value: 'command',
-        TransformationTypes.FIG.value: 'command',
+        TransformationTypes.ECS.value: {
+            'name': 'command',
+            'required': False,
+        },
+        TransformationTypes.FIG.value: {
+            'name': 'command',
+            'required': False,
+        },
     },
     'essential': {
-        TransformationTypes.ECS.value: 'essential',
-        TransformationTypes.FIG.value: None,
+        TransformationTypes.ECS.value: {
+            'name': 'essential',
+            'required': False
+        },
+        TransformationTypes.FIG.value: {
+            'name': None,
+            'required': False
+        },
     },
     'volumes_from': {
-        TransformationTypes.ECS.value: None,
-        TransformationTypes.FIG.value: 'volumes_from',
+        TransformationTypes.ECS.value: {
+            'name': None,
+            'required': False
+        },
+        TransformationTypes.FIG.value: {
+            'name': 'volumes_from',
+            'required': False
+        },
     },
     'dns': {
-        TransformationTypes.ECS.value: None,
-        TransformationTypes.FIG.value: 'dns',
+        TransformationTypes.ECS.value: {
+            'name': None,
+            'required': False
+        },
+        TransformationTypes.FIG.value: {
+            'name': 'dns',
+            'required': False
+        },
     },
     'work_dir': {
-        TransformationTypes.ECS.value: None,
-        TransformationTypes.FIG.value: 'working_dir',
+        TransformationTypes.ECS.value: {
+            'name': None,
+            'required': False
+        },
+        TransformationTypes.FIG.value: {
+            'name': 'working_dir',
+            'required': False
+        },
     },
     'domain': {
-        TransformationTypes.ECS.value: None,
-        TransformationTypes.FIG.value: 'domainname',
+        TransformationTypes.ECS.value: {
+            'name': None,
+            'required': False
+        },
+        TransformationTypes.FIG.value: {
+            'name': 'domainname',
+            'required': False
+        },
     },
     'build': {
-        TransformationTypes.ECS.value: None,
-        TransformationTypes.FIG.value: 'build'
+        TransformationTypes.ECS.value: {
+            'name': None,
+            'required': False
+        },
+        TransformationTypes.FIG.value: {
+            'name': 'build',
+            'required': False,
+        }
     },
     'expose': {
-        TransformationTypes.ECS.value: None,
-        TransformationTypes.FIG.value: 'expose'
+        TransformationTypes.ECS.value: {
+            'name': None,
+            'required': False
+        },
+        TransformationTypes.FIG.value: {
+            'name': 'expose',
+            'required': False
+        },
     },
     'network': {
-        TransformationTypes.ECS.value: None,
-        TransformationTypes.FIG.value: 'net'
+        TransformationTypes.ECS.value: {
+            'name': None,
+            'required': False
+        },
+        TransformationTypes.FIG.value: {
+            'name': 'net',
+            'required': False
+        },
     },
     'privileged': {
-        TransformationTypes.ECS.value: None,
-        TransformationTypes.FIG.value: 'privileged'
+        TransformationTypes.ECS.value: {
+            'name': None,
+            'required': False
+        },
+        TransformationTypes.FIG.value: {
+            'name': 'privileged',
+            'required': False
+        },
     },
 
 }

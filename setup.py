@@ -20,12 +20,12 @@ def get_version():
 setup(
     name='container-transform',
     version=get_version(),
-    description='',
+    description='A converter for various docker cluster formats',
     long_description=open('README.rst').read(),
     url='https://github.com/ambitioninc/container-transform',
     author='Micah  Hausler',
     author_email='opensource@ambition.com',
-    keywords='',
+    keywords='docker, container, fig, ecs',
     packages=find_packages(),
     classifiers=[
         'Programming Language :: Python :: 2.7',
