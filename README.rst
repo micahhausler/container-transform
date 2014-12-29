@@ -14,49 +14,55 @@
 
 container-transform
 ===================
-Transform is a small utility to transform various docker container formats to one another.
+container-transform is a small utility to transform various docker container
+formats to one another.
 
-Currently only input type is Fig and output type is EC2 Container Service
+Currently, container-transform can parse and convert ECS task definitions and
+fig configuration files. Any missing required parameters are printed to STDOUT.
 
 Quickstart
 ----------
 ::
 
-    $ container-transform  fig.yml -q -v
+    $ cat fig.yml | container-transform  -v
     [
-            {
-                "memory": 1024,
-                "image": "postgres:9.3",
-                "name": "db",
-                "essential": true
-            },
-            {
-                "memory": 128,
-                "image": "redis:latest",
-                "name": "redis",
-                "essential": true
-            },
-            {
-                "name": "web",
-                "memory": 64,
-                "command": [
-                    "uwsgi",
-                    "--json",
-                    "uwsgi.json"
-                ],
-                "environment": [
-                    {
-                        "name": "AWS_ACCESS_KEY_ID",
-                        "value": "AAAAAAAAAAAAAAAAAAAA"
-                    },
-                    {
-                        "name": "AWS_SECRET_ACCESS_KEY",
-                        "value": "1111111111111111111111111111111111111111"
-                    }
-                ],
-                "essential": true
-            }
+        {
+            "memory": 1024,
+            "image": "postgres:9.3",
+            "name": "db",
+            "essential": true
+        },
+        {
+            "memory": 128,
+            "image": "redis:latest",
+            "name": "redis",
+            "essential": true
+        },
+        {
+            "name": "web",
+            "memory": 64,
+            "command": [
+                "uwsgi",
+                "--json",
+                "uwsgi.json"
+            ],
+            "environment": [
+                {
+                    "name": "AWS_ACCESS_KEY_ID",
+                    "value": "AAAAAAAAAAAAAAAAAAAA"
+                },
+                {
+                    "name": "AWS_SECRET_ACCESS_KEY",
+                    "value": "1111111111111111111111111111111111111111"
+                }
+            ],
+            "essential": true
+        }
     ]
+    Container db is missing required parameter "cpu".
+    Container redis is missing required parameter "cpu".
+    Container web is missing required parameter "image".
+    Container web is missing required parameter "cpu".
 
 Installation
 ------------
