@@ -22,6 +22,22 @@
     },
     {
         "cpu": 200,
+        "essential": true,
+        "name": "logs",
+        "memory": 4,
+        "image": "me/mylogs",
+        "volumesFrom": [
+            {
+                "sourceContainer": "web",
+                "readOnly": true
+            },
+            {
+                "sourceContainer": "web2"
+            }
+        ]
+    },
+    {
+        "cpu": 200,
         "links": [
             "db",
             "redis"

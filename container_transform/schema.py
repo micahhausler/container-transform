@@ -112,7 +112,7 @@ ARG_MAP = {
     },
     'volumes_from': {
         TransformationTypes.ECS.value: {
-            'name': None,
+            'name': 'volumesFrom',
             'required': False
         },
         TransformationTypes.FIG.value: {
