@@ -1,8 +1,8 @@
 # import multiprocessing to avoid this bug (http://bugs.python.org/issue15881#msg170215)
 import multiprocessing
-assert multiprocessing
 import re
 from setuptools import setup, find_packages
+assert multiprocessing
 
 
 def get_version():
