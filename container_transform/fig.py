@@ -199,3 +199,11 @@ class FigTransformer(BaseTransformer):
     @staticmethod
     def emit_entrypoint(entrypoint):
         return entrypoint
+
+    @staticmethod
+    def ingest_volumes_from(volumes_from):
+        return volumes_from
+
+    @staticmethod
+    def emit_volumes_from(volumes_from):
+        return volumes_from

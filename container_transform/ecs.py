@@ -132,3 +132,11 @@ class ECSTransformer(BaseTransformer):
     @staticmethod
     def emit_entrypoint(entrypoint):
         return entrypoint.split()
+
+    @staticmethod
+    def ingest_volumes_from(volumes_from):
+        return [vol['sourceContainer'] for vol in volumes_from]
+
+    @staticmethod
+    def emit_volumes_from(volumes_from):
+        return [{'sourceContainer': vol} for vol in volumes_from]

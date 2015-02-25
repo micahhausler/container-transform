@@ -82,7 +82,8 @@ class Converter(object):
                     )
                 )
 
-            if container.get(input_name) and hasattr(self._input_class, 'ingest_{}'.format(parameter)) and \
+            if container.get(input_name) and \
+                    hasattr(self._input_class, 'ingest_{}'.format(parameter)) and \
                     output_name and hasattr(self._output_class, 'emit_{}'.format(parameter)):
                 # call transform_{}
                 ingest_func = getattr(self._input_class, 'ingest_{}'.format(parameter))
