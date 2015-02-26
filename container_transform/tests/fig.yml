@@ -48,3 +48,9 @@ web2:
   mem_limit: 1024b
   entrypoint: uwsgi
   command: --json uwsgi.json
+logs:
+  image: me/mylogs
+  mem_limit: 1024b
+  volumes_from:
+  - web
+  - web2

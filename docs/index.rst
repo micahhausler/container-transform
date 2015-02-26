@@ -4,7 +4,7 @@ container-transform is a small utility to transform various docker container
 formats to one another.
 
 Currently, container-transform can parse and convert ECS task definitions and
-fig configuration files. Any missing required parameters are printed to STDOUT.
+fig configuration files. Any missing required parameters are printed to STDERR.
 
 Example usage:
 

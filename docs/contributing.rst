@@ -60,8 +60,7 @@ Building the docs
 When in the project directory::
 
     $ pip install -r requirements/docs.txt
-    $ pip uninstall -y container-transform; python setup.py install
-    $ cd docs && make clean && make html
+    $ python setup.py build_sphinx
     $ open docs/_build/html/index.html
 
 Release Checklist

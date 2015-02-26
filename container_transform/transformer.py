@@ -19,6 +19,7 @@ SCHEMA = {
     'environment': dict,  # A simple key: value dictionary
     'entrypoint': str,  # An unsplit string
     'command': str,  # An unsplit string
+    'volumes_from': list,  # A list of containers, ignoring read_only
 }
 
 
@@ -181,4 +182,14 @@ class BaseTransformer(six.with_metaclass(ABCMeta), object):
     @staticmethod
     @abstractmethod
     def emit_entrypoint(entrypoint):
+        raise NotImplementedError
+
+    @staticmethod
+    @abstractmethod
+    def ingest_volumes_from(volumes_from):
+        raise NotImplementedError
+
+    @staticmethod
+    @abstractmethod
+    def emit_volumes_from(volumes_from):
         raise NotImplementedError
