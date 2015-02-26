@@ -18,7 +18,7 @@ container-transform is a small utility to transform various docker container
 formats to one another.
 
 Currently, container-transform can parse and convert ECS task definitions and
-fig configuration files. Any missing required parameters are printed to STDOUT.
+fig configuration files. Any missing required parameters are printed to STDERR.
 
 Quickstart
 ----------
@@ -75,10 +75,10 @@ To install the latest code directly from source, type::
     pip install git+git://github.com/ambitioninc/container-transform.git
 
 Documentation
-=============
+-------------
 
 Full documentation is available at http://container-transform.readthedocs.org
 
 License
-=======
+-------
 MIT License (see LICENSE)
