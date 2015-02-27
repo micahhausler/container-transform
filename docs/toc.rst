@@ -5,7 +5,6 @@ Table of Contents
    :maxdepth: 2
 
    index
-   installation
    usage
    api_docs
    contributing

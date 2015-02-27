@@ -3,14 +3,19 @@ Quickstart
 container-transform is a small utility to transform various docker container
 formats to one another.
 
-Currently, container-transform can parse and convert ECS task definitions and
-fig configuration files. Any missing required parameters are printed to STDERR.
+Currently, container-transform can parse and convert:
+
+* ECS task definitions
+* Docker-compose configuration files
+* Fig configuration files
+
+Any missing required parameters are printed to STDERR.
 
 Example usage:
 
 .. code-block:: bash
 
-    $ cat fig.yml | container-transform  -v
+    $ cat docker-compose.yml | container-transform  -v
     [
         {
             "memory": 1024,
@@ -54,7 +59,7 @@ or:
 
 .. code-block:: bash
 
-    $ container-transform  --input-type ecs --output-type fig task.json
+    $ container-transform  --input-type ecs --output-type compose task.json
     db:
       image: postgres:9.3
       mem_limit: 1073741824b
@@ -70,3 +75,14 @@ or:
 
     Container web is missing required parameter "image".
 
+
+Installation
+------------
+
+To install the latest release, type::
+
+    pip install container-transform
+
+To install the latest code directly from source, type::
+
+    pip install git+git://github.com/ambitioninc/container-transform.git
