@@ -18,7 +18,7 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
     '--input-type',
     'input_type',
     type=click.Choice([v.value.lower() for v in list(TransformationTypes)]),
-    default=TransformationTypes.FIG.value,
+    default=TransformationTypes.COMPOSE.value,
 )
 @click.option(
     '--output-type',
@@ -34,7 +34,7 @@ def transform(input_file, input_type, output_type, v, q):
     container-transform is a small utility to transform various docker
     container formats to one another.
 
-    Default input type is fig, default output type is ECS
+    Default input type is compose, default output type is ECS
 
     Default is to read from STDIN if no INPUT_FILE is provided
     """

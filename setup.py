@@ -25,7 +25,7 @@ setup(
     url='https://github.com/ambitioninc/container-transform',
     author='Micah  Hausler',
     author_email='opensource@ambition.com',
-    keywords='docker, container, fig, ecs',
+    keywords='docker, container, fig, ecs, compose',
     packages=find_packages(),
     classifiers=[
         'Programming Language :: Python :: 2.7',

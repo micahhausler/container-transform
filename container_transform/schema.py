@@ -7,6 +7,7 @@ LOG = logging.getLogger(__name__)
 class TransformationTypes(Enum):
     ECS = 'ecs'
     FIG = 'fig'
+    COMPOSE = 'compose'
 
 
 ARG_MAP = {
@@ -16,6 +17,10 @@ ARG_MAP = {
             'required': True,
         },
         TransformationTypes.FIG.value: {
+            'name': 'image',
+            'required': True,
+        },
+        TransformationTypes.COMPOSE.value: {
             'name': 'image',
             'required': True,
         },
@@ -29,6 +34,10 @@ ARG_MAP = {
             'name': 'name',
             'required': True
         },
+        TransformationTypes.COMPOSE.value: {
+            'name': 'name',
+            'required': True
+        },
     },
     'cpu': {
         TransformationTypes.ECS.value: {
@@ -39,6 +48,10 @@ ARG_MAP = {
             'name': None,
             'required': False
         },
+        TransformationTypes.COMPOSE.value: {
+            'name': 'cpu_shares',
+            'required': False
+        },
     },
     'memory': {
         TransformationTypes.ECS.value: {
@@ -46,6 +59,10 @@ ARG_MAP = {
             'required': True
         },
         TransformationTypes.FIG.value: {
+            'name': 'mem_limit',
+            'required': False,
+        },
+        TransformationTypes.COMPOSE.value: {
             'name': 'mem_limit',
             'required': False,
         },
@@ -59,6 +76,10 @@ ARG_MAP = {
             'name': 'links',
             'required': False,
         },
+        TransformationTypes.COMPOSE.value: {
+            'name': 'links',
+            'required': False,
+        },
     },
     'port_mappings': {
         TransformationTypes.ECS.value: {
@@ -66,6 +87,10 @@ ARG_MAP = {
             'required': False,
         },
         TransformationTypes.FIG.value: {
+            'name': 'ports',
+            'required': False,
+        },
+        TransformationTypes.COMPOSE.value: {
             'name': 'ports',
             'required': False,
         },
@@ -79,6 +104,10 @@ ARG_MAP = {
             'name': 'environment',
             'required': False,
         },
+        TransformationTypes.COMPOSE.value: {
+            'name': 'environment',
+            'required': False,
+        },
     },
     'entrypoint': {
         TransformationTypes.ECS.value: {
@@ -86,6 +115,10 @@ ARG_MAP = {
             'required': False,
         },
         TransformationTypes.FIG.value: {
+            'name': 'entrypoint',
+            'required': False,
+        },
+        TransformationTypes.COMPOSE.value: {
             'name': 'entrypoint',
             'required': False,
         },
@@ -99,6 +132,10 @@ ARG_MAP = {
             'name': 'command',
             'required': False,
         },
+        TransformationTypes.COMPOSE.value: {
+            'name': 'command',
+            'required': False,
+        },
     },
     'essential': {
         TransformationTypes.ECS.value: {
@@ -106,6 +143,10 @@ ARG_MAP = {
             'required': False
         },
         TransformationTypes.FIG.value: {
+            'name': None,
+            'required': False
+        },
+        TransformationTypes.COMPOSE.value: {
             'name': None,
             'required': False
         },
@@ -119,6 +160,10 @@ ARG_MAP = {
             'name': 'volumes_from',
             'required': False
         },
+        TransformationTypes.COMPOSE.value: {
+            'name': 'volumes_from',
+            'required': False
+        },
     },
     'dns': {
         TransformationTypes.ECS.value: {
@@ -126,6 +171,10 @@ ARG_MAP = {
             'required': False
         },
         TransformationTypes.FIG.value: {
+            'name': 'dns',
+            'required': False
+        },
+        TransformationTypes.COMPOSE.value: {
             'name': 'dns',
             'required': False
         },
@@ -139,6 +188,10 @@ ARG_MAP = {
             'name': 'working_dir',
             'required': False
         },
+        TransformationTypes.COMPOSE.value: {
+            'name': 'working_dir',
+            'required': False
+        },
     },
     'domain': {
         TransformationTypes.ECS.value: {
@@ -146,6 +199,10 @@ ARG_MAP = {
             'required': False
         },
         TransformationTypes.FIG.value: {
+            'name': 'domainname',
+            'required': False
+        },
+        TransformationTypes.COMPOSE.value: {
             'name': 'domainname',
             'required': False
         },
@@ -158,7 +215,11 @@ ARG_MAP = {
         TransformationTypes.FIG.value: {
             'name': 'build',
             'required': False,
-        }
+        },
+        TransformationTypes.COMPOSE.value: {
+            'name': 'build',
+            'required': False,
+        },
     },
     'expose': {
         TransformationTypes.ECS.value: {
@@ -166,6 +227,10 @@ ARG_MAP = {
             'required': False
         },
         TransformationTypes.FIG.value: {
+            'name': 'expose',
+            'required': False
+        },
+        TransformationTypes.COMPOSE.value: {
             'name': 'expose',
             'required': False
         },
@@ -179,6 +244,10 @@ ARG_MAP = {
             'name': 'net',
             'required': False
         },
+        TransformationTypes.COMPOSE.value: {
+            'name': 'net',
+            'required': False
+        },
     },
     'privileged': {
         TransformationTypes.ECS.value: {
@@ -186,6 +255,10 @@ ARG_MAP = {
             'required': False
         },
         TransformationTypes.FIG.value: {
+            'name': 'privileged',
+            'required': False
+        },
+        TransformationTypes.COMPOSE.value: {
             'name': 'privileged',
             'required': False
         },

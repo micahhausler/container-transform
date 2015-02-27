@@ -2,13 +2,14 @@ import six
 
 from .schema import TransformationTypes, ARG_MAP
 
-from .fig import FigTransformer
+from .compose import ComposeTransformer
 from .ecs import ECSTransformer
-
+from .fig import FigTransformer
 
 TRANSFORMER_CLASSES = {
-    TransformationTypes.FIG.value: FigTransformer,
-    TransformationTypes.ECS.value: ECSTransformer
+    TransformationTypes.COMPOSE.value: ComposeTransformer,
+    TransformationTypes.ECS.value: ECSTransformer,
+    TransformationTypes.FIG.value: FigTransformer
 }
 
 

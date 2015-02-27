@@ -12,6 +12,15 @@ ECSTransformer
 
     .. automethod:: __init__
 
+ComposeTransformer
+------------------
+
+.. automodule:: container_transform.compose
+.. autoclass:: container_transform.compose.ComposeTransformer
+    :members:
+
+    .. automethod:: __init__
+
 FigTransformer
 --------------
 

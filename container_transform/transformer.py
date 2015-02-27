@@ -2,7 +2,7 @@ import six
 
 from abc import ABCMeta, abstractmethod
 
-"""The BASE_SCHEMA defines the argument format the .ingest_*() and .emit_*()
+"""The SCHEMA defines the argument format the .ingest_*() and .emit_*()
 methods should produce and accept (respectively)"""
 SCHEMA = {
     'image': str,
