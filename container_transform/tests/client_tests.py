@@ -12,7 +12,7 @@ class ClientTests(TestCase):
     Tests for client
     """
     def setUp(self):
-        self.fig_input = (
+        self.yaml_input = (
             '\n'
             'web:\n'
             '  image: me/myapp\n'
@@ -23,11 +23,40 @@ class ClientTests(TestCase):
             '  mem_limit: 1024b\n'
         )
 
+    def test_prompt_compose_quiet(self):
+        runner = CliRunner()
+        with runner.isolated_filesystem():
+            with open('docker-compose.yml', 'w') as f:
+                f.write(self.yaml_input)
+
+            result = runner.invoke(transform, ['docker-compose.yml', '-q'])
+            assert result.exit_code == 0
+
+            data = json.loads(result.output)
+
+            self.assertIn(
+                {
+                    'name': 'web',
+                    'image': 'me/myapp',
+                    'memory': 4,
+                    'essential': True
+                },
+                data,
+            )
+            self.assertIn(
+                {
+                    'name': 'web2',
+                    'memory': 4,
+                    'essential': True
+                },
+                data,
+            )
+
     def test_prompt_fig_quiet(self):
         runner = CliRunner()
         with runner.isolated_filesystem():
             with open('fig.yml', 'w') as f:
-                f.write(self.fig_input)
+                f.write(self.yaml_input)
 
             result = runner.invoke(transform, ['fig.yml', '-q'])
             assert result.exit_code == 0
@@ -56,7 +85,7 @@ class ClientTests(TestCase):
         runner = CliRunner()
         with runner.isolated_filesystem():
             with open('fig.yml', 'w') as f:
-                f.write(self.fig_input)
+                f.write(self.yaml_input)
 
             result = runner.invoke(transform, ['fig.yml', '--no-verbose'])
             assert result.exit_code == 0

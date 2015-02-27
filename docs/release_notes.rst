@@ -4,6 +4,10 @@ Release Notes
 v0.4
 ----
 
+* Added support for `docker compose`_
+* docker-compose is now the default input type
+
+.. _docker compose: https://docs.docker.com/compose/
 
 v0.3
 ----
