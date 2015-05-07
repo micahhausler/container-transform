@@ -54,3 +54,9 @@ logs:
   volumes_from:
   - web
   - web2
+  volumes:
+    - '/var/log/supervisor/:/var/log/supervisor'
+    - '/var/log/nginx/:/var/log/nginx/:ro'
+    - '/var/log/apache/:ro'
+    - '/var/log/syslog/'
+    - '/should:/be:/ommitted'

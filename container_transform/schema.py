@@ -165,6 +165,21 @@ ARG_MAP = {
             'required': False
         },
     },
+    'volumes': {
+        TransformationTypes.ECS.value: {
+            'name': 'mountPoints',
+            'attribute': '',
+            'required': False
+        },
+        TransformationTypes.FIG.value: {
+            'name': 'volumes',
+            'required': False
+        },
+        TransformationTypes.COMPOSE.value: {
+            'name': 'volumes',
+            'required': False
+        }
+    },
     'dns': {
         TransformationTypes.ECS.value: {
             'name': None,

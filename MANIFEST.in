@@ -1,3 +1,4 @@
 include README.rst
 include CONTRIBUTORS.txt
 include LICENSE
+prune container_transform/tests

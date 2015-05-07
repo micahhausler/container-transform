@@ -1,8 +1,16 @@
 Release Notes
 =============
 
-v0.5
-----
+v0.5.0a1
+--------
+
+Features
+~~~~~~~~
+* Added support for local volumes
+
+Internal
+~~~~~~~~
+* converted static methods to class methods to keep track of volume information
 
 v0.4
 ----

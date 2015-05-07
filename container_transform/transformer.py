@@ -20,6 +20,7 @@ SCHEMA = {
     'entrypoint': str,  # An unsplit string
     'command': str,  # An unsplit string
     'volumes_from': list,  # A list of containers, ignoring read_only
+    'volumes': list,  # A list of dict {'host': '/path', 'container': '/path', 'readonly': True}
 }
 
 
@@ -80,9 +81,8 @@ class BaseTransformer(six.with_metaclass(ABCMeta), object):
         """
         raise NotImplementedError
 
-    @staticmethod
     @abstractmethod
-    def emit_containers(containers, verbose=True):
+    def emit_containers(self, containers, verbose=True):
         raise NotImplementedError
 
     @staticmethod
@@ -100,96 +100,84 @@ class BaseTransformer(six.with_metaclass(ABCMeta), object):
         """
         raise NotImplementedError
 
-    @staticmethod
-    def ingest_name(name):
+    def ingest_name(self, name):
         return name
 
-    @staticmethod
-    def emit_name(name):
+    def emit_name(self, name):
         return name
 
-    @staticmethod
-    def ingest_image(image):
+    def ingest_image(self, image):
         return image
 
-    @staticmethod
-    def emit_image(image):
+    def emit_image(self, image):
         return image
 
-    @staticmethod
-    def ingest_links(image):
+    def ingest_links(self, image):
         return image
 
-    @staticmethod
-    def emit_links(image):
+    def emit_links(self, image):
         return image
 
-    @staticmethod
     @abstractmethod
-    def ingest_port_mappings(port_mappings):
+    def ingest_port_mappings(self, port_mappings):
         raise NotImplementedError
 
-    @staticmethod
     @abstractmethod
-    def emit_port_mappings(port_mappings):
+    def emit_port_mappings(self, port_mappings):
         raise NotImplementedError
 
-    @staticmethod
     @abstractmethod
-    def ingest_cpu(cpu):
+    def ingest_cpu(self, cpu):
         raise NotImplementedError
 
-    @staticmethod
     @abstractmethod
-    def emit_cpu(cpu):
+    def emit_cpu(self, cpu):
         raise NotImplementedError
 
-    @staticmethod
     @abstractmethod
-    def ingest_memory(memory):
+    def ingest_memory(self, memory):
         raise NotImplementedError
 
-    @staticmethod
     @abstractmethod
-    def emit_memory(memory):
+    def emit_memory(self, memory):
         raise NotImplementedError
 
-    @staticmethod
     @abstractmethod
-    def ingest_environment(environment):
+    def ingest_environment(self, environment):
         raise NotImplementedError
 
-    @staticmethod
     @abstractmethod
-    def emit_environment(environment):
+    def emit_environment(self, environment):
         raise NotImplementedError
 
-    @staticmethod
     @abstractmethod
-    def ingest_command(command):
+    def ingest_command(self, command):
         raise NotImplementedError
 
-    @staticmethod
     @abstractmethod
-    def emit_command(command):
+    def emit_command(self, command):
         raise NotImplementedError
 
-    @staticmethod
     @abstractmethod
-    def ingest_entrypoint(entrypoint):
+    def ingest_entrypoint(self, entrypoint):
         raise NotImplementedError
 
-    @staticmethod
     @abstractmethod
-    def emit_entrypoint(entrypoint):
+    def emit_entrypoint(self, entrypoint):
         raise NotImplementedError
 
-    @staticmethod
     @abstractmethod
-    def ingest_volumes_from(volumes_from):
+    def ingest_volumes_from(self, volumes_from):
         raise NotImplementedError
 
-    @staticmethod
     @abstractmethod
-    def emit_volumes_from(volumes_from):
+    def emit_volumes_from(self, volumes_from):
+        raise NotImplementedError
+
+    @abstractmethod
+    def ingest_volumes(self, volumes):
+        raise NotImplementedError
+
+    @abstractmethod
+    def emit_volumes(self, volumes):
         raise NotImplementedError

@@ -3,13 +3,7 @@
 
 .. image:: https://coveralls.io/repos/ambitioninc/container-transform/badge.png?branch=develop
     :target: https://coveralls.io/r/ambitioninc/container-transform?branch=develop
-.. image:: https://pypip.in/v/container-transform/badge.png
-    :target: https://pypi.python.org/pypi/container-transform/
-    :alt: Latest PyPI version
 
-.. image:: https://pypip.in/d/container-transform/badge.png
-    :target: https://pypi.python.org/pypi/container-transform/
-    :alt: Number of PyPI downloads
 
 
 container-transform
