@@ -16,40 +16,57 @@ Example usage:
 .. code-block:: bash
 
     $ cat docker-compose.yml | container-transform  -v
-    [
-        {
-            "memory": 1024,
-            "image": "postgres:9.3",
-            "name": "db",
-            "essential": true
-        },
-        {
-            "memory": 128,
-            "image": "redis:latest",
-            "name": "redis",
-            "essential": true
-        },
-        {
-            "name": "web",
-            "memory": 64,
-            "command": [
-                "uwsgi",
-                "--json",
-                "uwsgi.json"
-            ],
-            "environment": [
-                {
-                    "name": "AWS_ACCESS_KEY_ID",
-                    "value": "AAAAAAAAAAAAAAAAAAAA"
-                },
-                {
-                    "name": "AWS_SECRET_ACCESS_KEY",
-                    "value": "1111111111111111111111111111111111111111"
+    {
+        "family": "python-app",
+        "volumes": [
+            {
+                "name": "host_logs",
+                "host": {
+                    "sourcePath": "/var/log/myapp"
                 }
-            ],
-            "essential": true
-        }
-    ]
+            }
+        ],
+        "containerDefinitions": [
+            {
+                "memory": 1024,
+                "image": "postgres:9.3",
+                "name": "db",
+                "essential": true
+            },
+            {
+                "memory": 128,
+                "image": "redis:latest",
+                "name": "redis",
+                "essential": true
+            },
+            {
+                "name": "web",
+                "memory": 64,
+                "command": [
+                    "uwsgi",
+                    "--json",
+                    "uwsgi.json"
+                ],
+                "mountPoints": [
+                    {
+                        "sourceVolume": "host_logs",
+                        "containerPath": "/var/log/uwsgi/"
+                    }
+                ],
+                "environment": [
+                    {
+                        "name": "AWS_ACCESS_KEY_ID",
+                        "value": "AAAAAAAAAAAAAAAAAAAA"
+                    },
+                    {
+                        "name": "AWS_SECRET_ACCESS_KEY",
+                        "value": "1111111111111111111111111111111111111111"
+                    }
+                ],
+                "essential": true
+            }
+        ]
+    }
     Container db is missing required parameter "cpu".
     Container redis is missing required parameter "cpu".
     Container web is missing required parameter "image".
