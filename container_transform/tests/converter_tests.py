@@ -15,8 +15,17 @@ class ConverterTests(TestCase):
         self.assertIsInstance(output, str)
 
     def test_ecs_converter(self):
-
         filename = './container_transform/tests/task.json'
+        conv = Converter(filename, 'ecs', 'fig')
+
+        fig_output = conv.convert()
+
+        self.assertIsInstance(fig_output, str)
+
+        self.assertEqual(0, len(conv.messages))
+
+    def test_ecs_converter_just_containers(self):
+        filename = './container_transform/tests/containers.json'
         conv = Converter(filename, 'ecs', 'fig')
 
         fig_output = conv.convert()

@@ -15,13 +15,13 @@ Running the tests
 
 To get the source source code and run the unit tests, run::
 
-    $ git clone git://github.com/ambitioninc/container-transform.git
-    $ cd container-transform
-    $ virtualenv env
-    $ . env/bin/activate
-    $ pip install nose
-    $ python setup.py install
-    $ python setup.py nosetests
+    git clone git://github.com/ambitioninc/container-transform.git
+    cd container-transform
+    virtualenv env
+    . env/bin/activate
+    pip install -e .[all]
+    python setup.py install
+    python setup.py nosetests
 
 While 100% code coverage does not make a library bug-free, it significantly
 reduces the number of easily caught bugs! Please make sure coverage is at 100%
@@ -59,9 +59,9 @@ Building the docs
 
 When in the project directory::
 
-    $ pip install -r requirements/docs.txt
-    $ python setup.py build_sphinx
-    $ open docs/_build/html/index.html
+    pip install -e .[all]
+    python setup.py build_sphinx
+    open docs/_build/html/index.html
 
 Release Checklist
 -----------------
@@ -73,6 +73,7 @@ Before a new release, please go through the following checklist:
 * Git tag the version
 * Upload to pypi::
 
+    pip install -e .[packaging]
     python setup.py sdist bdist_wheel upload
 
 * Increment the version to ``x.x-dev``

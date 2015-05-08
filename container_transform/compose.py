@@ -37,8 +37,7 @@ class ComposeTransformer(BaseTransformer):
 
         return output_containers
 
-    @staticmethod
-    def emit_containers(containers, verbose=True):
+    def emit_containers(self, containers, verbose=True):
 
         output = {}
         for container in containers:
@@ -95,8 +94,7 @@ class ComposeTransformer(BaseTransformer):
                 'container_port': int(parts[3])
             }
 
-    @staticmethod
-    def ingest_port_mappings(port_mappings):
+    def ingest_port_mappings(self, port_mappings):
         """
         Transform the docker-compose port mappings to base schema port_mappings
 
@@ -105,7 +103,7 @@ class ComposeTransformer(BaseTransformer):
         :return: the base schema port_mappings
         :rtype: list of dict
         """
-        return [ComposeTransformer._parse_port_mapping(mapping) for mapping in port_mappings]
+        return [self._parse_port_mapping(mapping) for mapping in port_mappings]
 
     @staticmethod
     def _emit_mapping(mapping):
@@ -120,18 +118,16 @@ class ComposeTransformer(BaseTransformer):
             parts.append(str(mapping['container_port']))
         return ':'.join(parts)
 
-    @staticmethod
-    def emit_port_mappings(port_mappings):
+    def emit_port_mappings(self, port_mappings):
         """
         :param port_mappings: the base schema port_mappings
         :type port_mappings: list of dict
         :return:
         :rtype: list of str
         """
-        return [str(ComposeTransformer._emit_mapping(mapping)) for mapping in port_mappings]
+        return [str(self._emit_mapping(mapping)) for mapping in port_mappings]
 
-    @staticmethod
-    def ingest_memory(memory):
+    def ingest_memory(self, memory):
         """
         Transform the memory into bytes
 
@@ -156,20 +152,16 @@ class ComposeTransformer(BaseTransformer):
         number = int(memory[:-1])
         return bit_shift[unit]['func'](number, bit_shift[unit]['shift'])
 
-    @staticmethod
-    def emit_memory(memory):
+    def emit_memory(self, memory):
         return '{}b'.format(memory)
 
-    @staticmethod
-    def ingest_cpu(cpu):
+    def ingest_cpu(self, cpu):
         return cpu
 
-    @staticmethod
-    def emit_cpu(cpu):
+    def emit_cpu(self, cpu):
         return cpu
 
-    @staticmethod
-    def ingest_environment(environment):
+    def ingest_environment(self, environment):
         output = {}
         if type(environment) is list:
             for kv in environment:
@@ -180,30 +172,75 @@ class ComposeTransformer(BaseTransformer):
                 output[str(key)] = str(value)
         return output
 
-    @staticmethod
-    def emit_environment(environment):
+    def emit_environment(self, environment):
         return environment
 
-    @staticmethod
-    def ingest_command(command):
+    def ingest_command(self, command):
         return command
 
-    @staticmethod
-    def emit_command(command):
+    def emit_command(self, command):
         return command
 
-    @staticmethod
-    def ingest_entrypoint(entrypoint):
+    def ingest_entrypoint(self, entrypoint):
         return entrypoint
 
-    @staticmethod
-    def emit_entrypoint(entrypoint):
+    def emit_entrypoint(self, entrypoint):
         return entrypoint
 
-    @staticmethod
-    def ingest_volumes_from(volumes_from):
+    def ingest_volumes_from(self, volumes_from):
+        return volumes_from
+
+    def emit_volumes_from(self, volumes_from):
         return volumes_from
 
     @staticmethod
-    def emit_volumes_from(volumes_from):
-        return volumes_from
+    def _ingest_volume(volume):
+        parts = volume.split(':')
+
+        if len(parts) == 1:
+            return {
+                'host': parts[0],
+                'container': parts[0]
+            }
+        if len(parts) == 2 and parts[1] != 'ro':
+            return {
+                'host': parts[0],
+                'container': parts[1]
+            }
+        if len(parts) == 2 and parts[1] == 'ro':
+            return {
+                'host': parts[0],
+                'container': parts[0],
+                'readonly': True
+            }
+        if len(parts) == 3 and parts[-1] == 'ro':
+            return {
+                'host': parts[0],
+                'container': parts[1],
+                'readonly': True
+            }
+
+    def ingest_volumes(self, volumes):
+        return [
+            self._ingest_volume(volume)
+            for volume
+            in volumes
+            if self._ingest_volume(volume) is not None
+        ]
+
+    @staticmethod
+    def _emit_volume(volume):
+        volume_str = volume.get('host') + ':' + volume.get('container', ':')
+        volume_str = volume_str.strip(':')
+
+        if volume.get('readonly') and len(volume_str):
+            volume_str += ':ro'
+        return volume_str
+
+    def emit_volumes(self, volumes):
+        return [
+            self._emit_volume(volume)
+            for volume
+            in volumes
+            if len(self._emit_volume(volume))
+        ]

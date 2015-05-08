@@ -16,6 +16,30 @@ def get_version():
     else:
         raise RuntimeError('Unable to find version string in {0}.'.format(VERSION_FILE))
 
+install_requires = [
+    'PyYAML>=3.10,<4',
+    'six>=1.3.0,<2',
+    'enum34>=1.0.4',
+    'click>=3.3',
+]
+tests_require = [
+    'coverage>=3.7.1',
+    'flake8>=2.2.0',
+    'mock>=1.0.1',
+    'nose>=1.3.0',
+]
+
+extras_require = {
+    'test': tests_require,
+    'packaging': ['wheel'],
+    'docs': ['Sphinx>=1.2.2', 'sphinx_rtd_theme'],
+}
+
+everything = set(install_requires)
+for deps in extras_require.values():
+    everything.update(deps)
+extras_require['all'] = list(everything)
+
 
 setup(
     name='container-transform',
@@ -40,19 +64,10 @@ setup(
         container-transform=container_transform.client:transform
     ''',
     license='MIT',
-    install_requires=[
-        'PyYAML >= 3.10, < 4',
-        'six >= 1.3.0, < 2',
-        'enum34>=1.0.4',
-        'click>=3.3',
-    ],
+    install_requires=install_requires,
     include_package_data=True,
     test_suite='nose.collector',
-    tests_require=[
-        'coverage>=3.7.1',
-        'flake8>=2.2.0',
-        'mock>=1.0.1',
-        'nose>=1.3.0',
-    ],
+    tests_require=tests_require,
+    extras_require=extras_require,
     zip_safe=False,
 )
