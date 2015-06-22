@@ -33,7 +33,6 @@ class ClientTests(TestCase):
             assert result.exit_code == 0
 
             data = json.loads(result.output)
-
             self.assertIn(
                 {
                     'name': 'web',
@@ -41,7 +40,7 @@ class ClientTests(TestCase):
                     'memory': 4,
                     'essential': True
                 },
-                data,
+                data['containerDefinitions'],
             )
             self.assertIn(
                 {
@@ -49,7 +48,7 @@ class ClientTests(TestCase):
                     'memory': 4,
                     'essential': True
                 },
-                data,
+                data['containerDefinitions'],
             )
 
     def test_prompt_fig_quiet(self):
@@ -70,7 +69,7 @@ class ClientTests(TestCase):
                     'memory': 4,
                     'essential': True
                 },
-                data,
+                data['containerDefinitions'],
             )
             self.assertIn(
                 {
@@ -78,7 +77,7 @@ class ClientTests(TestCase):
                     'memory': 4,
                     'essential': True
                 },
-                data,
+                data['containerDefinitions'],
             )
 
     def test_prompt_fig_no_quiet(self):
@@ -109,7 +108,7 @@ class ClientTests(TestCase):
                     'memory': 4,
                     'essential': True
                 },
-                data,
+                data['containerDefinitions'],
             )
             self.assertIn(
                 {
@@ -117,5 +116,5 @@ class ClientTests(TestCase):
                     'memory': 4,
                     'essential': True
                 },
-                data,
+                data['containerDefinitions'],
             )

@@ -48,7 +48,11 @@ class Converter(object):
         for container in containers:
             validated = output_transformer.validate(container)
 
-            converted_container = self._convert_container(validated)
+            converted_container = self._convert_container(
+                validated,
+                input_transformer,
+                output_transformer
+            )
 
             validated = output_transformer.validate(converted_container)
 
@@ -56,7 +60,7 @@ class Converter(object):
 
         return output_transformer.emit_containers(output_containers, verbose)
 
-    def _convert_container(self, container):
+    def _convert_container(self, container, input_transformer, output_transformer):
         """
         Converts a given dictionary to an output container definition
 
@@ -84,11 +88,11 @@ class Converter(object):
                 )
 
             if container.get(input_name) and \
-                    hasattr(self._input_class, 'ingest_{}'.format(parameter)) and \
-                    output_name and hasattr(self._output_class, 'emit_{}'.format(parameter)):
+                    hasattr(input_transformer, 'ingest_{}'.format(parameter)) and \
+                    output_name and hasattr(output_transformer, 'emit_{}'.format(parameter)):
                 # call transform_{}
-                ingest_func = getattr(self._input_class, 'ingest_{}'.format(parameter))
-                emit_func = getattr(self._output_class, 'emit_{}'.format(parameter))
+                ingest_func = getattr(input_transformer, 'ingest_{}'.format(parameter))
+                emit_func = getattr(output_transformer, 'emit_{}'.format(parameter))
 
                 output[output_name] = emit_func(ingest_func(container.get(input_name)))
 

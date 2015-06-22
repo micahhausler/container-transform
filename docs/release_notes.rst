@@ -1,6 +1,18 @@
 Release Notes
 =============
 
+v0.5.0
+------
+
+Features
+~~~~~~~~
+* Added support for local volumes
+* Output full ECS task json, including volume info
+
+Internal
+~~~~~~~~
+* converted static methods to class methods to keep track of volume information
+
 v0.4
 ----
 
