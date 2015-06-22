@@ -1,12 +1,13 @@
 Release Notes
 =============
 
-v0.5.0a2
---------
+v0.5.0
+------
 
 Features
 ~~~~~~~~
 * Added support for local volumes
+* Output full ECS task json, including volume info
 
 Internal
 ~~~~~~~~
