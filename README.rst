@@ -76,6 +76,21 @@ Quickstart
     Container web is missing required parameter "image".
     Container web is missing required parameter "cpu".
 
+Docker Image
+------------
+
+To get the docker image, run::
+
+    docker pull ambition/container-transform:latest
+
+To run the docker image::
+
+    docker run --rm -v $(pwd):/data/ ambition/container-transform  docker-compose.yml
+
+    # or
+    cat docker-compose.yml | docker run --rm -i ambition/container-transform
+
+
 Installation
 ------------
 To install the latest release, type::
