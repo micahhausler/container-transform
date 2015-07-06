@@ -128,7 +128,6 @@ class ECSTransformer(BaseTransformer):
     def _emit_mapping(mapping):
         if len(mapping) == 1:
             return {
-                'hostPort': int(list(mapping.values())[0]),
                 'containerPort': int(list(mapping.values())[0]),
             }
 

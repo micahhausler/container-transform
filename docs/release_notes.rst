@@ -1,6 +1,11 @@
 Release Notes
 =============
 
+v0.5.1
+------
+
+* Fixed issue where ECS host port was accidentally assigned when unspecified
+
 v0.5.0
 ------
 
