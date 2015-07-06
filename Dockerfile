@@ -1,4 +1,4 @@
-FROM dockerfile/python:latest
+FROM python:2.7.10
 
 COPY . /container-transform
 
@@ -7,4 +7,4 @@ RUN \
 	python /container-transform/setup.py install
 
 WORKDIR /data
-CMD ["container-transform", "-v"]
+ENTRYPOINT ["/usr/local/bin/container-transform"]
