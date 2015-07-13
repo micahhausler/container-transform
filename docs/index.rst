@@ -9,6 +9,10 @@ Currently, container-transform can parse and convert:
 * Docker-compose configuration files
 * Fig configuration files
 
+and it can output to:
+
+* Systemd unit files
+
 Any missing required parameters are printed to STDERR.
 
 Example usage:

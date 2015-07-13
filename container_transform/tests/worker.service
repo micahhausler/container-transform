@@ -1,0 +1,32 @@
+# worker.service #######################################################################
+[Unit]
+Description=Worker
+After=docker.service db.service redis.service web.service 
+Requires=docker.service db.service redis.service web.service 
+
+[Service]
+ExecStartPre=-/usr/bin/docker kill worker
+ExecStartPre=-/usr/bin/docker rm worker
+ExecStartPre=/usr/bin/docker pull me/myapp
+ExecStart=/usr/bin/docker run \
+    --name worker \
+    --memory 67108864b \
+    -p 8000 \
+    -p 8000:8000 \
+    -p 127.0.0.1:8001:8001 \
+    -p 8002:192.168.59.103:8002 \
+    -p 127.0.0.1:8003:192.168.59.103:8003 \
+    -e "AWS_ACCESS_KEY_ID=AAAAAAAAAAAAAAAAAAAA" \
+    -e "AWS_EC2_REGION=us-east-1" \
+    -e "AWS_SECRET_ACCESS_KEY=1111111111111111111111111111111111111111" \
+    -e "BROKER_URL=redis://redis:6379/0" \
+    -e "DB_HOST=db" \
+    -e "DB_NAME=postgres" \
+    -e "DB_PAS=postgres" \
+    -e "DB_USER=postgres" \
+    --link db \
+    --link redis \
+    --link web \
+    me/myapp \
+    celery worker
+ExecStop=/usr/bin/docker stop worker
