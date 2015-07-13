@@ -10,12 +10,12 @@ SCHEMA = {
     'cpu': int,  # out of 1024
     'memory': int,  # in bytes
     'links': list,  # This is universal across formats
-    'port_mappings': {
+    'port_mappings': [{
         'host_ip': str,
         'host_port': int,
         'container_ip': str,
         'container_port': int
-    },
+    }],
     'environment': dict,  # A simple key: value dictionary
     'entrypoint': str,  # An unsplit string
     'command': str,  # An unsplit string

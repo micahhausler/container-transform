@@ -1,5 +1,6 @@
-from unittest import TestCase
+import os
 import json
+from unittest import TestCase
 
 
 from click.testing import CliRunner
@@ -118,3 +119,18 @@ class ClientTests(TestCase):
                 },
                 data['containerDefinitions'],
             )
+
+    def test_prompt_compose_systemd_quiet(self):
+        runner = CliRunner()
+
+        input_file = '{}/docker-compose-web.yml'.format(os.path.dirname(__file__))
+
+        result = runner.invoke(transform, [input_file, '-q', '--output-type', 'systemd'])
+        assert result.exit_code == 0
+
+        service_file = '{}/web.service'.format(os.path.dirname(__file__))
+        service_contents = open(service_file).read()
+        self.assertEqual(
+            result.output,
+            service_contents
+        )

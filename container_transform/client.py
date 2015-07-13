@@ -1,7 +1,7 @@
 import click
 
 from .converter import Converter
-from .schema import TransformationTypes
+from .schema import InputTransformationTypes, OutputTransformationTypes
 from .version import __version__
 
 
@@ -17,14 +17,14 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 @click.option(
     '--input-type',
     'input_type',
-    type=click.Choice([v.value.lower() for v in list(TransformationTypes)]),
-    default=TransformationTypes.COMPOSE.value,
+    type=click.Choice([v.value.lower() for v in list(InputTransformationTypes)]),
+    default=InputTransformationTypes.COMPOSE.value,
 )
 @click.option(
     '--output-type',
     'output_type',
-    type=click.Choice([v.value.lower() for v in list(TransformationTypes)]),
-    default=TransformationTypes.ECS.value,
+    type=click.Choice([v.value.lower() for v in list(OutputTransformationTypes)]),
+    default=OutputTransformationTypes.ECS.value,
 )
 @click.option('-v/--no-verbose', default=True, help='Expand/minify json output')
 @click.option('-q', default=False, is_flag=True, help='Silence error messages')
