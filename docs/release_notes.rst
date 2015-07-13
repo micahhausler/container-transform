@@ -1,6 +1,11 @@
 Release Notes
 =============
 
+v0.6.0
+------
+
+* Added Systemd as an output type
+
 v0.5.1
 ------
 

@@ -8,6 +8,20 @@ class TransformationTypes(Enum):
     ECS = 'ecs'
     FIG = 'fig'
     COMPOSE = 'compose'
+    SYSTEMD = 'systemd'
+
+
+class InputTransformationTypes(Enum):
+    ECS = 'ecs'
+    FIG = 'fig'
+    COMPOSE = 'compose'
+
+
+class OutputTransformationTypes(Enum):
+    ECS = 'ecs'
+    FIG = 'fig'
+    COMPOSE = 'compose'
+    SYSTEMD = 'systemd'
 
 
 ARG_MAP = {
@@ -21,6 +35,10 @@ ARG_MAP = {
             'required': True,
         },
         TransformationTypes.COMPOSE.value: {
+            'name': 'image',
+            'required': True,
+        },
+        TransformationTypes.SYSTEMD.value: {
             'name': 'image',
             'required': True,
         },
@@ -38,6 +56,10 @@ ARG_MAP = {
             'name': 'name',
             'required': True
         },
+        TransformationTypes.SYSTEMD.value: {
+            'name': 'name',
+            'required': True
+        },
     },
     'cpu': {
         TransformationTypes.ECS.value: {
@@ -49,6 +71,10 @@ ARG_MAP = {
             'required': False
         },
         TransformationTypes.COMPOSE.value: {
+            'name': 'cpu_shares',
+            'required': False
+        },
+        TransformationTypes.SYSTEMD.value: {
             'name': 'cpu_shares',
             'required': False
         },
@@ -66,6 +92,10 @@ ARG_MAP = {
             'name': 'mem_limit',
             'required': False,
         },
+        TransformationTypes.SYSTEMD.value: {
+            'name': 'mem_limit',
+            'required': False,
+        },
     },
     'links': {
         TransformationTypes.ECS.value: {
@@ -77,6 +107,10 @@ ARG_MAP = {
             'required': False,
         },
         TransformationTypes.COMPOSE.value: {
+            'name': 'links',
+            'required': False,
+        },
+        TransformationTypes.SYSTEMD.value: {
             'name': 'links',
             'required': False,
         },
@@ -94,6 +128,10 @@ ARG_MAP = {
             'name': 'ports',
             'required': False,
         },
+        TransformationTypes.SYSTEMD.value: {
+            'name': 'ports',
+            'required': False,
+        },
     },
     'environment': {
         TransformationTypes.ECS.value: {
@@ -105,6 +143,10 @@ ARG_MAP = {
             'required': False,
         },
         TransformationTypes.COMPOSE.value: {
+            'name': 'environment',
+            'required': False,
+        },
+        TransformationTypes.SYSTEMD.value: {
             'name': 'environment',
             'required': False,
         },
@@ -122,6 +164,10 @@ ARG_MAP = {
             'name': 'entrypoint',
             'required': False,
         },
+        TransformationTypes.SYSTEMD.value: {
+            'name': 'entrypoint',
+            'required': False,
+        },
     },
     'command': {
         TransformationTypes.ECS.value: {
@@ -133,6 +179,10 @@ ARG_MAP = {
             'required': False,
         },
         TransformationTypes.COMPOSE.value: {
+            'name': 'command',
+            'required': False,
+        },
+        TransformationTypes.SYSTEMD.value: {
             'name': 'command',
             'required': False,
         },
@@ -150,6 +200,10 @@ ARG_MAP = {
             'name': None,
             'required': False
         },
+        TransformationTypes.SYSTEMD.value: {
+            'name': 'essential',
+            'required': False
+        },
     },
     'volumes_from': {
         TransformationTypes.ECS.value: {
@@ -161,6 +215,10 @@ ARG_MAP = {
             'required': False
         },
         TransformationTypes.COMPOSE.value: {
+            'name': 'volumes_from',
+            'required': False
+        },
+        TransformationTypes.SYSTEMD.value: {
             'name': 'volumes_from',
             'required': False
         },
@@ -178,7 +236,11 @@ ARG_MAP = {
         TransformationTypes.COMPOSE.value: {
             'name': 'volumes',
             'required': False
-        }
+        },
+        TransformationTypes.SYSTEMD.value: {
+            'name': 'volumes',
+            'required': False
+        },
     },
     'dns': {
         TransformationTypes.ECS.value: {
@@ -190,6 +252,10 @@ ARG_MAP = {
             'required': False
         },
         TransformationTypes.COMPOSE.value: {
+            'name': 'dns',
+            'required': False
+        },
+        TransformationTypes.SYSTEMD.value: {
             'name': 'dns',
             'required': False
         },
@@ -207,6 +273,10 @@ ARG_MAP = {
             'name': 'working_dir',
             'required': False
         },
+        TransformationTypes.SYSTEMD.value: {
+            'name': 'working_dir',
+            'required': False
+        },
     },
     'domain': {
         TransformationTypes.ECS.value: {
@@ -219,6 +289,10 @@ ARG_MAP = {
         },
         TransformationTypes.COMPOSE.value: {
             'name': 'domainname',
+            'required': False
+        },
+        TransformationTypes.SYSTEMD.value: {
+            'name': None,
             'required': False
         },
     },
@@ -235,6 +309,10 @@ ARG_MAP = {
             'name': 'build',
             'required': False,
         },
+        TransformationTypes.SYSTEMD.value: {
+            'name': None,
+            'required': False,
+        },
     },
     'expose': {
         TransformationTypes.ECS.value: {
@@ -246,6 +324,10 @@ ARG_MAP = {
             'required': False
         },
         TransformationTypes.COMPOSE.value: {
+            'name': 'expose',
+            'required': False
+        },
+        TransformationTypes.SYSTEMD.value: {
             'name': 'expose',
             'required': False
         },
@@ -263,6 +345,10 @@ ARG_MAP = {
             'name': 'net',
             'required': False
         },
+        TransformationTypes.SYSTEMD.value: {
+            'name': 'net',
+            'required': False
+        },
     },
     'privileged': {
         TransformationTypes.ECS.value: {
@@ -274,6 +360,10 @@ ARG_MAP = {
             'required': False
         },
         TransformationTypes.COMPOSE.value: {
+            'name': 'privileged',
+            'required': False
+        },
+        TransformationTypes.SYSTEMD.value: {
             'name': 'privileged',
             'required': False
         },

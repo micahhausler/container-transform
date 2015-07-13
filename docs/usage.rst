@@ -15,7 +15,7 @@ Usage
 
     Options:
       --input-type [ecs|compose|fig]
-      --output-type [ecs|compose|fig]
+      --output-type [ecs|compose|fig|systemd]
       -v / --no-verbose        Expand/minify json output
       -q                       Silence error messages
       --version                Show the version and exit.
@@ -42,3 +42,11 @@ Fig Format
 `Fig Documentation`_
 
 .. _Fig Documentation: http://www.fig.sh/yml.html
+
+
+Systemd Service Units
+---------------------
+
+`Systemd Unit Configuration`_
+
+.. _Systemd Unit Configuration: http://www.freedesktop.org/software/systemd/man/systemd.service.html
