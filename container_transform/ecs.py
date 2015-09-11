@@ -224,7 +224,7 @@ class ECSTransformer(BaseTransformer):
 
     @staticmethod
     def path_to_name(path):
-        return path.replace('/', ' ').title().replace(' ', '')
+        return path.replace('/', ' ').title().replace(' ', '').replace('.', '_')
 
     def _build_volume(self, volume):
         host_path = volume.get('host')
