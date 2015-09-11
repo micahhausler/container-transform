@@ -1,6 +1,11 @@
 Release Notes
 =============
 
+v0.6.1
+------
+
+* Fix ``after`` names in Systemd
+
 v0.6.0
 ------
 

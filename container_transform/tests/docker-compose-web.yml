@@ -12,7 +12,7 @@ web:
     DB_PASS: postgres
     DB_USER: postgres
   links:
-  - db
+  - "db:db.service"
   - redis
   ports:
   - 8000
