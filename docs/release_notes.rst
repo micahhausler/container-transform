@@ -5,6 +5,7 @@ v0.6.1
 ------
 
 * Fix ``after`` names in Systemd
+* Fixed invalid volume name for ECS volumes.
 
 v0.6.0
 ------
