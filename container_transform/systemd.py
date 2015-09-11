@@ -7,8 +7,8 @@ UNIT_TEMPLATE = '''\
 # {{ name }}.service #######################################################################
 [Unit]
 Description={{ name | title }}
-After=docker.service {% for link in links %}{{ link }}.service {% endfor %}
-Requires=docker.service {% for link in links %}{{ link }}.service {% endfor %}
+After=docker.service {% for link in link_keys %}{{ link }}.service {% endfor %}
+Requires=docker.service {% for link in link_keys %}{{ link }}.service {% endfor %}
 
 [Service]
 {% if essential == False %}
@@ -73,8 +73,9 @@ class SystemdTransformer(BaseTransformer):
     def emit_containers(self, containers, verbose=True):
         units = []
         for container in containers:
+            link_keys = [link.split(':')[0] for link in container.get('links', [])]
+            container['link_keys'] = link_keys
             units.append(Template(UNIT_TEMPLATE).render(container))
-
         return '\n'.join(units)
 
     @staticmethod

@@ -2,6 +2,7 @@ import json
 import uuid
 
 import six
+from six import string_types
 
 from .schema import TransformationTypes
 from .transformer import BaseTransformer
@@ -171,13 +172,19 @@ class ECSTransformer(BaseTransformer):
         return ' '.join(command)
 
     def emit_command(self, command):
-        return command.split()
+        if isinstance(command, string_types):
+            return command.split()
+        else:
+            return command
 
     def ingest_entrypoint(self, entrypoint):
         return ' '.join(entrypoint)
 
     def emit_entrypoint(self, entrypoint):
-        return entrypoint.split()
+        if isinstance(entrypoint, string_types):
+            return entrypoint.split()
+        else:
+            return entrypoint
 
     def ingest_volumes_from(self, volumes_from):
         return [vol['sourceContainer'] for vol in volumes_from]
@@ -217,7 +224,7 @@ class ECSTransformer(BaseTransformer):
 
     @staticmethod
     def path_to_name(path):
-        return path.replace('/', ' ').title().replace(' ', '')
+        return path.replace('/', ' ').title().replace(' ', '').replace('.', '_')
 
     def _build_volume(self, volume):
         host_path = volume.get('host')

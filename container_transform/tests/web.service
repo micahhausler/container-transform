@@ -24,7 +24,7 @@ ExecStart=/usr/bin/docker run \
     -e "DB_NAME=postgres" \
     -e "DB_PASS=postgres" \
     -e "DB_USER=postgres" \
-    --link db \
+    --link db:db.service \
     --link redis \
     <image> \
     uwsgi --json uwsgi.json

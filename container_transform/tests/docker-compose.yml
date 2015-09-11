@@ -61,3 +61,7 @@ logs:
     - '/var/log/apache/:ro'
     - '/var/log/syslog/'
     - '/should:/be:/ommitted'
+dummy:
+  image: me/myapp
+  entrypoint: ["noop", "param0"]
+  command: ["param2", "param1"]

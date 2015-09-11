@@ -1,6 +1,13 @@
 Release Notes
 =============
 
+v0.6.1
+------
+
+* Fix ``after`` names in Systemd
+* Fixed invalid volume name for ECS volumes
+* Added support for exec form of command and entrypoint
+
 v0.6.0
 ------
 
