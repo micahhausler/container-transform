@@ -36,14 +36,6 @@ Docker Compose Format
 
 .. _Docker Compose Documentation: https://docs.docker.com/compose/
 
-Fig Format
-----------
-
-`Fig Documentation`_
-
-.. _Fig Documentation: http://www.fig.sh/yml.html
-
-
 Systemd Service Units
 ---------------------
 

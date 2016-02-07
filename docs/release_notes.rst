@@ -1,6 +1,15 @@
 Release Notes
 =============
 
+v1.0.0
+------
+
+* Fix `GH #35`_
+* Removed fig support
+
+.. _GH #35: https://github.com/micahhausler/container-transform/issues/35
+
+
 v0.6.1
 ------
 

@@ -5,32 +5,23 @@ from container_transform.converter import Converter
 
 class ConverterTests(TestCase):
 
-    def test_fig_converter(self):
-
-        filename = './container_transform/tests/fig.yml'
-        conv = Converter(filename, 'fig', 'ecs')
-
-        output = conv.convert()
-
-        self.assertIsInstance(output, str)
-
     def test_ecs_converter(self):
         filename = './container_transform/tests/task.json'
-        conv = Converter(filename, 'ecs', 'fig')
+        conv = Converter(filename, 'ecs', 'compose')
 
-        fig_output = conv.convert()
+        compose_output = conv.convert()
 
-        self.assertIsInstance(fig_output, str)
+        self.assertIsInstance(compose_output, str)
 
         self.assertEqual(0, len(conv.messages))
 
     def test_ecs_converter_just_containers(self):
         filename = './container_transform/tests/containers.json'
-        conv = Converter(filename, 'ecs', 'fig')
+        conv = Converter(filename, 'ecs', 'compose')
 
-        fig_output = conv.convert()
+        compose_output = conv.convert()
 
-        self.assertIsInstance(fig_output, str)
+        self.assertIsInstance(compose_output, str)
 
         self.assertEqual(0, len(conv.messages))
 
@@ -38,9 +29,9 @@ class ConverterTests(TestCase):
         filename = './container_transform/tests/task.json'
         conv = Converter(filename, 'ecs', 'compose')
 
-        fig_output = conv.convert()
+        compose_output = conv.convert()
 
-        self.assertIsInstance(fig_output, str)
+        self.assertIsInstance(compose_output, str)
 
         self.assertEqual(0, len(conv.messages))
 

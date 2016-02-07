@@ -7,7 +7,6 @@ Currently, container-transform can parse and convert:
 
 * ECS task definitions
 * Docker-compose configuration files
-* Fig configuration files
 
 and it can output to:
 

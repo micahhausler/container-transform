@@ -2,13 +2,11 @@ from .schema import TransformationTypes, ARG_MAP
 
 from .compose import ComposeTransformer
 from .ecs import ECSTransformer
-from .fig import FigTransformer
 from .systemd import SystemdTransformer
 
 TRANSFORMER_CLASSES = {
     TransformationTypes.COMPOSE.value: ComposeTransformer,
     TransformationTypes.ECS.value: ECSTransformer,
-    TransformationTypes.FIG.value: FigTransformer,
     TransformationTypes.SYSTEMD.value: SystemdTransformer,
 }
 

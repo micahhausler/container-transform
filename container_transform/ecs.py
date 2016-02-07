@@ -19,7 +19,7 @@ class ECSTransformer(BaseTransformer):
         print(json.dumps(output, indent=4))
 
     """
-    input_type = TransformationTypes.FIG.value
+    input_type = TransformationTypes.COMPOSE.value
 
     def __init__(self, filename=None):
         """
