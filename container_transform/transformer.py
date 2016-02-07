@@ -1,5 +1,3 @@
-import six
-
 from abc import ABCMeta, abstractmethod
 
 """The SCHEMA defines the argument format the .ingest_*() and .emit_*()
@@ -24,7 +22,7 @@ SCHEMA = {
 }
 
 
-class BaseTransformer(six.with_metaclass(ABCMeta), object):
+class BaseTransformer(object, metaclass=ABCMeta):
     """
     The base class for Transformer classes to inherit from.
 

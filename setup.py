@@ -18,13 +18,11 @@ def get_version():
 
 install_requires = [
     'PyYAML>=3.10,<4',
-    'six>=1.3.0,<2',
     'Jinja2>=2.7.0',
-    'enum34>=1.0.4',
     'click>=3.3',
 ]
 tests_require = [
-    'coverage>=3.7.1',
+    'coverage>=4.0.3',
     'flake8>=2.2.0',
     'mock>=1.0.1',
     'nose>=1.3.0',
@@ -53,9 +51,7 @@ setup(
     keywords='docker, container, fig, ecs, compose',
     packages=find_packages(),
     classifiers=[
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',

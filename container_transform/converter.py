@@ -1,5 +1,3 @@
-import six
-
 from .schema import TransformationTypes, ARG_MAP
 
 from .compose import ComposeTransformer
@@ -73,7 +71,7 @@ class Converter(object):
         :return: A output_type container definition
         """
         output = {}
-        for parameter, options in six.iteritems(ARG_MAP):
+        for parameter, options in ARG_MAP.items():
             output_name = options.get(self.output_type, {}).get('name')
             output_required = options.get(self.output_type, {}).get('required')
 

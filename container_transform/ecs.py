@@ -1,8 +1,6 @@
 import json
 import uuid
 
-import six
-from six import string_types
 
 from .schema import TransformationTypes
 from .transformer import BaseTransformer
@@ -164,7 +162,7 @@ class ECSTransformer(BaseTransformer):
 
     def emit_environment(self, environment):
         output = []
-        for k, v in six.iteritems(environment):
+        for k, v in environment.items():
             output.append({'name': k, 'value': v})
         return output
 
@@ -172,7 +170,7 @@ class ECSTransformer(BaseTransformer):
         return ' '.join(command)
 
     def emit_command(self, command):
-        if isinstance(command, string_types):
+        if isinstance(command, str):
             return command.split()
         else:
             return command
@@ -181,7 +179,7 @@ class ECSTransformer(BaseTransformer):
         return ' '.join(entrypoint)
 
     def emit_entrypoint(self, entrypoint):
-        if isinstance(entrypoint, string_types):
+        if isinstance(entrypoint, str):
             return entrypoint.split()
         else:
             return entrypoint

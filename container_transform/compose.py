@@ -1,6 +1,5 @@
 import uuid
 
-import six
 import yaml
 
 from .transformer import BaseTransformer
@@ -30,7 +29,7 @@ class ComposeTransformer(BaseTransformer):
 
         output_containers = []
 
-        for container_name, definition in six.iteritems(containers):
+        for container_name, definition in containers.items():
             container = definition.copy()
             container['name'] = container_name
             output_containers.append(container)
@@ -168,7 +167,7 @@ class ComposeTransformer(BaseTransformer):
                 index = kv.find('=')
                 output[str(kv[:index])] = str(kv[index + 1:])
         if type(environment) is dict:
-            for key, value in six.iteritems(environment):
+            for key, value in environment.items():
                 output[str(key)] = str(value)
         return output
 
