@@ -95,7 +95,6 @@
                     "containerPort": 8002
                 },
                 {
-                    "hostPort": 8003,
                     "containerPort": 8003
                 }
             ],

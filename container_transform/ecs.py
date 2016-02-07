@@ -107,10 +107,13 @@ class ECSTransformer(BaseTransformer):
 
     @staticmethod
     def _parse_port_mapping(mapping):
-        return {
-            'host_port': int(mapping['hostPort']),
+        output = {
             'container_port': int(mapping['containerPort'])
         }
+        host_port = mapping.get('hostPort')
+        if host_port:
+            output['host_port'] = host_port
+        return output
 
     def ingest_port_mappings(self, port_mappings):
         """
