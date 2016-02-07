@@ -1,8 +1,8 @@
-.. image:: https://travis-ci.org/ambitioninc/container-transform.png
-   :target: https://travis-ci.org/ambitioninc/container-transform
+.. image:: https://travis-ci.org/micahhausler/container-transform.png
+   :target: https://travis-ci.org/micahhausler/container-transform
 
-.. image:: https://coveralls.io/repos/ambitioninc/container-transform/badge.png?branch=develop
-    :target: https://coveralls.io/r/ambitioninc/container-transform?branch=develop
+.. image:: https://coveralls.io/repos/micahhausler/container-transform/badge.png?branch=master
+    :target: https://coveralls.io/r/micahhausler/container-transform?branch=master
 
 
 
@@ -81,14 +81,14 @@ Docker Image
 
 To get the docker image, run::
 
-    docker pull ambition/container-transform:latest
+    docker pull micahhausler/container-transform:latest
 
 To run the docker image::
 
-    docker run --rm -v $(pwd):/data/ ambition/container-transform  docker-compose.yml
+    docker run --rm -v $(pwd):/data/ micahhausler/container-transform  docker-compose.yml
 
     # or
-    cat docker-compose.yml | docker run --rm -i ambition/container-transform
+    cat docker-compose.yml | docker run --rm -i micahhausler/container-transform
 
 
 Installation
@@ -99,7 +99,7 @@ To install the latest release, type::
 
 To install the latest code directly from source, type::
 
-    pip install git+git://github.com/ambitioninc/container-transform.git
+    pip install git+git://github.com/micahhausler/container-transform.git
 
 Documentation
 -------------

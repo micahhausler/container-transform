@@ -47,9 +47,9 @@ setup(
     version=get_version(),
     description='A converter for various docker cluster formats',
     long_description=open('README.rst').read(),
-    url='https://github.com/ambitioninc/container-transform',
+    url='https://github.com/micahhausler/container-transform',
     author='Micah  Hausler',
-    author_email='opensource@ambition.com',
+    author_email='hausler.m@gmail.com',
     keywords='docker, container, fig, ecs, compose',
     packages=find_packages(),
     classifiers=[

@@ -2,20 +2,20 @@ Contributing
 ============
 
 Contributions and issues are most welcome! All issues and pull requests are
-handled through github on the `ambitioninc repository`_. Also, please check for
+handled through github on the `issues page`_. Also, please check for
 any existing issues before filing a new one. If you have a great idea but it
 involves big changes, please file a ticket before making a pull request! We
 want to make sure you don't spend your time coding something that might not fit
 the scope of the project.
 
-.. _ambitioninc repository: https://github.com/ambitioninc/container-transform/issues
+.. _issues page: https://github.com/micahhausler/container-transform/issues
 
 Running the tests
 -----------------
 
 To get the source source code and run the unit tests, run::
 
-    git clone git://github.com/ambitioninc/container-transform.git
+    git clone git://github.com/micahhausler/container-transform.git
     cd container-transform
     virtualenv env
     . env/bin/activate
@@ -82,8 +82,8 @@ Vulnerability Reporting
 -----------------------
 
 For any security issues, please do NOT file an issue or pull request on github!
-Please contact `security@ambition.com`_ with the GPG key provided on `Ambition's
-website`_.
+Please contact `hausler.m@gmail.com`_ with the GPG key provided on `keybase`.
 
-.. _security@ambition.com: mailto:security@ambition.com
-.. _Ambition's website: http://ambition.com/security/
+
+.. _hausler.m@gmail.com: mailto:hausler.m@gmail.com
+.. _keybase : https://keybase.io/micahhausler

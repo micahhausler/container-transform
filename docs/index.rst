@@ -106,4 +106,4 @@ To install the latest release, type::
 
 To install the latest code directly from source, type::
 
-    pip install git+git://github.com/ambitioninc/container-transform.git
+    pip install git+git://github.com/micahhausler/container-transform.git
