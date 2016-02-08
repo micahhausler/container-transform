@@ -1,0 +1,41 @@
+{
+    "containerDefinitions": [
+        {
+            "dockerLabels": {
+                "com.example.department": "Finance",
+                "com.example.description": "Accounting webapp",
+                "com.example.label-with-empty-value": ""
+            },
+            "essential": true,
+            "logConfiguration": {
+                "logDriver": "gelf",
+                "options": {
+                    "gelf-address": "udp://127.0.0.1:12900",
+                    "tag": "web"
+                }
+            },
+            "mountPoints": [
+                {
+                    "containerPath": "/code",
+                    "sourceVolume": "_"
+                }
+            ],
+            "name": "web",
+            "portMappings": [
+                {
+                    "containerPort": 5000,
+                    "hostPort": 5000
+                }
+            ]
+        }
+    ],
+    "family": "",
+    "volumes": [
+        {
+            "host": {
+                "sourcePath": "."
+            },
+            "name": "_"
+        }
+    ]
+}

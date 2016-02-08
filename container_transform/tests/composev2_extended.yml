@@ -1,0 +1,23 @@
+version: '2'
+services:
+  web:
+    build: .
+    ports:
+     - "5000:5000"
+    volumes:
+     - .:/code
+    labels:
+      com.example.name: "web"
+      com.example.emptyvalue: ""
+    logging:
+      driver: gelf
+      options:
+        tag: web
+        gelf-address: "udp://127.0.0.1:12900"
+  redis:
+    image: redis
+    ports:
+     - "6379"
+    labels:
+        - io.redis.name=redis
+        - io.redis.novalue

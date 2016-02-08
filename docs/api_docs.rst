@@ -21,15 +21,6 @@ ComposeTransformer
 
     .. automethod:: __init__
 
-FigTransformer
---------------
-
-.. automodule:: container_transform.fig
-.. autoclass:: container_transform.fig.FigTransformer
-    :members:
-
-    .. automethod:: __init__
-
 BaseTransformer
 ---------------
 

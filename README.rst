@@ -4,6 +4,9 @@
 .. image:: https://coveralls.io/repos/micahhausler/container-transform/badge.png?branch=master
     :target: https://coveralls.io/r/micahhausler/container-transform?branch=master
 
+.. image:: https://readthedocs.org/projects/container-transform/badge/?version=latest
+    :target: http://container-transform.readthedocs.org/en/latest/?badge=latest
+    :alt: Documentation Status
 
 
 container-transform
@@ -12,8 +15,8 @@ container-transform is a small utility to transform various docker container
 formats to one another.
 
 Currently, container-transform can parse and convert ECS task definitions and
-docker-compose configuration files. It can also output Systemd unit files. Any
-missing required parameters are printed to STDERR.
+docker-compose configuration files (v1 and v2). It can also output Systemd unit
+files. Any missing required parameters are printed to STDERR.
 
 Quickstart
 ----------

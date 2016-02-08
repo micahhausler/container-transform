@@ -1,8 +1,6 @@
 import json
 import uuid
 
-import six
-from six import string_types
 
 from .schema import TransformationTypes
 from .transformer import BaseTransformer
@@ -21,7 +19,7 @@ class ECSTransformer(BaseTransformer):
         print(json.dumps(output, indent=4))
 
     """
-    input_type = TransformationTypes.FIG.value
+    input_type = TransformationTypes.COMPOSE.value
 
     def __init__(self, filename=None):
         """
@@ -79,6 +77,7 @@ class ECSTransformer(BaseTransformer):
 
     def emit_containers(self, containers, verbose=True):
         """
+        Emits the task definition and sorts containers by name
         :param containers: List of the container definitions
         :type containers: list of dict
         :param verbose: Print out newlines and indented JSON
@@ -86,6 +85,7 @@ class ECSTransformer(BaseTransformer):
         :return: The text output
         :rtype: str
         """
+        containers = sorted(containers, key=lambda c: c.get('name'))
         task_definition = {
             'family': self.family,
             'containerDefinitions': containers,
@@ -109,10 +109,13 @@ class ECSTransformer(BaseTransformer):
 
     @staticmethod
     def _parse_port_mapping(mapping):
-        return {
-            'host_port': int(mapping['hostPort']),
+        output = {
             'container_port': int(mapping['containerPort'])
         }
+        host_port = mapping.get('hostPort')
+        if host_port:
+            output['host_port'] = host_port
+        return output
 
     def ingest_port_mappings(self, port_mappings):
         """
@@ -164,7 +167,7 @@ class ECSTransformer(BaseTransformer):
 
     def emit_environment(self, environment):
         output = []
-        for k, v in six.iteritems(environment):
+        for k, v in environment.items():
             output.append({'name': k, 'value': v})
         return output
 
@@ -172,7 +175,7 @@ class ECSTransformer(BaseTransformer):
         return ' '.join(command)
 
     def emit_command(self, command):
-        if isinstance(command, string_types):
+        if isinstance(command, str):
             return command.split()
         else:
             return command
@@ -181,7 +184,7 @@ class ECSTransformer(BaseTransformer):
         return ' '.join(entrypoint)
 
     def emit_entrypoint(self, entrypoint):
-        if isinstance(entrypoint, string_types):
+        if isinstance(entrypoint, str):
             return entrypoint.split()
         else:
             return entrypoint
@@ -252,3 +255,23 @@ class ECSTransformer(BaseTransformer):
             in volumes
             if self._build_mountpoint(volume) is not None
         ]
+
+    def ingest_labels(self, labels):
+        return labels
+
+    def emit_labels(self, labels):
+        return labels
+
+    def ingest_logging(self, logging):
+        data = logging
+        if data.get('logDriver'):  # pragma: no cover
+            data['driver'] = data.get('logDriver')
+            del data['logDriver']
+        return logging
+
+    def emit_logging(self, logging):
+        data = logging
+        if data.get('driver'):  # pragma: no cover
+            data['logDriver'] = data.get('driver')
+            del data['driver']
+        return logging

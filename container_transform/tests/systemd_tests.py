@@ -35,7 +35,18 @@ class SystemdTransformerTests(TestCase):
                 '127.0.0.1:8001:8001',
                 '8002:192.168.59.103:8002',
                 '127.0.0.1:8003:192.168.59.103:8003'
-            ]
+            ],
+            'labels': {
+                'com.example.foo': 'bar',
+                'com.example.bar': None
+            },
+            'logging': {
+                'driver': 'gelf',
+                'options': {
+                    'tag': 'worker',
+                    'gelf-address': 'udp://127.0.0.1:12900'
+                }
+            }
         }]
 
         service_file = '{}/worker.service'.format(os.path.dirname(__file__))

@@ -1,0 +1,54 @@
+{
+    "containerDefinitions": [
+        {
+            "dockerLabels": {
+                "io.redis.name": "redis",
+                "io.redis.novalue": null
+            },
+            "essential": true,
+            "image": "redis",
+            "name": "redis",
+            "portMappings": [
+                {
+                    "containerPort": 6379
+                }
+            ]
+        },
+        {
+            "dockerLabels": {
+                "com.example.emptyvalue": "",
+                "com.example.name": "web"
+            },
+            "essential": true,
+            "logConfiguration": {
+                "logDriver": "gelf",
+                "options": {
+                    "gelf-address": "udp://127.0.0.1:12900",
+                    "tag": "web"
+                }
+            },
+            "mountPoints": [
+                {
+                    "containerPath": "/code",
+                    "sourceVolume": "_"
+                }
+            ],
+            "name": "web",
+            "portMappings": [
+                {
+                    "containerPort": 5000,
+                    "hostPort": 5000
+                }
+            ]
+        }
+    ],
+    "family": "",
+    "volumes": [
+        {
+            "host": {
+                "sourcePath": "."
+            },
+            "name": "_"
+        }
+    ]
+}

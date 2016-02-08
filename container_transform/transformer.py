@@ -1,5 +1,3 @@
-import six
-
 from abc import ABCMeta, abstractmethod
 
 """The SCHEMA defines the argument format the .ingest_*() and .emit_*()
@@ -24,7 +22,7 @@ SCHEMA = {
 }
 
 
-class BaseTransformer(six.with_metaclass(ABCMeta), object):
+class BaseTransformer(object, metaclass=ABCMeta):
     """
     The base class for Transformer classes to inherit from.
 
@@ -36,16 +34,6 @@ class BaseTransformer(six.with_metaclass(ABCMeta), object):
         normalized_keys = transformer.ingest_containers()
 
     """
-    def __init__(self, filename=None):
-        """
-        :param filename: The file to be loaded
-        :type filename: str
-        """
-        stream = None
-        if filename:
-            self._filename = filename
-            stream = self._read_file(filename)
-        self.stream = stream
 
     def _read_file(self, filename):
         """
@@ -73,7 +61,7 @@ class BaseTransformer(six.with_metaclass(ABCMeta), object):
         definitions dictionaries.
 
         This is to normalize `where` all the container information is.
-        For example, Fig places the container name outside the rest of the
+        For example, Compose v1 places the container name outside the rest of the
         container definition. We need to have a 'name' key in the container
         definition.
 

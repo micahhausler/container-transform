@@ -95,7 +95,6 @@
                     "containerPort": 8002
                 },
                 {
-                    "hostPort": 8003,
                     "containerPort": 8003
                 }
             ],
@@ -198,6 +197,17 @@
             "essential": true,
             "name": "redis",
             "memory": 64,
+            "dockerLabels": {
+                "com.example.emptyvalue": "",
+                "com.example.name": "web"
+            },
+            "logConfiguration": {
+                "logDriver": "gelf",
+                "options": {
+                    "gelf-address": "udp://127.0.0.1:12900",
+                    "tag": "web"
+                }
+            },
             "image": "redis:latest"
         }
     ]

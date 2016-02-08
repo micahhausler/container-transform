@@ -1,6 +1,6 @@
 import uuid
+from functools import reduce
 
-import six
 import yaml
 
 from .transformer import BaseTransformer
@@ -8,7 +8,7 @@ from .transformer import BaseTransformer
 
 class ComposeTransformer(BaseTransformer):
     """
-    A transformer for docker-compose
+    A transformer for docker-compose v1 and v2
 
     To use this class:
 
@@ -18,6 +18,27 @@ class ComposeTransformer(BaseTransformer):
         normalized_keys = transformer.ingest_containers()
 
     """
+    def __init__(self, filename=None):
+        """
+        We override ``.__init__()`` on purpose, we need to get the volume,
+        version, network, and possibly other data.
+
+        :param filename: The file to be loaded
+        :type filename: str
+        """
+        if filename:
+            self._filename = filename
+            stream = self._read_file(filename)
+            self.stream_version = int(stream.get('version', '1'))
+
+            if self.stream_version > 1:
+                self.stream = stream.get('services')
+                self.volumes = stream.get('volumes', None)
+                self.networks = stream.get('networks', None)
+            else:
+                self.stream = stream
+        else:
+            self.stream = None
 
     def _read_stream(self, stream):
         return yaml.safe_load(stream=stream)
@@ -30,7 +51,7 @@ class ComposeTransformer(BaseTransformer):
 
         output_containers = []
 
-        for container_name, definition in six.iteritems(containers):
+        for container_name, definition in containers.items():
             container = definition.copy()
             container['name'] = container_name
             output_containers.append(container)
@@ -39,14 +60,19 @@ class ComposeTransformer(BaseTransformer):
 
     def emit_containers(self, containers, verbose=True):
 
-        output = {}
+        services = {}
         for container in containers:
             name_in_container = container.get('name')
             if not name_in_container:
                 name = str(uuid.uuid4())
             else:
                 name = container.pop('name')
-            output[name] = container
+            services[name] = container
+
+        output = {
+            'services': services,
+            'version': '2',
+        }
 
         noalias_dumper = yaml.dumper.SafeDumper
         noalias_dumper.ignore_aliases = lambda self, data: True
@@ -168,7 +194,7 @@ class ComposeTransformer(BaseTransformer):
                 index = kv.find('=')
                 output[str(kv[:index])] = str(kv[index + 1:])
         if type(environment) is dict:
-            for key, value in six.iteritems(environment):
+            for key, value in environment.items():
                 output[str(key)] = str(value)
         return output
 
@@ -244,3 +270,29 @@ class ComposeTransformer(BaseTransformer):
             in volumes
             if len(self._emit_volume(volume))
         ]
+
+    @staticmethod
+    def _parse_label_string(label):
+        eq = label.find('=')
+        if eq == -1:
+            return {label: None}
+        else:
+            return {label[:eq]: label[eq+1:]}
+
+    def ingest_labels(self, labels):
+        if isinstance(labels, list):
+            return reduce(
+                lambda a, b: a.update(b) or a,
+                map(self._parse_label_string, labels),
+                {}
+            )
+        return labels
+
+    def emit_labels(self, labels):
+        return labels
+
+    def ingest_logging(self, logging):
+        return logging
+
+    def emit_logging(self, logging):
+        return logging

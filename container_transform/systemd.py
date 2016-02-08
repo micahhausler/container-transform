@@ -34,8 +34,15 @@ ExecStart=/usr/bin/docker run \\
     --net {{ net }} \\{% endif -%}
     {% for volume in volumes %}
     -v {{ volume }} \\{% endfor -%}
+    {%- if logging %}
+    {% if logging.driver -%}
+    --log-driver={{ logging.driver }} \\{% endif -%}
+    {% if logging.options %}{% for opt in logging.options|dictsort %}
+    --log-opt {{ opt[0] }}={{ opt[1] }} \\{% endfor -%}{% endif %}{% endif -%}
     {% if environment %}{% for env in environment|dictsort %}
     -e "{{ env[0] }}={{ env[1] }}" \\{% endfor -%}{% endif -%}
+    {% if labels %}{% for label in labels|dictsort %}
+    --label {{ label[0] }}="{{ label[1] }}" \\{% endfor -%}{% endif -%}
     {% for link in links %}
     --link {{ link }} \\{% endfor -%}
     {% for vf in volumes_from %}
@@ -162,3 +169,15 @@ class SystemdTransformer(BaseTransformer):
             in volumes
             if len(self._emit_volume(volume))
         ]
+
+    def ingest_labels(self, labels):
+        pass
+
+    def emit_labels(self, labels):
+        return labels
+
+    def ingest_logging(self, logging):
+        pass
+
+    def emit_logging(self, logging):
+        return logging
