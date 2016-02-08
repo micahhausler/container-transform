@@ -1,0 +1,17 @@
+version: '2'
+services:
+  web:
+    build: .
+    ports:
+     - "5000:5000"
+    volumes:
+     - .:/code
+    labels:
+      com.example.description: "Accounting webapp"
+      com.example.department: "Finance"
+      com.example.label-with-empty-value: ""
+    logging:
+      driver: gelf
+      options:
+        tag: web
+        gelf-address: "udp://127.0.0.1:12900"

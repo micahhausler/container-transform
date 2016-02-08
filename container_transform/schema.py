@@ -289,5 +289,32 @@ ARG_MAP = {
             'required': False
         },
     },
-
+    'labels': {
+        TransformationTypes.ECS.value: {
+            'name': 'dockerLabels',
+            'required': False
+        },
+        TransformationTypes.COMPOSE.value: {
+            'name': 'labels',
+            'required': False
+        },
+        TransformationTypes.SYSTEMD.value: {
+            'name': 'labels',
+            'required': False
+        },
+    },
+    'logging': {
+        TransformationTypes.ECS.value: {
+            'name': 'logConfiguration',
+            'required': False
+        },
+        TransformationTypes.COMPOSE.value: {
+            'name': 'logging',
+            'required': False
+        },
+        TransformationTypes.SYSTEMD.value: {
+            'name': 'logging',
+            'required': False
+        },
+    }
 }

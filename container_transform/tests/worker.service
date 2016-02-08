@@ -16,6 +16,9 @@ ExecStart=/usr/bin/docker run \
     -p 127.0.0.1:8001:8001 \
     -p 8002:192.168.59.103:8002 \
     -p 127.0.0.1:8003:192.168.59.103:8003 \
+    --log-driver=gelf \
+    --log-opt gelf-address=udp://127.0.0.1:12900 \
+    --log-opt tag=worker \
     -e "AWS_ACCESS_KEY_ID=AAAAAAAAAAAAAAAAAAAA" \
     -e "AWS_EC2_REGION=us-east-1" \
     -e "AWS_SECRET_ACCESS_KEY=1111111111111111111111111111111111111111" \
@@ -24,6 +27,8 @@ ExecStart=/usr/bin/docker run \
     -e "DB_NAME=postgres" \
     -e "DB_PAS=postgres" \
     -e "DB_USER=postgres" \
+    --label com.example.bar="None" \
+    --label com.example.foo="bar" \
     --link db \
     --link redis \
     --link web \

@@ -77,6 +77,7 @@ class ECSTransformer(BaseTransformer):
 
     def emit_containers(self, containers, verbose=True):
         """
+        Emits the task definition and sorts containers by name
         :param containers: List of the container definitions
         :type containers: list of dict
         :param verbose: Print out newlines and indented JSON
@@ -84,6 +85,7 @@ class ECSTransformer(BaseTransformer):
         :return: The text output
         :rtype: str
         """
+        containers = sorted(containers, key=lambda c: c.get('name'))
         task_definition = {
             'family': self.family,
             'containerDefinitions': containers,
@@ -253,3 +255,23 @@ class ECSTransformer(BaseTransformer):
             in volumes
             if self._build_mountpoint(volume) is not None
         ]
+
+    def ingest_labels(self, labels):
+        return labels
+
+    def emit_labels(self, labels):
+        return labels
+
+    def ingest_logging(self, logging):
+        data = logging
+        if data.get('logDriver'):  # pragma: no cover
+            data['driver'] = data.get('logDriver')
+            del data['logDriver']
+        return logging
+
+    def emit_logging(self, logging):
+        data = logging
+        if data.get('driver'):  # pragma: no cover
+            data['logDriver'] = data.get('driver')
+            del data['driver']
+        return logging

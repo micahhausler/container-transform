@@ -34,16 +34,6 @@ class BaseTransformer(object, metaclass=ABCMeta):
         normalized_keys = transformer.ingest_containers()
 
     """
-    def __init__(self, filename=None):
-        """
-        :param filename: The file to be loaded
-        :type filename: str
-        """
-        stream = None
-        if filename:
-            self._filename = filename
-            stream = self._read_file(filename)
-        self.stream = stream
 
     def _read_file(self, filename):
         """
@@ -71,7 +61,7 @@ class BaseTransformer(object, metaclass=ABCMeta):
         definitions dictionaries.
 
         This is to normalize `where` all the container information is.
-        For example, Fig places the container name outside the rest of the
+        For example, Compose v1 places the container name outside the rest of the
         container definition. We need to have a 'name' key in the container
         definition.
 

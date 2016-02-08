@@ -26,9 +26,11 @@ class ComposeTransformerTests(TestCase):
 
         self.assertEqual(
             (
-                '{mock_uuid}:\n'
-                '  cpu: 200\n'
-                '  image: postgres:9.3\n'
+                'services:\n'
+                '  {mock_uuid}:\n'
+                '    cpu: 200\n'
+                '    image: postgres:9.3\n'
+                'version: \'2\'\n'
             ).format(mock_uuid=mock_uuid.return_value),
             output
         )

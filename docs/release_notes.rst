@@ -4,10 +4,14 @@ Release Notes
 v1.0.0
 ------
 
-* Fix `GH #35`_
+* Fixed `GH #35`_
 * Removed fig support
+* Added support for labels
+* Added support for docker-compose v2
+* Added support for log drivers - `GH #33`_
 
 .. _GH #35: https://github.com/micahhausler/container-transform/issues/35
+.. _GH #33: https://github.com/micahhausler/container-transform/issues/33
 
 
 v0.6.1
