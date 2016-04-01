@@ -158,7 +158,7 @@ class ComposeTransformer(BaseTransformer):
         Transform the memory into bytes
 
         :param memory: Compose memory definition. (1g, 24k)
-        :type memory: str
+        :type memory: memory string or integer
         :return: The memory in bytes
         :rtype: int
         """
@@ -167,6 +167,10 @@ class ComposeTransformer(BaseTransformer):
 
         def rshift(num, shift):
             return num >> shift
+
+        if isinstance(memory, int):
+            # Memory was specified as an integer, meaning it is in bytes
+            memory = '{}b'.format(memory)
 
         bit_shift = {
             'g': {'func': lshift, 'shift': 30},

@@ -61,6 +61,12 @@ logs:
     - '/var/log/apache/:ro'
     - '/var/log/syslog/'
     - '/should:/be:/ommitted'
+web3:
+  image: me/myapp
+  mem_limit: 1024
+  entrypoint: uwsgi
+  command: --json uwsgi.json
+  cpu_shares: 200
 dummy:
   image: me/myapp
   entrypoint: ["noop", "param0"]
