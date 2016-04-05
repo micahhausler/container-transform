@@ -95,9 +95,7 @@ class ClientTests(TestCase):
             messages = set(result.output.split('\n')[1:])
 
             self.assertEqual(
-                {'Container web2 is missing required parameter "cpu".',
-                 'Container web is missing required parameter "cpu".',
-                 'Container web2 is missing required parameter "image".',
+                {'Container web2 is missing required parameter "image".',
                  ''},
                 messages
             )

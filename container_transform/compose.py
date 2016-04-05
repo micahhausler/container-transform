@@ -218,7 +218,39 @@ class ComposeTransformer(BaseTransformer):
         return entrypoint
 
     def ingest_volumes_from(self, volumes_from):
-        return volumes_from
+        ingested_volumes_from = []
+        for vol in volumes_from:
+            ingested = {}
+            parts = vol.split(':')
+            rwo_value = None
+            read_only = None
+
+            assert(len(parts) <= 3)
+
+            if len(parts) == 3:
+                # Is form 'service:name:ro' or 'container:name:ro'
+                # in new compose v2 format.
+                reference_type, source_container, rwo_value = parts
+            elif len(parts) == 2:
+                # Is form 'name:ro' or 'service:name' (for >= v2)
+                if parts[1] in ['ro', 'rw']:
+                    source_container = parts[0]
+                    rwo_value = parts[1]
+                elif (parts[0] in ['service', 'container'] and
+                      self.stream_version > 1):
+                    reference_type = parts[0]
+                    source_container = parts[1]
+            elif len(parts) == 1:
+                source_container = parts[0]
+
+            if rwo_value == 'ro':
+                ingested['read_only'] = True
+
+            ingested['source_container'] = source_container
+
+            ingested_volumes_from.append(ingested)
+            
+        return ingested_volumes_from
 
     def emit_volumes_from(self, volumes_from):
         return volumes_from

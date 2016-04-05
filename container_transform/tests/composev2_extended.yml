@@ -21,3 +21,21 @@ services:
     labels:
         - io.redis.name=redis
         - io.redis.novalue
+  web2:
+    build: .
+    ports:
+     - "5001:5000"
+    volumes:
+     - .:/code
+    volumes_from:
+      - service:web
+      - service:redis:ro
+    labels:
+      com.example.name: "web"
+      com.example.emptyvalue: ""
+    logging:
+      driver: gelf
+      options:
+        tag: web
+        gelf-address: "udp://127.0.0.1:12900"
+

@@ -40,6 +40,42 @@
                     "hostPort": 5000
                 }
             ]
+        },
+        {
+            "dockerLabels": {
+                "com.example.emptyvalue": "",
+                "com.example.name": "web"
+            },
+            "essential": true,
+            "logConfiguration": {
+                "logDriver": "gelf",
+                "options": {
+                    "gelf-address": "udp://127.0.0.1:12900",
+                    "tag": "web"
+                }
+            },
+            "mountPoints": [
+                {
+                    "containerPath": "/code",
+                    "sourceVolume": "_"
+                }
+            ],
+            "name": "web2",
+            "portMappings": [
+                {
+                    "containerPort": 5000,
+                    "hostPort": 5001
+                }
+            ],
+            "volumesFrom": [
+                {
+                    "sourceContainer": "web"
+                },
+                {
+                    "readOnly": true,
+                    "sourceContainer": "redis"
+                }
+            ]
         }
     ],
     "family": "",

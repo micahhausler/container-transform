@@ -41,6 +41,17 @@ class ConverterTests(TestCase):
         conv = Converter(filename, 'compose', 'ecs')
 
         output = conv.convert()
+        output_dict = json.loads(output)
+
+        # NOTE: We can't just check an output file because it appears the
+        # environment dictionary is being serialized in a non-deterministic
+        # order.  TODO: Fix that.
+        for definition in output_dict['containerDefinitions']:
+            if definition['name'] == 'web4':
+                # Check read only volumes definition
+                volumesFrom = definition['volumesFrom']
+                self.assertIn({'sourceContainer': 'web3', 'readOnly': True}, volumesFrom)
+                self.assertIn({'sourceContainer': 'logs'}, volumesFrom)
 
         self.assertIsInstance(output, str)
 
