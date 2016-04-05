@@ -278,6 +278,11 @@ class ComposeTransformer(BaseTransformer):
                 'container': parts[1],
                 'readonly': True
             }
+        if len(parts) == 3 and parts[-1] == 'rw':
+            return {
+                'host': parts[0],
+                'container': parts[1],
+            }
 
     def ingest_volumes(self, volumes):
         return [

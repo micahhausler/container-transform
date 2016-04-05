@@ -27,6 +27,7 @@ services:
      - "5001:5000"
     volumes:
      - .:/code
+     - /bob/:/codeforbob:rw
     volumes_from:
       - service:web
       - service:redis:ro

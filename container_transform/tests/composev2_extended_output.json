@@ -58,6 +58,10 @@
                 {
                     "containerPath": "/code",
                     "sourceVolume": "_"
+                },
+                {
+                    "containerPath": "/codeforbob",
+                    "sourceVolume": "Bob"
                 }
             ],
             "name": "web2",
@@ -85,6 +89,12 @@
                 "sourcePath": "."
             },
             "name": "_"
+        },
+        {
+            "host": {
+                "sourcePath": "/bob/"
+            },
+            "name": "Bob"
         }
     ]
 }
