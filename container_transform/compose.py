@@ -223,18 +223,16 @@ class ComposeTransformer(BaseTransformer):
             ingested = {}
             parts = vol.split(':')
             rwo_value = None
-            read_only = None
 
             assert(len(parts) <= 3)
 
             if len(parts) == 3:
                 # Is form 'service:name:ro' or 'container:name:ro'
                 # in new compose v2 format.
-                reference_type, source_container, rwo_value = parts
+                source_container, rwo_value = parts[1:]
             elif len(parts) == 2:
                 # Is form 'name:ro' or 'service:name' (for >= v2)
                 if self.stream_version > 1 and parts[0] == 'service':
-                    reference_type = parts[0]
                     source_container = parts[1]
                 else:
                     assert(parts[1] in ['ro', 'rw'])
@@ -247,9 +245,8 @@ class ComposeTransformer(BaseTransformer):
                 ingested['read_only'] = True
 
             ingested['source_container'] = source_container
-
             ingested_volumes_from.append(ingested)
-            
+
         return ingested_volumes_from
 
     def emit_volumes_from(self, volumes_from):
