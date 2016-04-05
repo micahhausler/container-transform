@@ -233,14 +233,14 @@ class ComposeTransformer(BaseTransformer):
                 reference_type, source_container, rwo_value = parts
             elif len(parts) == 2:
                 # Is form 'name:ro' or 'service:name' (for >= v2)
-                if parts[1] in ['ro', 'rw']:
-                    source_container = parts[0]
-                    rwo_value = parts[1]
-                elif (parts[0] in ['service', 'container'] and
-                      self.stream_version > 1):
+                if self.stream_version > 1 and parts[0] == 'service':
                     reference_type = parts[0]
                     source_container = parts[1]
-            elif len(parts) == 1:
+                else:
+                    assert(parts[1] in ['ro', 'rw'])
+                    source_container = parts[0]
+                    rwo_value = parts[1]
+            else:
                 source_container = parts[0]
 
             if rwo_value == 'ro':
