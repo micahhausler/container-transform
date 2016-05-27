@@ -29,7 +29,7 @@ class ComposeTransformer(BaseTransformer):
         if filename:
             self._filename = filename
             stream = self._read_file(filename)
-            self.stream_version = int(stream.get('version', '1'))
+            self.stream_version = float(stream.get('version', '1'))
 
             if self.stream_version > 1:
                 self.stream = stream.get('services')
