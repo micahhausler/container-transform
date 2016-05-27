@@ -68,3 +68,15 @@ class ConverterTests(TestCase):
 
         output_want = open(output_filename, 'r').read()
         self.assertEqual(output, output_want)
+
+    def test_compose_converter_v2_0(self):
+        self.maxDiff = None
+
+        filename = './container_transform/tests/composev2.0.yml'
+        output_filename = './container_transform/tests/composev2.0_output.service'
+        conv = Converter(filename, 'compose', 'systemd')
+
+        output = conv.convert()
+
+        output_want = open(output_filename, 'r').read()
+        self.assertEqual(output, output_want)
