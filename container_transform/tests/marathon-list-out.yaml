@@ -1,0 +1,26 @@
+services:
+  postgres:
+    cpu_shares: 512.0
+    dns:
+    - 8.8.8.8
+    dns_search:
+    - us-west-2.compute.internal
+    environment:
+      POSTGRES_PASSWORD: SuperSecret
+      POSTGRES_USER: grafana
+    image: postgres:9.5
+    mem_limit: 134217728b
+    network_mode: bridge
+    ports:
+    - '5432'
+    volumes_from:
+    - /prom/redis
+  redis:
+    cpu_shares: 512.0
+    image: redis
+    mem_limit: 134217728b
+    network_mode: bridge
+    ports:
+    - 6379:6379
+version: '2'
+

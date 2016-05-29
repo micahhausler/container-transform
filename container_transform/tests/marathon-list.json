@@ -1,0 +1,100 @@
+[
+  {
+    "id": "/prom/postgres",
+    "env": {
+      "POSTGRES_PASSWORD": "SuperSecret",
+      "POSTGRES_USER": "grafana"
+    },
+    "instances": 1,
+    "cpus": 0.5,
+    "mem": 128,
+    "disk": 512,
+    "requirePorts": true,
+    "container": {
+      "type": "DOCKER",
+      "docker": {
+        "image": "postgres:9.5",
+        "network": "BRIDGE",
+        "parameters": [
+            {
+                "key": "volumes-from",
+                "value": "/prom/redis"
+            },
+            {
+                "key": "dns",
+                "value": "8.8.8.8"
+            },
+            {
+                "key": "dns-search",
+                "value": "us-west-2.compute.internal"
+            }
+        ],
+        "portMappings": [
+          {
+            "containerPort": 5432,
+            "protocol": "tcp",
+            "labels": {}
+          }
+        ],
+        "privileged": false,
+        "forcePullImage": true
+      }
+    },
+    "healthChecks": [
+      {
+        "protocol": "TCP",
+        "portIndex": 0,
+        "gracePeriodSeconds": 300,
+        "intervalSeconds": 60,
+        "timeoutSeconds": 20,
+        "maxConsecutiveFailures": 3,
+        "ignoreHttp1xx": false
+      }
+    ],
+    "upgradeStrategy": {
+      "minimumHealthCapacity": 0.5,
+      "maximumOverCapacity": 0
+    }
+  },
+  {
+    "id": "/prom/redis",
+    "instances": 1,
+    "cpus": 0.5,
+    "mem": 128,
+    "requirePorts": true,
+    "container": {
+      "type": "DOCKER",
+      "volumes": [],
+      "docker": {
+        "image": "redis",
+        "network": "BRIDGE",
+        "portMappings": [
+          {
+            "containerPort": 6379,
+            "hostPort": 6379,
+            "protocol": "tcp",
+            "labels": {}
+          }
+        ],
+        "privileged": false,
+        "forcePullImage": true
+      }
+    },
+    "healthChecks": [
+      {
+        "protocol": "TCP",
+        "portIndex": 0,
+        "gracePeriodSeconds": 300,
+        "intervalSeconds": 60,
+        "timeoutSeconds": 20,
+        "maxConsecutiveFailures": 3,
+        "ignoreHttp1xx": false
+      }
+    ],
+    "upgradeStrategy": {
+      "minimumHealthCapacity": 1,
+      "maximumOverCapacity": 1
+    },
+    "labels": {}
+  }
+]

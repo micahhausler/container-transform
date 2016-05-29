@@ -134,3 +134,82 @@ class ClientTests(TestCase):
             result.output,
             service_contents
         )
+
+    def test_prompt_marathon_compose_quiet(self):
+        runner = CliRunner()
+
+        input_file = '{}/marathon-test.json'.format(os.path.dirname(__file__))
+
+        result = runner.invoke(
+            transform,
+            [input_file, '-q', '--input-type', 'marathon', '--output-type', 'compose'])
+        assert result.exit_code == 0
+
+        service_file = '{}/marathon-test-out.yaml'.format(os.path.dirname(__file__))
+        service_contents = open(service_file).read()
+        self.assertEqual(
+            result.output,
+            service_contents
+        )
+
+    def test_prompt_marathon_compose_group_quiet(self):
+        runner = CliRunner()
+
+        input_file = '{}/marathon-group.json'.format(os.path.dirname(__file__))
+
+        result = runner.invoke(
+            transform,
+            [input_file, '-q', '--input-type', 'marathon', '--output-type', 'compose'])
+        assert result.exit_code == 0
+
+        service_file = '{}/marathon-group-out.yaml'.format(os.path.dirname(__file__))
+        service_contents = open(service_file).read()
+        self.assertEqual(
+            result.output,
+            service_contents
+        )
+
+    def test_prompt_marathon_compose_list_quiet(self):
+        runner = CliRunner()
+
+        input_file = '{}/marathon-list.json'.format(os.path.dirname(__file__))
+
+        result = runner.invoke(
+            transform,
+            [input_file, '-q', '--input-type', 'marathon', '--output-type', 'compose'])
+        assert result.exit_code == 0
+
+        service_file = '{}/marathon-list-out.yaml'.format(os.path.dirname(__file__))
+        service_contents = open(service_file).read()
+        self.assertEqual(
+            result.output,
+            service_contents
+        )
+
+    def test_prompt_compose_marathon_quiet(self):
+        runner = CliRunner()
+        input_file = '{}/marathon-test.yaml'.format(os.path.dirname(__file__))
+
+        result = runner.invoke(
+            transform,
+            [input_file, '-q', '--input-type', 'compose', '--output-type', 'marathon'])
+        assert result.exit_code == 0
+
+        service_file = '{}/marathon-compose-out.json'.format(os.path.dirname(__file__))
+        service_contents = open(service_file).read()
+        self.assertEqual(
+            result.output,
+            service_contents
+        )
+
+    def test_prompt_compose_marathon_quiet_mini(self):
+        runner = CliRunner()
+        self.maxDiff = None
+        input_file = '{}/marathon-test.yaml'.format(os.path.dirname(__file__))
+
+        result = runner.invoke(
+            transform,
+            [
+                input_file, '-q', '--input-type', 'compose',
+                '--output-type', 'marathon', '--no-verbose'])
+        assert result.exit_code == 0

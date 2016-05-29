@@ -205,10 +205,14 @@
                 "logDriver": "gelf",
                 "options": {
                     "gelf-address": "udp://127.0.0.1:12900",
-                    "tag": "web"
+                    "tag": "redis"
                 }
             },
+            "entryPoint": [
+                "redis"
+            ],
             "image": "redis:latest"
+
         }
     ]
 }

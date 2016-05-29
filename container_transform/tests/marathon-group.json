@@ -1,0 +1,262 @@
+{
+  "id": "/prom",
+  "dependencies": [],
+  "version": "2016-05-26T16:04:52.938Z",
+  "apps": [
+    {
+      "id": "/prom/grafana",
+      "env": {
+        "GF_DATABASE_PASSWORD": "SuperSecret",
+        "GF_DATABASE_USER": "grafana",
+        "GF_SESSION_PROVIDER_CONFIG": "addr=redis.prom.marathon.mesos:6379,pool_size=100,db=grafana",
+        "GF_DATABASE_HOST": "postgres.prom.marathon.mesos:5432",
+        "GF_USERS_AUTO_ASSIGN_ORG_ROLE": "Editor",
+        "GF_DATABASE_TYPE": "postgres",
+        "GF_SESSION_PROVIDER": "redis",
+        "GF_USERS_AUTO_ASSIGN_ORG": "true",
+        "GF_USERS_ALLOW_ORG_CREATE": "false",
+        "GF_DATABASE_SSL_MODE": "disable"
+      },
+      "instances": 2,
+      "cpus": 0.5,
+      "mem": 128,
+      "disk": 128,
+      "executor": "",
+      "constraints": [
+        [
+          "hostname",
+          "UNIQUE"
+        ]
+      ],
+      "fetch": [],
+      "requirePorts": false,
+      "container": {
+        "type": "DOCKER",
+        "docker": {
+          "image": "grafana/grafana:3.0.4",
+          "network": "BRIDGE",
+          "portMappings": [
+            {
+              "containerPort": 3000,
+              "hostPort": 0,
+              "protocol": "tcp",
+              "name": "http",
+              "labels": {}
+            }
+          ],
+          "privileged": false,
+          "forcePullImage": true
+        }
+      },
+      "healthChecks": [
+        {
+          "path": "/login",
+          "protocol": "HTTP",
+          "portIndex": 0,
+          "gracePeriodSeconds": 300,
+          "intervalSeconds": 60,
+          "timeoutSeconds": 20,
+          "maxConsecutiveFailures": 3,
+          "ignoreHttp1xx": false
+        }
+      ],
+      "dependencies": [
+        "/prom/postgres",
+        "/prom/redis"
+      ],
+      "upgradeStrategy": {
+        "minimumHealthCapacity": 1,
+        "maximumOverCapacity": 1
+      },
+      "labels": {
+        "HAPROXY_GROUP": "external",
+        "HAPROXY_0_VHOST": "grafana.example.com"
+      }
+    },
+    {
+      "id": "/prom/mesos-exporter-master",
+      "cmd": null,
+      "args": [
+        "-master",
+        "http://leader.mesos:5050"
+      ],
+      "env": {},
+      "instances": 1,
+      "cpus": 0.5,
+      "mem": 256,
+      "disk": 0,
+      "requirePorts": true,
+      "container": {
+        "type": "DOCKER",
+        "docker": {
+          "image": "prom/mesos_exporter",
+          "network": "BRIDGE",
+          "portMappings": [
+            {
+              "containerPort": 9110,
+              "hostPort": 9110,
+              "protocol": "tcp",
+              "name": "http",
+              "labels": {}
+            }
+          ],
+          "privileged": false,
+          "forcePullImage": true
+        }
+      },
+      "healthChecks": [
+        {
+          "path": "/metrics",
+          "protocol": "HTTP",
+          "portIndex": 0,
+          "gracePeriodSeconds": 300,
+          "intervalSeconds": 60,
+          "timeoutSeconds": 20,
+          "maxConsecutiveFailures": 3,
+          "ignoreHttp1xx": false
+        }
+      ],
+      "upgradeStrategy": {
+        "minimumHealthCapacity": 1,
+        "maximumOverCapacity": 1
+      },
+      "labels": {}
+    },
+    {
+      "id": "/prom/postgres",
+      "env": {
+        "POSTGRES_PASSWORD": "SuperSecret",
+        "POSTGRES_USER": "grafana"
+      },
+      "instances": 1,
+      "cpus": 0.5,
+      "mem": 128,
+      "disk": 512,
+      "requirePorts": true,
+      "container": {
+        "type": "DOCKER",
+        "docker": {
+          "image": "postgres:9.5",
+          "network": "BRIDGE",
+          "portMappings": [
+            {
+              "containerPort": 5432,
+              "hostPort": 5432,
+              "protocol": "tcp",
+              "labels": {}
+            }
+          ],
+          "privileged": false,
+          "forcePullImage": true
+        }
+      },
+      "healthChecks": [
+        {
+          "protocol": "TCP",
+          "portIndex": 0,
+          "gracePeriodSeconds": 300,
+          "intervalSeconds": 60,
+          "timeoutSeconds": 20,
+          "maxConsecutiveFailures": 3,
+          "ignoreHttp1xx": false
+        }
+      ],
+      "upgradeStrategy": {
+        "minimumHealthCapacity": 0.5,
+        "maximumOverCapacity": 0
+      }
+    },
+    {
+      "id": "/prom/prometheus",
+      "cmd": "/bin/prometheus -config.file=$MESOS_SANDBOX/config.yml -storage.local.path=/prometheus  -web.console.libraries=/etc/prometheus/console_libraries -web.console.templates=/etc/prometheus/consoles",
+      "instances": 1,
+      "cpus": 0.5,
+      "mem": 128,
+      "disk": 512,
+      "fetch": [
+        {
+          "uri": "https://gist.githubusercontent.com/you/hash/raw/hash/config.yml",
+          "extract": false,
+          "executable": false,
+          "cache": false
+        }
+      ],
+      "requirePorts": true,
+      "container": {
+        "type": "DOCKER",
+        "docker": {
+          "image": "micahhausler/prometheus-mesos",
+          "network": "BRIDGE",
+          "portMappings": [
+            {
+              "containerPort": 9090,
+              "hostPort": 9090,
+              "protocol": "tcp",
+              "name": "http",
+              "labels": {}
+            }
+          ],
+          "privileged": false,
+          "forcePullImage": true
+        }
+      },
+      "healthChecks": [
+        {
+          "path": "/graph",
+          "protocol": "HTTP",
+          "portIndex": 0,
+          "gracePeriodSeconds": 300,
+          "intervalSeconds": 60,
+          "timeoutSeconds": 20,
+          "maxConsecutiveFailures": 3,
+          "ignoreHttp1xx": false
+        }
+      ],
+      "upgradeStrategy": {
+        "minimumHealthCapacity": 0.5,
+        "maximumOverCapacity": 0
+      }
+    },
+    {
+      "id": "/prom/redis",
+      "instances": 1,
+      "cpus": 0.5,
+      "mem": 128,
+      "requirePorts": true,
+      "container": {
+        "type": "DOCKER",
+        "volumes": [],
+        "docker": {
+          "image": "redis",
+          "network": "BRIDGE",
+          "portMappings": [
+            {
+              "containerPort": 6379,
+              "hostPort": 6379,
+              "protocol": "tcp",
+              "labels": {}
+            }
+          ],
+          "privileged": false,
+          "forcePullImage": true
+        }
+      },
+      "healthChecks": [
+        {
+          "protocol": "TCP",
+          "portIndex": 0,
+          "gracePeriodSeconds": 300,
+          "intervalSeconds": 60,
+          "timeoutSeconds": 20,
+          "maxConsecutiveFailures": 3,
+          "ignoreHttp1xx": false
+        }
+      ],
+      "upgradeStrategy": {
+        "minimumHealthCapacity": 1,
+        "maximumOverCapacity": 1
+      },
+      "labels": {}
+    }
+  ]
+}
