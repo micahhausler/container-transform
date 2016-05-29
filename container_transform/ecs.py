@@ -78,11 +78,14 @@ class ECSTransformer(BaseTransformer):
     def emit_containers(self, containers, verbose=True):
         """
         Emits the task definition and sorts containers by name
+
         :param containers: List of the container definitions
         :type containers: list of dict
+
         :param verbose: Print out newlines and indented JSON
         :type verbose: bool
-        :return: The text output
+
+        :returns: The text output
         :rtype: str
         """
         containers = sorted(containers, key=lambda c: c.get('name'))

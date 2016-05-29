@@ -7,6 +7,7 @@ Currently, container-transform can parse and convert:
 
 * ECS task definitions
 * Docker-compose configuration files
+* Marathon App Definitions
 
 and it can output to:
 
@@ -99,7 +100,7 @@ or:
 Installation
 ------------
 
-To install the latest release, type::
+To install the latest release (Python 3 only), type::
 
     pip install container-transform
 

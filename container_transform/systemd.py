@@ -51,6 +51,8 @@ ExecStart=/usr/bin/docker run \\
     --dns {{ ns }} \\{% endfor -%}
     {% if work_dir %}
     --workdir {{ work_dir}} \\{% endif -%}
+    {% if user %}
+    --user {{ user }} \\{% endif -%}
     {% if privileged %}
     --privileged {{ privileged}} \\{%- endif %}
     {{ image or "<image>"  }} {% if command %}\\

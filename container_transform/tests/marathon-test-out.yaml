@@ -1,0 +1,33 @@
+services:
+  foo:
+    command: sleep 100
+    cpu_shares: 102.4
+    entrypoint: /bin/bash
+    environment:
+      XPS1: Test
+      XPS2: Rest
+    image: mesosphere:marathon/latest
+    labels:
+      note: Away from olympus
+      owner: zeus
+    links:
+    - /prod/group
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://127.0.0.1:12900
+        tag: web
+    mem_limit: 16777216b
+    network_mode: bridge
+    networks:
+    - mesos
+    ports:
+    - '80'
+    - 443:443
+    user: ubuntu
+    volumes:
+    - /hdd/tools/docker/var/www:/var/www:ro
+    - /hdd/tools/docker/registry:/docker_storage
+    working_dir: /home/ubuntu
+version: '2'
+

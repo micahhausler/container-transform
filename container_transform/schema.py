@@ -1,5 +1,6 @@
 from enum import Enum
 import logging
+from collections import OrderedDict
 
 LOG = logging.getLogger(__name__)
 
@@ -8,20 +9,23 @@ class TransformationTypes(Enum):
     ECS = 'ecs'
     COMPOSE = 'compose'
     SYSTEMD = 'systemd'
+    MARATHON = 'marathon'
 
 
 class InputTransformationTypes(Enum):
     ECS = 'ecs'
     COMPOSE = 'compose'
+    MARATHON = 'marathon'
 
 
 class OutputTransformationTypes(Enum):
     ECS = 'ecs'
     COMPOSE = 'compose'
     SYSTEMD = 'systemd'
+    MARATHON = 'marathon'
 
 
-ARG_MAP = {
+ARG_MAP = OrderedDict({
     'image': {
         TransformationTypes.ECS.value: {
             'name': 'image',
@@ -33,6 +37,10 @@ ARG_MAP = {
         },
         TransformationTypes.SYSTEMD.value: {
             'name': 'image',
+            'required': True,
+        },
+        TransformationTypes.MARATHON.value: {
+            'name': 'container.docker.image',
             'required': True,
         },
     },
@@ -49,6 +57,10 @@ ARG_MAP = {
             'name': 'name',
             'required': True
         },
+        TransformationTypes.MARATHON.value: {
+            'name': 'id',
+            'required': True
+        },
     },
     'cpu': {
         TransformationTypes.ECS.value: {
@@ -61,6 +73,10 @@ ARG_MAP = {
         },
         TransformationTypes.SYSTEMD.value: {
             'name': 'cpu_shares',
+            'required': False
+        },
+        TransformationTypes.MARATHON.value: {
+            'name': 'cpus',
             'required': False
         },
     },
@@ -77,6 +93,10 @@ ARG_MAP = {
             'name': 'mem_limit',
             'required': False,
         },
+        TransformationTypes.MARATHON.value: {
+            'name': 'mem',
+            'required': False,
+        },
     },
     'links': {
         TransformationTypes.ECS.value: {
@@ -89,6 +109,10 @@ ARG_MAP = {
         },
         TransformationTypes.SYSTEMD.value: {
             'name': 'links',
+            'required': False,
+        },
+        TransformationTypes.MARATHON.value: {
+            'name': 'dependencies',
             'required': False,
         },
     },
@@ -105,6 +129,10 @@ ARG_MAP = {
             'name': 'ports',
             'required': False,
         },
+        TransformationTypes.MARATHON.value: {
+            'name': 'container.docker.portMappings',
+            'required': False,
+        },
     },
     'environment': {
         TransformationTypes.ECS.value: {
@@ -117,6 +145,10 @@ ARG_MAP = {
         },
         TransformationTypes.SYSTEMD.value: {
             'name': 'environment',
+            'required': False,
+        },
+        TransformationTypes.MARATHON.value: {
+            'name': 'env',
             'required': False,
         },
     },
@@ -133,6 +165,10 @@ ARG_MAP = {
             'name': 'entrypoint',
             'required': False,
         },
+        TransformationTypes.MARATHON.value: {
+            'name': 'container.docker.parameters.entrypoint',
+            'required': False,
+        },
     },
     'command': {
         TransformationTypes.ECS.value: {
@@ -145,6 +181,10 @@ ARG_MAP = {
         },
         TransformationTypes.SYSTEMD.value: {
             'name': 'command',
+            'required': False,
+        },
+        TransformationTypes.MARATHON.value: {
+            'name': 'args',
             'required': False,
         },
     },
@@ -161,6 +201,10 @@ ARG_MAP = {
             'name': 'essential',
             'required': False
         },
+        TransformationTypes.MARATHON.value: {
+            'name': None,
+            'required': False
+        },
     },
     'volumes_from': {
         TransformationTypes.ECS.value: {
@@ -174,6 +218,11 @@ ARG_MAP = {
         TransformationTypes.SYSTEMD.value: {
             'name': 'volumes_from',
             'required': False
+        },
+        TransformationTypes.MARATHON.value: {
+            'name': 'container.docker.parameters.volumes-from',
+            'required': False,
+            'type': list
         },
     },
     'volumes': {
@@ -190,6 +239,10 @@ ARG_MAP = {
             'name': 'volumes',
             'required': False
         },
+        TransformationTypes.MARATHON.value: {
+            'name': 'container.volumes',
+            'required': False
+        },
     },
     'dns': {
         TransformationTypes.ECS.value: {
@@ -203,6 +256,11 @@ ARG_MAP = {
         TransformationTypes.SYSTEMD.value: {
             'name': 'dns',
             'required': False
+        },
+        TransformationTypes.MARATHON.value: {
+            'name': 'container.docker.parameters.dns',
+            'required': False,
+            'type': list
         },
     },
     'work_dir': {
@@ -218,6 +276,10 @@ ARG_MAP = {
             'name': 'working_dir',
             'required': False
         },
+        TransformationTypes.MARATHON.value: {
+            'name': 'container.docker.parameters.workdir',
+            'required': False
+        },
     },
     'domain': {
         TransformationTypes.ECS.value: {
@@ -225,12 +287,17 @@ ARG_MAP = {
             'required': False
         },
         TransformationTypes.COMPOSE.value: {
-            'name': 'domainname',
+            'name': 'dns_search',
             'required': False
         },
         TransformationTypes.SYSTEMD.value: {
             'name': None,
             'required': False
+        },
+        TransformationTypes.MARATHON.value: {
+            'name': 'container.docker.parameters.dns-search',
+            'required': False,
+            'type': list
         },
     },
     'build': {
@@ -243,6 +310,10 @@ ARG_MAP = {
             'required': False,
         },
         TransformationTypes.SYSTEMD.value: {
+            'name': None,
+            'required': False,
+        },
+        TransformationTypes.MARATHON.value: {
             'name': None,
             'required': False,
         },
@@ -260,6 +331,11 @@ ARG_MAP = {
             'name': 'expose',
             'required': False
         },
+        TransformationTypes.MARATHON.value: {
+            'name': 'container.docker.parameters.expose',
+            'required': False,
+            'type': list
+        },
     },
     'network': {
         TransformationTypes.ECS.value: {
@@ -267,12 +343,35 @@ ARG_MAP = {
             'required': False
         },
         TransformationTypes.COMPOSE.value: {
-            'name': 'net',
+            'name': 'networks',
             'required': False
         },
         TransformationTypes.SYSTEMD.value: {
             'name': 'net',
             'required': False
+        },
+        TransformationTypes.MARATHON.value: {
+            'name': 'container.docker.parameters.net',
+            'required': False,
+            'type': list
+        },
+    },
+    'net_mode': {
+        TransformationTypes.ECS.value: {
+            'name': None,
+            'required': False
+        },
+        TransformationTypes.COMPOSE.value: {
+            'name': 'network_mode',
+            'required': False
+        },
+        TransformationTypes.SYSTEMD.value: {
+            'name': 'net',
+            'required': False
+        },
+        TransformationTypes.MARATHON.value: {
+            'name': 'container.docker.network',
+            'required': False,
         },
     },
     'privileged': {
@@ -288,6 +387,10 @@ ARG_MAP = {
             'name': 'privileged',
             'required': False
         },
+        TransformationTypes.MARATHON.value: {
+            'name': 'container.docker.privileged',
+            'required': False
+        },
     },
     'labels': {
         TransformationTypes.ECS.value: {
@@ -299,6 +402,10 @@ ARG_MAP = {
             'required': False
         },
         TransformationTypes.SYSTEMD.value: {
+            'name': 'labels',
+            'required': False
+        },
+        TransformationTypes.MARATHON.value: {
             'name': 'labels',
             'required': False
         },
@@ -316,5 +423,29 @@ ARG_MAP = {
             'name': 'logging',
             'required': False
         },
+        TransformationTypes.MARATHON.value: {
+            'name': 'container.docker.parameters.log-driver',
+            'required': False,
+            'type': list,
+        },
+    },
+    'user': {
+        TransformationTypes.ECS.value: {
+            'name': 'user',
+            'required': False
+        },
+        TransformationTypes.COMPOSE.value: {
+            'name': 'user',
+            'required': False
+        },
+        TransformationTypes.SYSTEMD.value: {
+            'name': 'user',
+            'required': False
+        },
+        TransformationTypes.MARATHON.value: {
+            'name': 'container.docker.parameters.user',
+            'required': False
+        },
     }
-}
+    # TODO: 'containername', 'pid'
+})

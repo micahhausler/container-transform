@@ -8,17 +8,25 @@ SCHEMA = {
     'cpu': int,  # out of 1024
     'memory': int,  # in bytes
     'links': list,  # This is universal across formats
+    'logging': {
+        # See compose options
+    },
     'port_mappings': [{
         'host_ip': str,
-        'host_port': int,
+        'host_port': int,  # 0 is a valid, non-false value
         'container_ip': str,
-        'container_port': int
+        'container_port': int,
+        'protocol': 'tcp' or 'udp',
     }],
     'environment': dict,  # A simple key: value dictionary
     'entrypoint': str,  # An unsplit string
     'command': str,  # An unsplit string
     'volumes_from': list,  # A list of containers, ignoring read_only
     'volumes': list,  # A list of dict {'host': '/path', 'container': '/path', 'readonly': True}
+    'dns': list,
+    'domain': list,
+    'labels': dict,
+    'network': list,
 }
 
 
@@ -105,6 +113,52 @@ class BaseTransformer(object, metaclass=ABCMeta):
 
     def emit_links(self, image):
         return image
+
+    def ingest_user(self, user):
+        return user
+
+    def emit_user(self, user):
+        return user
+
+    def ingest_net_mode(self, net_mode):
+        return net_mode
+
+    def emit_net_mode(self, net_mode):
+        return net_mode
+
+    def ingest_network(self, network):
+        return network
+
+    def emit_network(self, network):
+        return network
+
+    def ingest_domain(self, domain):
+        if not isinstance(domain, list) and domain is not None:
+            domain = [domain]
+        return domain
+
+    def emit_domain(self, domain):
+        return domain
+
+    def ingest_dns(self, dns):
+        if not isinstance(dns, list) and dns is not None:
+            dns = [dns]
+        return dns
+
+    def emit_dns(self, dns):
+        return dns
+
+    def ingest_work_dir(self, work_dir):
+        return work_dir
+
+    def emit_work_dir(self, work_dir):
+        return work_dir
+
+    def ingest_labels(self, labels):
+        return labels
+
+    def emit_labels(self, labels):
+        return labels
 
     @abstractmethod
     def ingest_port_mappings(self, port_mappings):

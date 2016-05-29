@@ -1,6 +1,11 @@
 Release Notes
 =============
 
+v1.1.0
+------
+
+* Added Marathon task support
+
 v1.0.0
 ------
 
