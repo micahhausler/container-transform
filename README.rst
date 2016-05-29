@@ -14,9 +14,16 @@ container-transform
 container-transform is a small utility to transform various docker container
 formats to one another.
 
-Currently, container-transform can parse and convert ECS task definitions and
-docker-compose configuration files (v1 and v2). It can also output Systemd unit
-files. Any missing required parameters are printed to STDERR.
+Currently, container-transform can parse and convert:
+
+* ECS task definitions
+* Docker-compose configuration files
+* Marathon App Definitions
+
+and it can output to:
+
+* Systemd unit files
+
 
 Quickstart
 ----------
