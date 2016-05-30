@@ -234,7 +234,7 @@ class MarathonTransformer(BaseTransformer):
     def _parse_port_mapping(mapping):
         output = {
             'container_port': int(mapping['containerPort']),
-            'protocol': mapping.get('protocol')
+            'protocol': mapping.get('protocol', 'tcp')
         }
         if 'hostPort' in mapping:
             output['host_port'] = int(mapping.get('hostPort'))

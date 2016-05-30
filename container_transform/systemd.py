@@ -105,7 +105,10 @@ class SystemdTransformer(BaseTransformer):
             parts.append(str(mapping['container_ip']))
         if mapping.get('container_port'):
             parts.append(str(mapping['container_port']))
-        return ':'.join(parts)
+        output = ':'.join(parts)
+        if mapping.get('protocol') == 'udp':
+            output += '/udp'
+        return output
 
     def emit_port_mappings(self, port_mappings):
         """

@@ -39,7 +39,7 @@ class ComposeTransformerTests(TestCase):
         """
         Test ._emit_mapping()
         """
-        mappping = {
+        mapping = {
             'host_ip': '192.168.59.103',
             'host_port': 8000,
             'container_ip': '127.0.0.1',
@@ -47,8 +47,22 @@ class ComposeTransformerTests(TestCase):
         }
 
         self.assertEqual(
-            self.transformer._emit_mapping(mappping),
+            self.transformer._emit_mapping(mapping),
             '192.168.59.103:8000:127.0.0.1:80'
+        )
+
+    def test_emit_mapping_udp(self):
+        """
+        Test ._emit_mapping() with udp port
+        """
+        mapping = {
+            'host_port': 53,
+            'container_port': 53,
+            'protocol': 'udp'
+        }
+        self.assertEqual(
+            self.transformer._emit_mapping(mapping),
+            '53:53/udp'
         )
 
     def test_emit_mapping_missing_ports(self):
@@ -74,6 +88,21 @@ class ComposeTransformerTests(TestCase):
         self.assertEqual(
             self.transformer._parse_port_mapping(mapping),
             None
+        )
+
+    def test_parse_port_mapping_udp(self):
+        """
+        Test ._parse_port_mapping() fails on > 4 parts
+        """
+        mapping = '53:53/udp'
+
+        self.assertEqual(
+            self.transformer._parse_port_mapping(mapping),
+            {
+                'host_port': 53,
+                'container_port': 53,
+                'protocol': 'udp'
+            }
         )
 
     def test_ingest_cpu(self):
