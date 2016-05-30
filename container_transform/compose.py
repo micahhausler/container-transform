@@ -215,12 +215,16 @@ class ComposeTransformer(BaseTransformer):
         return environment
 
     def ingest_command(self, command):
+        if isinstance(command, list):
+            command = ' '.join(command)
         return command
 
     def emit_command(self, command):
         return command
 
     def ingest_entrypoint(self, entrypoint):
+        if isinstance(entrypoint, list):
+            entrypoint = ' '.join(entrypoint)
         return entrypoint
 
     def emit_entrypoint(self, entrypoint):
