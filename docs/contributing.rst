@@ -82,7 +82,7 @@ Vulnerability Reporting
 -----------------------
 
 For any security issues, please do NOT file an issue or pull request on github!
-Please contact `hausler.m@gmail.com`_ with the GPG key provided on `keybase`.
+Please contact `hausler.m@gmail.com`_ with the GPG key provided on `keybase`_.
 
 
 .. _hausler.m@gmail.com: mailto:hausler.m@gmail.com
