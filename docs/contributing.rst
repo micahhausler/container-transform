@@ -20,7 +20,6 @@ To get the source source code and run the unit tests, run::
     virtualenv env
     . env/bin/activate
     pip install -e .[all]
-    python setup.py install
     python setup.py nosetests
 
 While 100% code coverage does not make a library bug-free, it significantly
@@ -62,6 +61,44 @@ When in the project directory::
     pip install -e .[all]
     python setup.py build_sphinx
     open docs/_build/html/index.html
+
+Adding a new parameter
+----------------------
+
+If there is a docker parameter that you'd like to add support for, here's a
+quick overview of what is involved:
+
+1. Make a new parameter in the ``ARG_MAP`` in the file ``container-transform/schema.py``
+2. Check what the parameter name is for each supported transformation type.
+   There are links to the documentation for each type on the :doc:`usage` page
+3. Create an ``ingest_<param>`` and ``emit_<param>`` method on the
+   :class:`BaseTransformer<container_transform.transformer.BaseTransformer>` class
+4. Add any data transformations by overriding the base methods that each format
+   requires.
+5. Add tests to cover any new logic. Don't just use a client test to make
+   coverage 100%
+
+Adding a new Transformer
+------------------------
+
+If you'd like to add a new format, please create an issue before making a pull
+request in order to discuss any major design decisions before putting in
+valuable time writing the actual code.
+
+Below is a rough checklist of creating a new transformer type:
+
+* Create a file and class in the base :py:mod:`container_transform` module
+* Implement all abstract methods on the :class:`BaseTransformer<container_transform.transformer.BaseTransformer>`
+  class
+* Add the class to the ``TRANSFORMER_CLASSES`` in the ``converter.py`` file.
+* Add the type to the enums at the top of teh ``schema.py`` file.
+* Add a key to each of the dictionaries in the ``ARG_MAP`` parameters
+* If a docker parameter is not supported in your transformer, still create
+  a dictionary for it, but set the name to ``None``
+* Create a test file in the tests module for your transformer. Try to get at
+  least 90% coverage of your transformer before adding any tests to the
+  :py:mod:`client_tests.py<container_transform.tests.client_test>` module.
+* Add client tests just to make sure the command doesn't blow up
 
 Release Checklist
 -----------------

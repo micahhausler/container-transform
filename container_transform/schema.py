@@ -90,7 +90,7 @@ ARG_MAP = OrderedDict({
             'required': False,
         },
         TransformationTypes.SYSTEMD.value: {
-            'name': 'mem_limit',
+            'name': 'memory',
             'required': False,
         },
         TransformationTypes.MARATHON.value: {
@@ -446,6 +446,42 @@ ARG_MAP = OrderedDict({
             'name': 'container.docker.parameters.user',
             'required': False
         },
-    }
-    # TODO: 'containername', 'pid'
+    },
+    'env_file': {
+        TransformationTypes.ECS.value: {
+            'name': None,
+            'required': False
+        },
+        TransformationTypes.COMPOSE.value: {
+            'name': 'env_file',
+            'required': False,
+        },
+        TransformationTypes.SYSTEMD.value: {
+            'name': 'env-file',
+            'required': False,
+        },
+        TransformationTypes.MARATHON.value: {
+            'name': 'container.docker.parameters.env-file',
+            'required': False,
+            'type': list,
+        },
+    },
+    'pid': {
+        TransformationTypes.ECS.value: {
+            'name': None,
+            'required': False
+        },
+        TransformationTypes.COMPOSE.value: {
+            'name': 'pid',
+            'required': False,
+        },
+        TransformationTypes.SYSTEMD.value: {
+            'name': 'pid',
+            'required': False,
+        },
+        TransformationTypes.MARATHON.value: {
+            'name': 'container.docker.parameters.pid',
+            'required': False,
+        },
+    },
 })

@@ -27,6 +27,8 @@ SCHEMA = {
     'domain': list,
     'labels': dict,
     'network': list,
+    'env-file': list,
+    'pid': str,
 }
 
 
@@ -159,6 +161,20 @@ class BaseTransformer(object, metaclass=ABCMeta):
 
     def emit_labels(self, labels):
         return labels
+
+    def ingest_pid(self, pid):
+        return pid
+
+    def emit_pid(self, pid):
+        return pid
+
+    def ingest_env_file(self, env_file):
+        if not isinstance(env_file, list) and env_file is not None:
+            env_file = [env_file]
+        return env_file
+
+    def emit_env_file(self, env_file):
+        return env_file
 
     @abstractmethod
     def ingest_port_mappings(self, port_mappings):

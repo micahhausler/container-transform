@@ -5,6 +5,8 @@ v1.1.2
 ------
 
 * Fixed udp port handling
+* Added support for ``pid`` and ``env-file`` parameters
+* Added docs for adding parameters and creating new transformers
 
 v1.1.1
 ------
