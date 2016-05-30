@@ -65,7 +65,7 @@ ARG_MAP = OrderedDict({
     'cpu': {
         TransformationTypes.ECS.value: {
             'name': 'cpu',
-            'required': True
+            'required': False
         },
         TransformationTypes.COMPOSE.value: {
             'name': 'cpu_shares',

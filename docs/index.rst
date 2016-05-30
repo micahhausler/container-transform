@@ -7,7 +7,7 @@ Currently, container-transform can parse and convert:
 
 * ECS task definitions
 * Docker-compose configuration files
-* Marathon App Definitions
+* Marathon Application Definitions or Groups of Applications
 
 and it can output to:
 
@@ -71,10 +71,7 @@ Example usage:
             }
         ]
     }
-    Container db is missing required parameter "cpu".
-    Container redis is missing required parameter "cpu".
     Container web is missing required parameter "image".
-    Container web is missing required parameter "cpu".
 
 or:
 

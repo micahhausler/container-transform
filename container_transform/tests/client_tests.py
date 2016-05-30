@@ -95,9 +95,7 @@ class ClientTests(TestCase):
             messages = set(result.output.split('\n')[1:])
 
             self.assertEqual(
-                {'Container web2 is missing required parameter "cpu".',
-                 'Container web is missing required parameter "cpu".',
-                 'Container web2 is missing required parameter "image".',
+                {'Container web2 is missing required parameter "image".',
                  ''},
                 messages
             )
@@ -213,3 +211,17 @@ class ClientTests(TestCase):
                 input_file, '-q', '--input-type', 'compose',
                 '--output-type', 'marathon', '--no-verbose'])
         assert result.exit_code == 0
+
+    def test_prompt_compose_marathon_single_app_quiet(self):
+        runner = CliRunner()
+        self.maxDiff = None
+        input_file = '{}/composev2.yml'.format(os.path.dirname(__file__))
+
+        result = runner.invoke(
+            transform,
+            [
+                input_file, '-q', '--input-type', 'compose',
+                '--output-type', 'marathon', '--no-verbose'])
+        assert result.exit_code == 0
+        result_data = json.loads(result.output)
+        self.assertIsInstance(result_data, dict)

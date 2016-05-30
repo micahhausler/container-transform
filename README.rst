@@ -18,7 +18,7 @@ Currently, container-transform can parse and convert:
 
 * ECS task definitions
 * Docker-compose configuration files
-* Marathon App Definitions
+* Marathon Application Definitions or Groups of Applications
 
 and it can output to:
 
@@ -81,10 +81,33 @@ Quickstart
             }
         ]
     }
-    Container db is missing required parameter "cpu".
-    Container redis is missing required parameter "cpu".
     Container web is missing required parameter "image".
     Container web is missing required parameter "cpu".
+
+Quick Help
+----------
+::
+
+    Usage: container-transform [OPTIONS] [INPUT_FILE]
+
+      container-transform is a small utility to transform various docker
+      container formats to one another.
+
+      Default input type is compose, default output type is ECS
+
+      Default is to read from STDIN if no INPUT_FILE is provided
+
+      All options may be set by environment variables with the prefix "CT_"
+      followed by the full argument name.
+
+    Options:
+      -i, --input-type [ecs|compose|marathon]
+      -o, --output-type [ecs|compose|systemd|marathon]
+      -v, --verbose / --no-verbose    Expand/minify json output
+      -q, --quiet                     Silence error messages
+      --version                       Show the version and exit.
+      -h, --help                      Show this message and exit.
+
 
 Docker Image
 ------------
@@ -103,7 +126,8 @@ To run the docker image::
 
 Installation
 ------------
-To install the latest release, type::
+
+To install the latest release (Python 3 only), type::
 
     pip install container-transform
 
