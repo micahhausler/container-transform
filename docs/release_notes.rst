@@ -1,6 +1,12 @@
 Release Notes
 =============
 
+v1.1.3
+------
+
+* Switched docker image to python:3.5-alpine (604 MB smaller, 77 MB total)
+* Fixed case when compose specifies command as an array
+
 v1.1.2
 ------
 
