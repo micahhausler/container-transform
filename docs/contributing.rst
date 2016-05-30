@@ -91,7 +91,7 @@ Below is a rough checklist of creating a new transformer type:
 * Implement all abstract methods on the :class:`BaseTransformer<container_transform.transformer.BaseTransformer>`
   class
 * Add the class to the ``TRANSFORMER_CLASSES`` in the ``converter.py`` file.
-* Add the type to the enums at the top of teh ``schema.py`` file.
+* Add the type to the enums at the top of the ``schema.py`` file.
 * Add a key to each of the dictionaries in the ``ARG_MAP`` parameters
 * If a docker parameter is not supported in your transformer, still create
   a dictionary for it, but set the name to ``None``
