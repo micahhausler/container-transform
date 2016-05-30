@@ -11,6 +11,7 @@ ExecStartPre=/usr/bin/docker pull <image>
 ExecStart=/usr/bin/docker run \
     --name web \
     -p 5000:5000 \
+    -p 53:53/udp \
     -v .:/code \
     --log-driver=gelf \
     --log-opt gelf-address=udp://127.0.0.1:12900 \

@@ -113,11 +113,13 @@ class ECSTransformer(BaseTransformer):
     @staticmethod
     def _parse_port_mapping(mapping):
         output = {
-            'container_port': int(mapping['containerPort'])
+            'container_port': int(mapping['containerPort']),
+            'protocol': mapping.get('protocol', 'tcp')
         }
         host_port = mapping.get('hostPort')
         if host_port:
             output['host_port'] = host_port
+
         return output
 
     def ingest_port_mappings(self, port_mappings):
@@ -133,15 +135,19 @@ class ECSTransformer(BaseTransformer):
 
     @staticmethod
     def _emit_mapping(mapping):
-        if len(mapping) == 1:
-            return {
-                'containerPort': int(list(mapping.values())[0]),
-            }
-
-        return {
-            'hostPort': int(mapping['host_port']),
-            'containerPort': int(mapping['container_port']),
-        }
+        output = {}
+        if 'host_port' not in mapping:
+            output.update({
+                'containerPort': int(mapping.get('container_port')),
+            })
+        else:
+            output.update({
+                'hostPort': int(mapping['host_port']),
+                'containerPort': int(mapping['container_port']),
+            })
+        if mapping.get('protocol') == 'udp':
+            output['protocol'] = 'udp'
+        return output
 
     def emit_port_mappings(self, port_mappings):
         return [self._emit_mapping(mapping) for mapping in port_mappings]

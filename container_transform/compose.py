@@ -89,36 +89,42 @@ class ComposeTransformer(BaseTransformer):
 
     @staticmethod
     def _parse_port_mapping(mapping):
+        protocol = 'udp' if 'udp' in str(mapping) else 'tcp'
+        output = {
+            'protocol': protocol
+        }
+        mapping = str(mapping).rstrip('/udp')
         parts = str(mapping).split(':')
         if len(parts) == 1:
-            return {
+            output.update({
                 'container_port': int(parts[0])
-            }
-        if len(parts) == 2 and '.' not in mapping:
-            return {
+            })
+        elif len(parts) == 2 and '.' not in mapping:
+            output.update({
                 'host_port': int(parts[0]),
-                'container_port': int(parts[1])
-            }
-        if len(parts) == 3:
+                'container_port': int(parts[1]),
+            })
+        elif len(parts) == 3:
             if '.' in parts[0]:
-                return {
+                output.update({
                     'host_ip': parts[0],
                     'host_port': int(parts[1]),
-                    'container_port': int(parts[2])
-                }
+                    'container_port': int(parts[2]),
+                })
             else:
-                return {
+                output.update({
                     'host_port': int(parts[0]),
                     'container_ip': parts[1],
-                    'container_port': int(parts[2])
-                }
-        if len(parts) == 4:
-            return {
+                    'container_port': int(parts[2]),
+                })
+        elif len(parts) == 4:
+            output.update({
                 'host_ip': parts[0],
                 'host_port': int(parts[1]),
                 'container_ip': parts[2],
-                'container_port': int(parts[3])
-            }
+                'container_port': int(parts[3]),
+            })
+        return output if len(output) >= 2 else None
 
     def ingest_port_mappings(self, port_mappings):
         """
@@ -142,7 +148,10 @@ class ComposeTransformer(BaseTransformer):
             parts.append(str(mapping['container_ip']))
         if mapping.get('container_port'):
             parts.append(str(mapping['container_port']))
-        return ':'.join(parts)
+        output = ':'.join(parts)
+        if mapping.get('protocol') == 'udp':
+            output += '/udp'
+        return output
 
     def emit_port_mappings(self, port_mappings):
         """

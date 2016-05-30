@@ -1,6 +1,11 @@
 Release Notes
 =============
 
+v1.1.2
+------
+
+* Fixed udp port handling
+
 v1.1.1
 ------
 
