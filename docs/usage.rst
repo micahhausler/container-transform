@@ -13,11 +13,14 @@ Usage
 
       Default is to read from STDIN if no INPUT_FILE is provided
 
+      All options may be set by environment variables with the prefix "CT_"
+      followed by the full argument name.
+
     Options:
-      --input-type [ecs|compose|marathon]
-      --output-type [ecs|compose|systemd|marathon]
-      -v / --no-verbose               Expand/minify json output
-      -q                              Silence error messages
+      -i, --input-type [ecs|compose|marathon]
+      -o, --output-type [ecs|compose|systemd|marathon]
+      -v, --verbose / --no-verbose    Expand/minify json output
+      -q, --quiet                     Silence error messages
       --version                       Show the version and exit.
       -h, --help                      Show this message and exit.
 
@@ -45,6 +48,16 @@ Systemd Service Units
 
 Marathon Applications
 ---------------------
+
+When consuming Marathon input, container-transform supports:
+
+* A single Marathon application
+* Content from the Marathon Group API
+* A JSON array of Marathon application objects
+
+When emitting Marathon output, container-transform will emit a list of
+applications if there is more than one. Otherwise, it will emit a single
+application.
 
 `Marathon Application Basics`_  & `Marathon API docs`_
 

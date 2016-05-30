@@ -1,10 +1,22 @@
 Release Notes
 =============
 
+v1.1.1
+------
+
+* Added environment variable support for command line options
+* Added short form for command line options
+* CPU is no longer required for ECS
+
 v1.1.0
 ------
 
 * Added Marathon task support
+* Correctly handle compose version type - `GH #46`_
+* Assume compose memory is in bytes - `GH #41`_
+
+.. _GH #46: https://github.com/micahhausler/container-transform/pull/46
+.. _GH #41: https://github.com/micahhausler/container-transform/pull/41
 
 v1.0.0
 ------

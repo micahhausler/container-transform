@@ -34,6 +34,16 @@ class MarathonTransformer(BaseTransformer):
     """
     A transformer for Marathon Apps
 
+    When consuming Marathon input, the transformer supports:
+
+    * A single Marathon application
+    * Content from the Marathon Group API
+    * A JSON array of Marathon application objects
+
+    When emitting Marathon output, the transformer will emit a list of
+    applications if there is more than one. Otherwise, it will emit a single
+    application.
+
     To use this class:
 
     .. code-block:: python
@@ -47,8 +57,6 @@ class MarathonTransformer(BaseTransformer):
 
     def __init__(self, filename=None):
         """
-        We override ``.__init__()`` on purpose, we need to record the docker option data.
-
         :param filename: The file to be loaded
         :type filename: str
         """
@@ -144,6 +152,10 @@ class MarathonTransformer(BaseTransformer):
         :rtype: str
         """
         containers = sorted(containers, key=lambda c: c.get('id'))
+
+        if len(containers) == 1 and isinstance(containers, list):
+            containers = containers[0]
+
         if verbose:
             return json.dumps(containers, indent=4, sort_keys=True)
         else:
