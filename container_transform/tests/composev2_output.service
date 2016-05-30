@@ -10,6 +10,7 @@ ExecStartPre=-/usr/bin/docker rm web
 ExecStartPre=/usr/bin/docker pull <image>
 ExecStart=/usr/bin/docker run \
     --name web \
+    --pid host \
     -p 5000:5000 \
     -p 53:53/udp \
     -v .:/code \

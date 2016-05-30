@@ -5,6 +5,8 @@ services:
     ports:
      - "5000:5000"
      - "53:53/udp"
+    pid: "host"
+    env_file: "./web.env"
     volumes:
      - .:/code
     labels:

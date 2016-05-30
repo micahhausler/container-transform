@@ -12,7 +12,6 @@ class SystemdTransformerTests(TestCase):
         self.transformer = SystemdTransformer()
 
     def test_emit_containers(self):
-        self.maxDiff = None
         containers = [{
             'command': 'celery worker',
             'environment': {
@@ -27,7 +26,7 @@ class SystemdTransformerTests(TestCase):
             },
             'image': 'me/myapp',
             'links': ['db', 'redis', 'web'],
-            'mem_limit': '67108864b',
+            'memory': '67108864b',
             'name': 'worker',
             'ports': [
                 '8000',
@@ -48,7 +47,6 @@ class SystemdTransformerTests(TestCase):
                 }
             }
         }]
-
         service_file = '{}/worker.service'.format(os.path.dirname(__file__))
         service_contents = open(service_file).read()
         self.assertEqual(

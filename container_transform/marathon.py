@@ -373,3 +373,9 @@ class MarathonTransformer(BaseTransformer):
 
     def emit_user(self, user):
         return [{'key': 'user', 'value': user}]
+
+    def emit_pid(self, pid):
+        return [{'key': 'pid', 'value': pid}]
+
+    def emit_env_file(self, env_file):
+        return [{'key': 'env-file', 'value': ef} for ef in env_file]
