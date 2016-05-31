@@ -1,6 +1,8 @@
 import json
 import uuid
 
+from datetime import datetime
+
 from copy import deepcopy
 from functools import reduce
 from collections import Mapping, defaultdict
@@ -30,17 +32,13 @@ def lookup_nested_dict(dic, key, *keys):
     return dic.get(key)
 
 
-class MarathonTransformer(BaseTransformer):
+class ChronosTransformer(BaseTransformer):
     """
-    A transformer for Marathon Apps
+    A transformer for Chronos Jobs
 
-    When consuming Marathon input, the transformer supports:
+    When consuming Chronos input, the transformer supports:
 
-    * A single Marathon application
-    * Content from the Marathon Group API
-    * A JSON array of Marathon application objects
-
-    When emitting Marathon output, the transformer will emit a list of
+    When emitting Chronos output, the transformer will emit a list of
     applications if there is more than one. Otherwise, it will emit a single
     application.
 
@@ -48,7 +46,7 @@ class MarathonTransformer(BaseTransformer):
 
     .. code-block:: python
 
-        transformer = MarathonTransformer('./app.json')
+        transformer = ChronosTransformer('./task.json')
         output = transformer.ingest_container()
         print(json.dumps(output, indent=4))
 
@@ -80,9 +78,9 @@ class MarathonTransformer(BaseTransformer):
         :param key: The key name we're looking up
         :param is_list: if the response is a list of items
         """
-        if not container.get('container', {}).get('docker', {}).get('parameters'):
+        if not container.get('container', {}).get('parameters'):
             return
-        params = container['container']['docker']['parameters']
+        params = container['container']['parameters']
 
         # Super hacky - log-opt is a sub option of the logging directive of everything else
         if key == 'log-driver':
@@ -106,32 +104,30 @@ class MarathonTransformer(BaseTransformer):
 
     def flatten_container(self, container):
         """
-        Accepts a marathon container and pulls out the nested values into the top level
+        Accepts a chronos container and pulls out the nested values into the top level
         """
         for names in ARG_MAP.values():
-            if names[TransformationTypes.MARATHON.value]['name'] and \
-                            '.' in names[TransformationTypes.MARATHON.value]['name']:
-                marathon_dotted_name = names[TransformationTypes.MARATHON.value]['name']
-                parts = marathon_dotted_name.split('.')
+            if names[TransformationTypes.CHRONOS.value]['name'] and \
+                            '.' in names[TransformationTypes.CHRONOS.value]['name']:
+                chronos_dotted_name = names[TransformationTypes.CHRONOS.value]['name']
+                parts = chronos_dotted_name.split('.')
 
                 if parts[-2] == 'parameters':
                     # Special lookup for docker parameters
-                    common_type = names[TransformationTypes.MARATHON.value].get('type')
+                    common_type = names[TransformationTypes.CHRONOS.value].get('type')
                     result = self._lookup_parameter(container, parts[-1], common_type)
                     if result:
-                        container[marathon_dotted_name] = result
+                        container[chronos_dotted_name] = result
                 else:
                     result = lookup_nested_dict(container, *parts)
                     if result:
-                        container[marathon_dotted_name] = result
+                        container[chronos_dotted_name] = result
         return container
 
     def ingest_containers(self, containers=None):
         containers = containers or self.stream or {}
-        # Accept groups api output
-        if 'apps' in containers:
-            containers = containers['apps']
-        elif isinstance(containers, dict):
+        # Accept lists of tasks for convenience
+        if isinstance(containers, dict):
             containers = [containers]
         return [
             self.flatten_container(container)
@@ -151,7 +147,7 @@ class MarathonTransformer(BaseTransformer):
         :returns: The text output
         :rtype: str
         """
-        containers = sorted(containers, key=lambda c: c.get('id'))
+        containers = sorted(containers, key=lambda c: c.get('name'))
 
         if len(containers) == 1 and isinstance(containers, list):
             containers = containers[0]
@@ -163,8 +159,8 @@ class MarathonTransformer(BaseTransformer):
 
     def validate(self, container):
         # Ensure container name
-        container_name = container.get('id', str(uuid.uuid4()))
-        container['id'] = container_name
+        container_name = container.get('name', str(uuid.uuid4()))
+        container['name'] = container_name
 
         container_data = defaultdict(lambda: defaultdict(dict))
         container_data.update(container)
@@ -187,40 +183,29 @@ class MarathonTransformer(BaseTransformer):
                     del container_data[key]
 
         # Sort the parameters in a deterministic way
-        if container_data['container']['docker'].get('parameters'):
-            old_params = container_data['container']['docker']['parameters']
+        if container_data['container'].get('parameters'):
+            old_params = container_data['container']['parameters']
             sorted_values = sorted(
                 old_params, key=lambda p: str(p.get('value'))
             )
             sorted_keys = sorted(
                 sorted_values, key=lambda p: p.get('key')
             )
-            container_data['container']['docker']['parameters'] = sorted_keys
-
-        # Set requirePorts if any hostPorts are specified.
-        if container_data['container']['docker'].get('portMappings'):
-            host_ports = set([
-                 p.get('hostPort', 0)
-                 for p
-                 in container_data['container']['docker']['portMappings']])
-            container_data['requirePorts'] = bool(host_ports.difference({0}))
+            container_data['container']['parameters'] = sorted_keys
 
         # Assume the network mode is BRIDGE if unspecified
-        if container_data.get('container', {}).get('docker', {}).get('network') == 'HOST':
-            if container_data['container']['docker'].get('portMappings'):
-                container_data['ports'] = [
-                    p.get('containerPort') or p.get('hostPort')
-                    for p
-                    in container_data['container']['docker']['portMappings']]
-                # del container_data['container']['docker']['portMappings']
-                container_data['requirePorts'] = True
-        else:
-            container_data['container']['docker']['network'] = 'BRIDGE'
+        if container_data['container'].get('network') != 'HOST':
+            container_data['container']['network'] = 'BRIDGE'
 
-        container_data['container']['docker']['forcePullImage'] = True
+        container_data['container']['forcePullImage'] = True
         container_data['container']['type'] = 'DOCKER'
-        container_data['acceptedResourceRoles'] = []
-        container_data['fetch'] = []
+        container_data['uris'] = []
+        container_data['schedule'] = 'R/{now}/PT1H'.format(now=datetime.utcnow().isoformat())
+        container_data['disabled'] = False
+        container_data['shell'] = False
+        container_data['owner'] = None
+        container_data['ownerName'] = None
+        container_data['description'] = ""
 
         return container_data
 
@@ -228,16 +213,29 @@ class MarathonTransformer(BaseTransformer):
         return name.split('/')[-1]
 
     def emit_links(self, links):
-        return ['/{0}'.format(link) for link in links]
+        return [
+            {'key': 'link', 'value': link}
+            for link
+            in links
+        ]
 
     @staticmethod
     def _parse_port_mapping(mapping):
+        protocol = 'udp' if 'udp' in str(mapping) else 'tcp'
         output = {
-            'container_port': int(mapping['containerPort']),
-            'protocol': mapping.get('protocol', 'tcp')
+            'protocol': protocol
         }
-        if 'hostPort' in mapping:
-            output['host_port'] = int(mapping.get('hostPort'))
+        mapping = str(mapping).rstrip('/udp')
+        parts = str(mapping).split(':')
+        if len(parts) == 1:
+            output.update({
+                'container_port': int(parts[0])
+            })
+        else:
+            output.update({
+                'host_port': int(parts[0]),
+                'container_port': int(parts[1]),
+            })
         return output
 
     def ingest_port_mappings(self, port_mappings):
@@ -251,12 +249,19 @@ class MarathonTransformer(BaseTransformer):
         """
         return [self._parse_port_mapping(mapping) for mapping in port_mappings]
 
+    def _construct_port_mapping(self, mapping):
+        output = str(mapping['container_port'])
+        if 'host_port' in mapping:
+            output = str(mapping['host_port']) + ':' + output
+        if mapping.get('protocol') == 'udp':
+            output += '/udp'
+        return output
+
     def emit_port_mappings(self, port_mappings):
         return [
             {
-                'containerPort': mapping['container_port'],
-                'hostPort': mapping.get('host_port', 0),
-                'protocol': mapping.get('protocol', 'tcp')
+                'key': 'publish',
+                'value': self._construct_port_mapping(mapping),
             }
             for mapping
             in port_mappings]
@@ -277,10 +282,17 @@ class MarathonTransformer(BaseTransformer):
         return float(cpu/1024)
 
     def ingest_environment(self, environment):
-        return environment
+        return dict([(var['name'], var['value']) for var in environment])
 
     def emit_environment(self, environment):
-        return environment
+        environ = [
+            {'name': name, 'value': value}
+            for name, value
+            in environment.items()
+        ]
+        # Sort the parameters in a deterministic way
+        sorted_by_value = sorted(environ, key=lambda p: p.get('value'))
+        return sorted(sorted_by_value, key=lambda p: p.get('name'))
 
     def ingest_command(self, command):
         return ' '.join(command)
@@ -382,3 +394,9 @@ class MarathonTransformer(BaseTransformer):
 
     def emit_expose(self, expose):
         return [{'key': 'expose', 'value': port} for port in expose]
+
+    def emit_labels(self, labels):
+        return [{'key': 'label', 'value': label} for label in labels]
+
+    def emit_privileged(self, privileged):
+        return [{'key': 'privileged', 'value': privileged}]

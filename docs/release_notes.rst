@@ -1,6 +1,12 @@
 Release Notes
 =============
 
+v1.1.4
+------
+
+* Added Chronos task support
+* Fixed ``privileged`` for Marathon output
+
 v1.1.3
 ------
 

@@ -39,6 +39,15 @@ MarathonTransformer
 
     .. automethod:: __init__
 
+ChronosTransformer
+------------------
+
+.. automodule:: container_transform.chronos
+.. autoclass:: container_transform.chronos.ChronosTransformer
+    :members:
+
+    .. automethod:: __init__
+
 BaseTransformer
 ---------------
 

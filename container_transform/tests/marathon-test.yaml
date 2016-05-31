@@ -45,6 +45,11 @@ services:
       - '8.8.4.4'
     working_dir: "/var/www"
   redis:
+    pid: 'host'
+    env_file:
+      - '/etc/default/redis.conf'
+    privileged: true
+    expose: 6379
     image: "redis:latest"
     mem_limit: 6k
     cpu_shares: 200

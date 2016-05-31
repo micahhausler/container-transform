@@ -19,8 +19,8 @@ Usage
       followed by the full argument name.
 
     Options:
-      -i, --input-type [ecs|compose|marathon]
-      -o, --output-type [ecs|compose|systemd|marathon]
+      -i, --input-type [ecs|compose|marathon|chronos]
+      -o, --output-type [ecs|compose|systemd|marathon|chronos]
       -v, --verbose / --no-verbose    Expand/minify json output
       -q, --quiet                     Silence error messages
       --version                       Show the version and exit.
@@ -65,3 +65,30 @@ application.
 
 .. _Marathon Application Basics: http://mesosphere.github.io/marathon/docs/application-basics.html
 .. _Marathon API docs: http://mesosphere.github.io/marathon/docs/generated/api.html
+
+Chronos Tasks
+-------------
+
+Chronos tasks are meant to be run as headless tasks and while most docker
+options may be passed as parameters, they may not work as intended on a Mesos
+cluster.
+
+When consuming Chronos input, container-transform supports:
+
+* A single Chronos task
+* A JSON array of Chronos tasks
+
+When emitting Chronos output, container-transform will emit a list of tasks if
+there is more than one. Otherwise, it will emit a single task.
+
+.. note::
+
+    A JSON array of tasks is not valid for submitting to the Chronos API, but
+    is meant to be a convenience so that the output can be manipulated with
+    other tools.
+
+
+`Chronos API Documentation`_  & `Chronos Job Serializer source code`_
+
+.. _Chronos API Documentation: http://mesos.github.io/chronos/docs/api.html#adding-a-docker-job
+.. _Chronos Job Serializer source code: https://github.com/mesos/chronos/blob/master/src/main/scala/org/apache/mesos/chronos/utils/JobSerializer.scala

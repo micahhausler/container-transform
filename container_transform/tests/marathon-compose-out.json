@@ -77,16 +77,20 @@
                         "value": "skuid.ink"
                     },
                     {
-                        "key": "net",
-                        "value": "b"
+                        "key": "env-file",
+                        "value": "/etc/default/redis.conf"
+                    },
+                    {
+                        "key": "expose",
+                        "value": 6379
                     },
                     {
                         "key": "net",
-                        "value": "e"
+                        "value": "web"
                     },
                     {
-                        "key": "net",
-                        "value": "w"
+                        "key": "pid",
+                        "value": "host"
                     },
                     {
                         "key": "user",
@@ -99,7 +103,8 @@
                         "hostPort": 0,
                         "protocol": "tcp"
                     }
-                ]
+                ],
+                "privileged": true
             },
             "type": "DOCKER",
             "volumes": [
@@ -145,6 +150,10 @@
                     {
                         "key": "entrypoint",
                         "value": "/bin/bash"
+                    },
+                    {
+                        "key": "expose",
+                        "value": "5000:5000"
                     },
                     {
                         "key": "log-driver",

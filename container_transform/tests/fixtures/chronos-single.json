@@ -1,0 +1,27 @@
+{
+  "container": {
+    "forcePullImage": true,
+    "image": "worker",
+    "network": "BRIDGE",
+    "parameters": [
+      {
+        "key": "log-driver",
+        "value": "json-file"
+      },
+      {
+        "key": "volumes-from",
+        "value": "web"
+      }
+    ],
+    "type": "DOCKER"
+  },
+  "description": "",
+  "disabled": false,
+  "mem": 65,
+  "name": "background_worker",
+  "owner": null,
+  "ownerName": null,
+  "schedule": "R/2016-05-31T18:47:51.193047/PT1H",
+  "shell": false,
+  "uris": []
+}

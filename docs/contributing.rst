@@ -99,15 +99,16 @@ Below is a rough checklist of creating a new transformer type:
   least 90% coverage of your transformer before adding any tests to the
   :py:mod:`client_tests.py<container_transform.tests.client_test>` module.
 * Add client tests just to make sure the command doesn't blow up
+* Add documentation and API links on the :doc:`usage` page.
+* Update the usage text output on the ``README.rst`` and the :doc:`usage` page
+* Add the type to the format list on the :doc:`index` and ``README.rst`` 
 
 Possible Transformer implementations:
 
 * `Elastic Beanstalk (based on ECS)`_
-* `Chronos`_ scheduled tasks
 * `Kubernetes`_ pod
 
 .. _Elastic Beanstalk (based on ECS): http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create_deploy_docker_v2config.html#create_deploy_docker_v2config_dockerrun_format
-.. _Chronos: http://mesos.github.io/chronos/docs/api.html#adding-a-docker-job
 .. _Kubernetes: http://kubernetes.io/docs/user-guide/pods/multi-container/#pod-configuration-file
 
 

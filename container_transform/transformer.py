@@ -129,6 +129,8 @@ class BaseTransformer(object, metaclass=ABCMeta):
         return net_mode
 
     def ingest_network(self, network):
+        if not isinstance(network, list) and network is not None:
+            network = [network]
         return network
 
     def emit_network(self, network):
@@ -175,6 +177,20 @@ class BaseTransformer(object, metaclass=ABCMeta):
 
     def emit_env_file(self, env_file):
         return env_file
+
+    def ingest_expose(self, expose):
+        if not isinstance(expose, list) and expose is not None:
+            expose = [expose]
+        return expose
+
+    def emit_expose(self, expose):
+        return expose
+
+    def ingest_privileged(self, privileged):
+        return privileged
+
+    def emit_privileged(self, privileged):
+        return privileged
 
     @abstractmethod
     def ingest_port_mappings(self, port_mappings):
@@ -238,4 +254,12 @@ class BaseTransformer(object, metaclass=ABCMeta):
 
     @abstractmethod
     def emit_volumes(self, volumes):
+        raise NotImplementedError
+
+    @abstractmethod
+    def emit_logging(self, logging):
+        raise NotImplementedError
+
+    @abstractmethod
+    def ingest_logging(self, logging):
         raise NotImplementedError
