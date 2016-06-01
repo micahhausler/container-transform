@@ -19,6 +19,7 @@ Currently, container-transform can parse and convert:
 * ECS task definitions
 * Docker-compose configuration files
 * Marathon Application Definitions or Groups of Applications
+* Chronos Task Definitions
 
 and it can output to:
 
@@ -101,13 +102,12 @@ Quick Help
       followed by the full argument name.
 
     Options:
-      -i, --input-type [ecs|compose|marathon]
-      -o, --output-type [ecs|compose|systemd|marathon]
+      -i, --input-type [ecs|compose|marathon|chronos]
+      -o, --output-type [ecs|compose|systemd|marathon|chronos]
       -v, --verbose / --no-verbose    Expand/minify json output
       -q, --quiet                     Silence error messages
       --version                       Show the version and exit.
       -h, --help                      Show this message and exit.
-
 
 Docker Image
 ------------

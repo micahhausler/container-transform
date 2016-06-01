@@ -10,12 +10,14 @@ class TransformationTypes(Enum):
     COMPOSE = 'compose'
     SYSTEMD = 'systemd'
     MARATHON = 'marathon'
+    CHRONOS = 'chronos'
 
 
 class InputTransformationTypes(Enum):
     ECS = 'ecs'
     COMPOSE = 'compose'
     MARATHON = 'marathon'
+    CHRONOS = 'chronos'
 
 
 class OutputTransformationTypes(Enum):
@@ -23,6 +25,7 @@ class OutputTransformationTypes(Enum):
     COMPOSE = 'compose'
     SYSTEMD = 'systemd'
     MARATHON = 'marathon'
+    CHRONOS = 'chronos'
 
 
 ARG_MAP = OrderedDict({
@@ -43,6 +46,10 @@ ARG_MAP = OrderedDict({
             'name': 'container.docker.image',
             'required': True,
         },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'container.image',
+            'required': True,
+        },
     },
     'name': {
         TransformationTypes.ECS.value: {
@@ -61,6 +68,10 @@ ARG_MAP = OrderedDict({
             'name': 'id',
             'required': True
         },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'name',
+            'required': True
+        },
     },
     'cpu': {
         TransformationTypes.ECS.value: {
@@ -76,6 +87,10 @@ ARG_MAP = OrderedDict({
             'required': False
         },
         TransformationTypes.MARATHON.value: {
+            'name': 'cpus',
+            'required': False
+        },
+        TransformationTypes.CHRONOS.value: {
             'name': 'cpus',
             'required': False
         },
@@ -97,6 +112,10 @@ ARG_MAP = OrderedDict({
             'name': 'mem',
             'required': False,
         },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'mem',
+            'required': False,
+        },
     },
     'links': {
         TransformationTypes.ECS.value: {
@@ -114,6 +133,11 @@ ARG_MAP = OrderedDict({
         TransformationTypes.MARATHON.value: {
             'name': 'dependencies',
             'required': False,
+        },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'container.parameters.link',
+            'required': False,
+            'type': list,
         },
     },
     'port_mappings': {
@@ -133,6 +157,11 @@ ARG_MAP = OrderedDict({
             'name': 'container.docker.portMappings',
             'required': False,
         },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'container.parameters.publish',
+            'required': False,
+            'type': list,
+        },
     },
     'environment': {
         TransformationTypes.ECS.value: {
@@ -149,6 +178,10 @@ ARG_MAP = OrderedDict({
         },
         TransformationTypes.MARATHON.value: {
             'name': 'env',
+            'required': False,
+        },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'environmentVariables',
             'required': False,
         },
     },
@@ -169,6 +202,10 @@ ARG_MAP = OrderedDict({
             'name': 'container.docker.parameters.entrypoint',
             'required': False,
         },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'container.parameters.entrypoint',
+            'required': False,
+        },
     },
     'command': {
         TransformationTypes.ECS.value: {
@@ -187,6 +224,10 @@ ARG_MAP = OrderedDict({
             'name': 'args',
             'required': False,
         },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'arguments',
+            'required': False,
+        },
     },
     'essential': {
         TransformationTypes.ECS.value: {
@@ -202,6 +243,10 @@ ARG_MAP = OrderedDict({
             'required': False
         },
         TransformationTypes.MARATHON.value: {
+            'name': None,
+            'required': False
+        },
+        TransformationTypes.CHRONOS.value: {
             'name': None,
             'required': False
         },
@@ -224,6 +269,11 @@ ARG_MAP = OrderedDict({
             'required': False,
             'type': list
         },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'container.parameters.volumes-from',
+            'required': False,
+            'type': list
+        },
     },
     'volumes': {
         TransformationTypes.ECS.value: {
@@ -240,6 +290,10 @@ ARG_MAP = OrderedDict({
             'required': False
         },
         TransformationTypes.MARATHON.value: {
+            'name': 'container.volumes',
+            'required': False
+        },
+        TransformationTypes.CHRONOS.value: {
             'name': 'container.volumes',
             'required': False
         },
@@ -262,6 +316,11 @@ ARG_MAP = OrderedDict({
             'required': False,
             'type': list
         },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'container.parameters.dns',
+            'required': False,
+            'type': list
+        },
     },
     'work_dir': {
         TransformationTypes.ECS.value: {
@@ -278,6 +337,10 @@ ARG_MAP = OrderedDict({
         },
         TransformationTypes.MARATHON.value: {
             'name': 'container.docker.parameters.workdir',
+            'required': False
+        },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'container.parameters.workdir',
             'required': False
         },
     },
@@ -299,6 +362,11 @@ ARG_MAP = OrderedDict({
             'required': False,
             'type': list
         },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'container.parameters.dns-search',
+            'required': False,
+            'type': list
+        },
     },
     'build': {
         TransformationTypes.ECS.value: {
@@ -314,6 +382,10 @@ ARG_MAP = OrderedDict({
             'required': False,
         },
         TransformationTypes.MARATHON.value: {
+            'name': None,
+            'required': False,
+        },
+        TransformationTypes.CHRONOS.value: {
             'name': None,
             'required': False,
         },
@@ -336,6 +408,11 @@ ARG_MAP = OrderedDict({
             'required': False,
             'type': list
         },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'container.parameters.expose',
+            'required': False,
+            'type': list
+        },
     },
     'network': {
         TransformationTypes.ECS.value: {
@@ -352,6 +429,11 @@ ARG_MAP = OrderedDict({
         },
         TransformationTypes.MARATHON.value: {
             'name': 'container.docker.parameters.net',
+            'required': False,
+            'type': list
+        },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'container.parameters.net',
             'required': False,
             'type': list
         },
@@ -373,6 +455,10 @@ ARG_MAP = OrderedDict({
             'name': 'container.docker.network',
             'required': False,
         },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'container.network',
+            'required': False,
+        },
     },
     'privileged': {
         TransformationTypes.ECS.value: {
@@ -390,6 +476,11 @@ ARG_MAP = OrderedDict({
         TransformationTypes.MARATHON.value: {
             'name': 'container.docker.privileged',
             'required': False
+        },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'container.parameters.privileged',
+            'required': False,
+            'type': bool
         },
     },
     'labels': {
@@ -409,6 +500,11 @@ ARG_MAP = OrderedDict({
             'name': 'labels',
             'required': False
         },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'container.parameters.label',
+            'required': False,
+            'type': list
+        },
     },
     'logging': {
         TransformationTypes.ECS.value: {
@@ -425,6 +521,11 @@ ARG_MAP = OrderedDict({
         },
         TransformationTypes.MARATHON.value: {
             'name': 'container.docker.parameters.log-driver',
+            'required': False,
+            'type': list,
+        },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'container.parameters.log-driver',
             'required': False,
             'type': list,
         },
@@ -446,6 +547,10 @@ ARG_MAP = OrderedDict({
             'name': 'container.docker.parameters.user',
             'required': False
         },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'container.parameters.user',
+            'required': False
+        },
     },
     'env_file': {
         TransformationTypes.ECS.value: {
@@ -465,6 +570,11 @@ ARG_MAP = OrderedDict({
             'required': False,
             'type': list,
         },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'container.parameters.env-file',
+            'required': False,
+            'type': list,
+        },
     },
     'pid': {
         TransformationTypes.ECS.value: {
@@ -481,6 +591,32 @@ ARG_MAP = OrderedDict({
         },
         TransformationTypes.MARATHON.value: {
             'name': 'container.docker.parameters.pid',
+            'required': False,
+        },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'container.parameters.pid',
+            'required': False,
+        },
+    },
+    'fetch': {  # Mesos-specific fetcher
+        TransformationTypes.ECS.value: {
+            'name': None,
+            'required': False
+        },
+        TransformationTypes.COMPOSE.value: {
+            'name': None,
+            'required': False,
+        },
+        TransformationTypes.SYSTEMD.value: {
+            'name': None,
+            'required': False,
+        },
+        TransformationTypes.MARATHON.value: {
+            'name': 'fetch',
+            'required': False,
+        },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'uris',
             'required': False,
         },
     },

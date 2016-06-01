@@ -4,12 +4,15 @@ from .compose import ComposeTransformer
 from .ecs import ECSTransformer
 from .systemd import SystemdTransformer
 from .marathon import MarathonTransformer
+from .chronos import ChronosTransformer
+
 
 TRANSFORMER_CLASSES = {
     TransformationTypes.COMPOSE.value: ComposeTransformer,
     TransformationTypes.ECS.value: ECSTransformer,
     TransformationTypes.SYSTEMD.value: SystemdTransformer,
     TransformationTypes.MARATHON.value: MarathonTransformer,
+    TransformationTypes.CHRONOS.value: ChronosTransformer,
 }
 
 

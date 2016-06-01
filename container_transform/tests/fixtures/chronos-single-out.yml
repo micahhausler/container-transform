@@ -1,0 +1,12 @@
+services:
+  background_worker:
+    image: worker
+    logging:
+      driver: json-file
+      options: {}
+    mem_limit: 68157440b
+    network_mode: bridge
+    volumes_from:
+    - web
+version: '2'
+
