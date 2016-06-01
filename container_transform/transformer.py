@@ -29,6 +29,7 @@ SCHEMA = {
     'network': list,
     'env-file': list,
     'pid': str,
+    'fetch': [dict],
 }
 
 
@@ -191,6 +192,12 @@ class BaseTransformer(object, metaclass=ABCMeta):
 
     def emit_privileged(self, privileged):
         return privileged
+
+    def ingest_fetch(self, fetch):
+        return fetch
+
+    def emit_fetch(self, fetch):
+        return fetch
 
     @abstractmethod
     def ingest_port_mappings(self, port_mappings):

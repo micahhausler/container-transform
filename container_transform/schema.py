@@ -598,4 +598,26 @@ ARG_MAP = OrderedDict({
             'required': False,
         },
     },
+    'fetch': {  # Mesos-specific fetcher
+        TransformationTypes.ECS.value: {
+            'name': None,
+            'required': False
+        },
+        TransformationTypes.COMPOSE.value: {
+            'name': None,
+            'required': False,
+        },
+        TransformationTypes.SYSTEMD.value: {
+            'name': None,
+            'required': False,
+        },
+        TransformationTypes.MARATHON.value: {
+            'name': 'fetch',
+            'required': False,
+        },
+        TransformationTypes.CHRONOS.value: {
+            'name': 'uris',
+            'required': False,
+        },
+    },
 })

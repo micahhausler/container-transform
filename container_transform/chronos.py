@@ -400,3 +400,9 @@ class ChronosTransformer(BaseTransformer):
 
     def emit_privileged(self, privileged):
         return [{'key': 'privileged', 'value': privileged}]
+
+    def ingest_fetch(self, fetch):
+        return [{'uri': uri} for uri in fetch]
+
+    def emit_fetch(self, fetch):
+        return [uri.get('uri') for uri in fetch]

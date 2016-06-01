@@ -43,6 +43,32 @@ class ChronosTransformerTests(TestCase):
             0.5
         )
 
+    def test_ingest_fetch(self):
+        fetch = [
+            'https://s3.amazonaws.com/bucket/item.json',
+            'hdfs://hdfs.marathon.mesos/path/item.json',
+        ]
+        self.assertEqual(
+            self.transformer.ingest_fetch(fetch),
+            [
+                {'uri': 'https://s3.amazonaws.com/bucket/item.json'},
+                {'uri': 'hdfs://hdfs.marathon.mesos/path/item.json'}
+            ]
+        )
+
+    def test_emit_fetch(self):
+        fetch = [
+            {'uri': 'https://s3.amazonaws.com/bucket/item.json'},
+            {'uri': 'hdfs://hdfs.marathon.mesos/path/item.json'}
+        ]
+        self.assertEqual(
+            self.transformer.emit_fetch(fetch),
+            [
+                'https://s3.amazonaws.com/bucket/item.json',
+                'hdfs://hdfs.marathon.mesos/path/item.json',
+            ]
+        )
+
     def test_ingest_environment(self):
         environment = [
             {'name': 'CT_INPUT_TYPE', 'value': 'compose'},

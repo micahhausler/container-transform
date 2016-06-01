@@ -6,6 +6,7 @@ v1.1.4
 
 * Added Chronos task support
 * Fixed ``privileged`` for Marathon output
+* Added support for Mesos fetcher
 
 v1.1.3
 ------

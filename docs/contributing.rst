@@ -107,9 +107,11 @@ Possible Transformer implementations:
 
 * `Elastic Beanstalk (based on ECS)`_
 * `Kubernetes`_ pod
+* `Nomad`_ job specification
 
 .. _Elastic Beanstalk (based on ECS): http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create_deploy_docker_v2config.html#create_deploy_docker_v2config_dockerrun_format
 .. _Kubernetes: http://kubernetes.io/docs/user-guide/pods/multi-container/#pod-configuration-file
+.. _Nomad: https://www.nomadproject.io/docs/jobspec/json.html
 
 
 Release Checklist
