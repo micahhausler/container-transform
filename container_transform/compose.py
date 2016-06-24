@@ -225,7 +225,7 @@ class ComposeTransformer(BaseTransformer):
             rwo_value = None
 
             assert(len(parts) <= 3,
-                "Volume string '{}' has too many colons".format(vol))
+                   "Volume string '{}' has too many colons".format(vol))
 
             if len(parts) == 3:
                 # Is form 'service:name:ro' or 'container:name:ro'
