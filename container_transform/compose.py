@@ -313,3 +313,9 @@ class ComposeTransformer(BaseTransformer):
 
     def emit_logging(self, logging):
         return logging
+
+    def ingest_privileged(self, privileged):
+        return privileged
+
+    def emit_privileged(self, privileged):
+        return privileged

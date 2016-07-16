@@ -462,7 +462,7 @@ ARG_MAP = OrderedDict({
     },
     'privileged': {
         TransformationTypes.ECS.value: {
-            'name': None,
+            'name': 'privileged',
             'required': False
         },
         TransformationTypes.COMPOSE.value: {
