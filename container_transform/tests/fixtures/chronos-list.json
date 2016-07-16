@@ -1,0 +1,210 @@
+[
+    {
+        "container": {
+            "forcePullImage": true,
+            "image": "worker",
+            "network": "BRIDGE",
+            "parameters": [
+                {
+                    "key": "log-driver",
+                    "value": "json-file"
+                },
+                {
+                    "key": "volumes-from",
+                    "value": "web"
+                }
+            ],
+            "type": "DOCKER"
+        },
+        "description": "",
+        "disabled": false,
+        "mem": 65,
+        "name": "background_worker",
+        "owner": null,
+        "ownerName": null,
+        "schedule": "R/2016-05-31T18:47:51.193047/PT1H",
+        "shell": false,
+        "uris": []
+    },
+    {
+        "container": {
+            "forcePullImage": true,
+            "image": "boring",
+            "network": "HOST",
+            "type": "DOCKER"
+        },
+        "description": "",
+        "disabled": false,
+        "name": "boring",
+        "owner": null,
+        "ownerName": null,
+        "schedule": "R/2016-05-31T18:47:51.193923/PT1H",
+        "shell": false,
+        "uris": []
+    },
+    {
+        "container": {
+            "forcePullImage": true,
+            "image": "memcached",
+            "network": "BRIDGE",
+            "parameters": [
+                {
+                    "key": "publish",
+                    "value": "11211"
+                }
+            ],
+            "type": "DOCKER"
+        },
+        "description": "",
+        "disabled": false,
+        "name": "memcached",
+        "owner": null,
+        "ownerName": null,
+        "schedule": "R/2016-05-31T18:47:51.193257/PT1H",
+        "shell": false,
+        "uris": []
+    },
+    {
+        "arguments": [
+            "/usr/local/bin/redis"
+        ],
+        "container": {
+            "forcePullImage": true,
+            "image": "redis:latest",
+            "network": "HOST",
+            "parameters": [
+                {
+                    "key": "dns",
+                    "value": "8.8.8.8"
+                },
+                {
+                    "key": "dns-search",
+                    "value": "skuid.ink"
+                },
+                {
+                    "key": "net",
+                    "value": "web"
+                },
+                {
+                    "key": "publish",
+                    "value": "6379"
+                },
+                {
+                    "key": "user",
+                    "value": "var-www"
+                }
+            ],
+            "type": "DOCKER",
+            "volumes": [
+                {
+                    "containerPath": "/var/redis",
+                    "hostPath": "/var/redis",
+                    "mode": "RW"
+                }
+            ]
+        },
+        "cpus": 0.1953125,
+        "description": "",
+        "disabled": false,
+        "environmentVariables": [
+            {
+                "name": "SOME_VAR",
+                "value": "redis-var"
+            }
+        ],
+        "mem": 4,
+        "name": "redis",
+        "owner": null,
+        "ownerName": null,
+        "schedule": "R/2016-05-31T18:47:51.194315/PT1H",
+        "shell": false,
+        "uris": []
+    },
+    {
+        "container": {
+            "forcePullImage": true,
+            "image": "micahhausler/web",
+            "network": "BRIDGE",
+            "parameters": [
+                {
+                    "key": "dns",
+                    "value": "8.8.4.4"
+                },
+                {
+                    "key": "dns",
+                    "value": "8.8.8.8"
+                },
+                {
+                    "key": "dns-search",
+                    "value": "skuid.ink"
+                },
+                {
+                    "key": "entrypoint",
+                    "value": "/bin/bash"
+                },
+                {
+                    "key": "label",
+                    "value": "com.example.department"
+                },
+                {
+                    "key": "label",
+                    "value": "com.example.description"
+                },
+                {
+                    "key": "label",
+                    "value": "com.example.label-with-empty-value"
+                },
+                {
+                    "key": "link",
+                    "value": "redis"
+                },
+                {
+                    "key": "log-driver",
+                    "value": "gelf"
+                },
+                {
+                    "key": "log-opt",
+                    "value": "gelf-address=udp://127.0.0.1:12900"
+                },
+                {
+                    "key": "log-opt",
+                    "value": "tag=web"
+                },
+                {
+                    "key": "net",
+                    "value": "web"
+                },
+                {
+                    "key": "publish",
+                    "value": "5000:5000"
+                },
+                {
+                    "key": "workdir",
+                    "value": "/var/www"
+                }
+            ],
+            "type": "DOCKER",
+            "volumes": [
+                {
+                    "containerPath": "/code",
+                    "hostPath": "/var/code",
+                    "mode": "RW"
+                },
+                {
+                    "containerPath": "/opt",
+                    "hostPath": "/opt/code",
+                    "mode": "RO"
+                }
+            ]
+        },
+        "description": "",
+        "disabled": false,
+        "mem": 64,
+        "name": "web",
+        "owner": null,
+        "ownerName": null,
+        "schedule": "R/2016-05-31T18:47:51.193757/PT1H",
+        "shell": false,
+        "uris": []
+    }
+]

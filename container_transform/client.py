@@ -11,25 +11,44 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.argument(
     'input_file',
+    envvar='CT_INPUT_FILE',
     default='/dev/stdin',
     type=click.Path(exists=False, file_okay=True, dir_okay=False),
 )
 @click.option(
+    '-i',
     '--input-type',
     'input_type',
+    envvar='CT_INPUT_TYPE',
     type=click.Choice([v.value.lower() for v in list(InputTransformationTypes)]),
     default=InputTransformationTypes.COMPOSE.value,
 )
 @click.option(
+    '-o',
     '--output-type',
     'output_type',
+    envvar='CT_OUTPUT_TYPE',
     type=click.Choice([v.value.lower() for v in list(OutputTransformationTypes)]),
     default=OutputTransformationTypes.ECS.value,
 )
-@click.option('-v/--no-verbose', default=True, help='Expand/minify json output')
-@click.option('-q', default=False, is_flag=True, help='Silence error messages')
+@click.option(
+    '-v/--no-verbose',
+    '--verbose',
+    'verbose',
+    envvar='CT_VERBOSE',
+    default=True,
+    help='Expand/minify json output'
+)
+@click.option(
+    '-q',
+    '--quiet',
+    envvar='CT_QUIET',
+    default=False,
+    is_flag=True,
+    help='Silence error messages'
+)
 @click.version_option(__version__)
-def transform(input_file, input_type, output_type, v, q):
+def transform(input_file, input_type, output_type, verbose, quiet):
     """
     container-transform is a small utility to transform various docker
     container formats to one another.
@@ -37,12 +56,15 @@ def transform(input_file, input_type, output_type, v, q):
     Default input type is compose, default output type is ECS
 
     Default is to read from STDIN if no INPUT_FILE is provided
+
+    All options may be set by environment variables with the prefix "CT_"
+    followed by the full argument name.
     """
     converter = Converter(input_file, input_type, output_type)
-    output = converter.convert(v)
+    output = converter.convert(verbose)
 
     click.echo(click.style(output, fg='green'))
 
-    if not q:
+    if not quiet:
         for message in converter.messages:
             click.echo(click.style(message, fg='red', bold=True), err=True)

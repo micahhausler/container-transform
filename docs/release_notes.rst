@@ -1,6 +1,43 @@
 Release Notes
 =============
 
+v1.1.4
+------
+
+* Added Chronos task support
+* Fixed ``privileged`` for Marathon output
+* Added support for Mesos fetcher
+
+v1.1.3
+------
+
+* Switched docker image to python:3.5-alpine (604 MB smaller, 77 MB total)
+* Fixed case when compose specifies command as an array
+
+v1.1.2
+------
+
+* Fixed udp port handling
+* Added support for ``pid`` and ``env-file`` parameters
+* Added docs for adding parameters and creating new transformers
+
+v1.1.1
+------
+
+* Added environment variable support for command line options
+* Added short form for command line options
+* CPU is no longer required for ECS
+
+v1.1.0
+------
+
+* Added Marathon task support
+* Correctly handle compose version type - `GH #46`_
+* Assume compose memory is in bytes - `GH #41`_
+
+.. _GH #46: https://github.com/micahhausler/container-transform/pull/46
+.. _GH #41: https://github.com/micahhausler/container-transform/pull/41
+
 v1.0.0
 ------
 

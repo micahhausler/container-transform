@@ -20,10 +20,12 @@ ExecStart=/usr/bin/docker run \\
     --name {{ name }} \\
     {%- if cpu_shares %}
     --cpu {{ cpu_shares }} \\{% endif -%}
-    {% if mem_limit %}
-    --memory {{ mem_limit }} \\{% endif -%}
+    {% if memory %}
+    --memory {{ memory }} \\{% endif -%}
     {% if hostname %}
     --hostname {{ hostname }} \\{% endif -%}
+    {% if pid %}
+    --pid {{ pid }} \\{% endif -%}
     {% if entrypoint %}
     --entrypoint {{ entrypoint }} \\{% endif -%}
     {% for port in ports %}
@@ -45,12 +47,16 @@ ExecStart=/usr/bin/docker run \\
     --label {{ label[0] }}="{{ label[1] }}" \\{% endfor -%}{% endif -%}
     {% for link in links %}
     --link {{ link }} \\{% endfor -%}
+    {% for ef in env_file %}
+    --env-file {{ ef }} \\{% endfor -%}
     {% for vf in volumes_from %}
     --volumes-from {{ vf }} \\{% endfor -%}
     {% for ns in dns %}
     --dns {{ ns }} \\{% endfor -%}
     {% if work_dir %}
     --workdir {{ work_dir}} \\{% endif -%}
+    {% if user %}
+    --user {{ user }} \\{% endif -%}
     {% if privileged %}
     --privileged {{ privileged}} \\{%- endif %}
     {{ image or "<image>"  }} {% if command %}\\
@@ -103,7 +109,10 @@ class SystemdTransformer(BaseTransformer):
             parts.append(str(mapping['container_ip']))
         if mapping.get('container_port'):
             parts.append(str(mapping['container_port']))
-        return ':'.join(parts)
+        output = ':'.join(parts)
+        if mapping.get('protocol') == 'udp':
+            output += '/udp'
+        return output
 
     def emit_port_mappings(self, port_mappings):
         """

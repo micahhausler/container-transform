@@ -1,3 +1,5 @@
+.. _index:
+
 Quickstart
 ==========
 container-transform is a small utility to transform various docker container
@@ -7,6 +9,8 @@ Currently, container-transform can parse and convert:
 
 * ECS task definitions
 * Docker-compose configuration files
+* Marathon Application Definitions or Groups of Applications
+* Chronos Task Definitions
 
 and it can output to:
 
@@ -70,10 +74,7 @@ Example usage:
             }
         ]
     }
-    Container db is missing required parameter "cpu".
-    Container redis is missing required parameter "cpu".
     Container web is missing required parameter "image".
-    Container web is missing required parameter "cpu".
 
 or:
 
@@ -99,7 +100,7 @@ or:
 Installation
 ------------
 
-To install the latest release, type::
+To install the latest release (Python 3 only), type::
 
     pip install container-transform
 

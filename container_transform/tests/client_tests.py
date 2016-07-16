@@ -132,3 +132,152 @@ class ClientTests(TestCase):
             result.output,
             service_contents
         )
+
+    def test_prompt_marathon_compose_quiet(self):
+        runner = CliRunner()
+
+        input_file = '{}/marathon-test.json'.format(os.path.dirname(__file__))
+
+        result = runner.invoke(
+            transform,
+            [input_file, '-q', '--input-type', 'marathon', '--output-type', 'compose'])
+        assert result.exit_code == 0
+
+        service_file = '{}/marathon-test-out.yaml'.format(os.path.dirname(__file__))
+        service_contents = open(service_file).read()
+        self.assertEqual(
+            result.output,
+            service_contents
+        )
+
+    def test_prompt_marathon_compose_group_quiet(self):
+        runner = CliRunner()
+
+        input_file = '{}/marathon-group.json'.format(os.path.dirname(__file__))
+
+        result = runner.invoke(
+            transform,
+            [input_file, '-q', '--input-type', 'marathon', '--output-type', 'compose'])
+        assert result.exit_code == 0
+
+        service_file = '{}/marathon-group-out.yaml'.format(os.path.dirname(__file__))
+        service_contents = open(service_file).read()
+        self.assertEqual(
+            result.output,
+            service_contents
+        )
+
+    def test_prompt_marathon_compose_list_quiet(self):
+        runner = CliRunner()
+
+        input_file = '{}/marathon-list.json'.format(os.path.dirname(__file__))
+
+        result = runner.invoke(
+            transform,
+            [input_file, '-q', '--input-type', 'marathon', '--output-type', 'compose'])
+        assert result.exit_code == 0
+
+        service_file = '{}/marathon-list-out.yaml'.format(os.path.dirname(__file__))
+        service_contents = open(service_file).read()
+        self.assertEqual(
+            result.output,
+            service_contents
+        )
+
+    def test_prompt_compose_marathon_quiet(self):
+        runner = CliRunner()
+        input_file = '{}/marathon-test.yaml'.format(os.path.dirname(__file__))
+
+        result = runner.invoke(
+            transform,
+            [input_file, '-q', '--input-type', 'compose', '--output-type', 'marathon'])
+        assert result.exit_code == 0
+
+        service_file = '{}/marathon-compose-out.json'.format(os.path.dirname(__file__))
+        service_contents = open(service_file).read()
+        self.assertEqual(
+            result.output,
+            service_contents
+        )
+
+    def test_prompt_compose_marathon_quiet_mini(self):
+        runner = CliRunner()
+        input_file = '{}/marathon-test.yaml'.format(os.path.dirname(__file__))
+
+        result = runner.invoke(
+            transform,
+            [
+                input_file, '-q', '--input-type', 'compose',
+                '--output-type', 'marathon', '--no-verbose'])
+        assert result.exit_code == 0
+
+    def test_prompt_compose_marathon_single_app_quiet(self):
+        runner = CliRunner()
+        input_file = '{}/composev2.yml'.format(os.path.dirname(__file__))
+
+        result = runner.invoke(
+            transform,
+            [
+                input_file, '-q', '--input-type', 'compose',
+                '--output-type', 'marathon', '--no-verbose'])
+        assert result.exit_code == 0
+        result_data = json.loads(result.output)
+        self.assertIsInstance(result_data, dict)
+
+    def test_prompt_compose_to_chronos_quiet(self):
+        runner = CliRunner()
+        input_file = '{}/marathon-test.yaml'.format(os.path.dirname(__file__))
+
+        result = runner.invoke(
+            transform,
+            [
+                input_file, '-q', '--input-type', 'compose',
+                '--output-type', 'chronos', '--no-verbose'])
+        assert result.exit_code == 0
+        result_data = json.loads(result.output)
+        self.assertIsInstance(result_data, list)
+
+    def test_prompt_compose_to_chronos_single_verbose_quiet(self):
+        runner = CliRunner()
+        input_file = '{}/composev2.0.yml'.format(os.path.dirname(__file__))
+
+        result = runner.invoke(
+            transform,
+            [input_file, '-q', '-v', '-i', 'compose', '-o', 'chronos'])
+        assert result.exit_code == 0
+        result_data = json.loads(result.output)
+        self.assertIsInstance(result_data, dict)
+
+    def test_prompt_chronos_to_compose_list_quiet(self):
+        runner = CliRunner()
+
+        input_file = '{}/fixtures/chronos-list.json'.format(os.path.dirname(__file__))
+
+        result = runner.invoke(
+            transform,
+            [input_file, '-q', '--input-type', 'chronos', '--output-type', 'compose'])
+        assert result.exit_code == 0
+
+        service_file = '{}/fixtures/chronos-list-out.yaml'.format(os.path.dirname(__file__))
+        service_contents = open(service_file).read()
+        self.assertEqual(
+            result.output,
+            service_contents
+        )
+
+    def test_prompt_chronos_to_compose_single_quiet(self):
+        runner = CliRunner()
+
+        input_file = '{}/fixtures/chronos-single.json'.format(os.path.dirname(__file__))
+
+        result = runner.invoke(
+            transform,
+            [input_file, '-q', '--input-type', 'chronos', '--output-type', 'compose'])
+        assert result.exit_code == 0
+
+        service_file = '{}/fixtures/chronos-single-out.yml'.format(os.path.dirname(__file__))
+        service_contents = open(service_file).read()
+        self.assertEqual(
+            result.output,
+            service_contents
+        )

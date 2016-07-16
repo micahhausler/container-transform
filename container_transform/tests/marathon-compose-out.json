@@ -1,0 +1,214 @@
+[
+    {
+        "acceptedResourceRoles": [],
+        "container": {
+            "docker": {
+                "forcePullImage": true,
+                "image": "worker",
+                "network": "BRIDGE",
+                "parameters": [
+                    {
+                        "key": "log-driver",
+                        "value": "json-file"
+                    },
+                    {
+                        "key": "volumes-from",
+                        "value": "web"
+                    }
+                ]
+            },
+            "type": "DOCKER"
+        },
+        "fetch": [],
+        "id": "background_worker",
+        "mem": 65
+    },
+    {
+        "acceptedResourceRoles": [],
+        "container": {
+            "docker": {
+                "forcePullImage": true,
+                "image": "boring",
+                "network": "HOST"
+            },
+            "type": "DOCKER"
+        },
+        "fetch": [],
+        "id": "boring"
+    },
+    {
+        "acceptedResourceRoles": [],
+        "container": {
+            "docker": {
+                "forcePullImage": true,
+                "image": "memcached",
+                "network": "BRIDGE",
+                "portMappings": [
+                    {
+                        "containerPort": 11211,
+                        "hostPort": 0,
+                        "protocol": "tcp"
+                    }
+                ]
+            },
+            "type": "DOCKER"
+        },
+        "fetch": [],
+        "id": "memcached",
+        "requirePorts": false
+    },
+    {
+        "acceptedResourceRoles": [],
+        "args": [
+            "/usr/local/bin/redis"
+        ],
+        "container": {
+            "docker": {
+                "forcePullImage": true,
+                "image": "redis:latest",
+                "network": "HOST",
+                "parameters": [
+                    {
+                        "key": "dns",
+                        "value": "8.8.8.8"
+                    },
+                    {
+                        "key": "dns-search",
+                        "value": "skuid.ink"
+                    },
+                    {
+                        "key": "env-file",
+                        "value": "/etc/default/redis.conf"
+                    },
+                    {
+                        "key": "expose",
+                        "value": 6379
+                    },
+                    {
+                        "key": "net",
+                        "value": "web"
+                    },
+                    {
+                        "key": "pid",
+                        "value": "host"
+                    },
+                    {
+                        "key": "user",
+                        "value": "var-www"
+                    }
+                ],
+                "portMappings": [
+                    {
+                        "containerPort": 6379,
+                        "hostPort": 0,
+                        "protocol": "tcp"
+                    }
+                ],
+                "privileged": true
+            },
+            "type": "DOCKER",
+            "volumes": [
+                {
+                    "containerPath": "/var/redis",
+                    "hostPath": "/var/redis",
+                    "mode": "RW"
+                }
+            ]
+        },
+        "cpus": 0.1953125,
+        "env": {
+            "SOME_VAR": "redis-var"
+        },
+        "fetch": [],
+        "id": "redis",
+        "mem": 4,
+        "ports": [
+            6379
+        ],
+        "requirePorts": true
+    },
+    {
+        "acceptedResourceRoles": [],
+        "container": {
+            "docker": {
+                "forcePullImage": true,
+                "image": "micahhausler/web",
+                "network": "BRIDGE",
+                "parameters": [
+                    {
+                        "key": "dns",
+                        "value": "8.8.4.4"
+                    },
+                    {
+                        "key": "dns",
+                        "value": "8.8.8.8"
+                    },
+                    {
+                        "key": "dns-search",
+                        "value": "skuid.ink"
+                    },
+                    {
+                        "key": "entrypoint",
+                        "value": "/bin/bash"
+                    },
+                    {
+                        "key": "expose",
+                        "value": "5000:5000"
+                    },
+                    {
+                        "key": "log-driver",
+                        "value": "gelf"
+                    },
+                    {
+                        "key": "log-opt",
+                        "value": "gelf-address=udp://127.0.0.1:12900"
+                    },
+                    {
+                        "key": "log-opt",
+                        "value": "tag=web"
+                    },
+                    {
+                        "key": "net",
+                        "value": "web"
+                    },
+                    {
+                        "key": "workdir",
+                        "value": "/var/www"
+                    }
+                ],
+                "portMappings": [
+                    {
+                        "containerPort": 5000,
+                        "hostPort": 5000,
+                        "protocol": "tcp"
+                    }
+                ]
+            },
+            "type": "DOCKER",
+            "volumes": [
+                {
+                    "containerPath": "/code",
+                    "hostPath": "/var/code",
+                    "mode": "RW"
+                },
+                {
+                    "containerPath": "/opt",
+                    "hostPath": "/opt/code",
+                    "mode": "RO"
+                }
+            ]
+        },
+        "dependencies": [
+            "/redis"
+        ],
+        "fetch": [],
+        "id": "web",
+        "labels": {
+            "com.example.department": "Finance",
+            "com.example.description": "Accounting webapp",
+            "com.example.label-with-empty-value": ""
+        },
+        "mem": 64,
+        "requirePorts": true
+    }
+]

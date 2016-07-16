@@ -1,0 +1,68 @@
+services:
+  background_worker:
+    image: worker
+    logging:
+      driver: json-file
+      options: {}
+    mem_limit: 68157440b
+    network_mode: bridge
+    volumes_from:
+    - web
+  boring:
+    image: boring
+    network_mode: host
+  memcached:
+    image: memcached
+    network_mode: bridge
+    ports:
+    - '11211'
+  redis:
+    command: /usr/local/bin/redis
+    cpu_shares: 200.0
+    dns:
+    - 8.8.8.8
+    dns_search:
+    - skuid.ink
+    environment:
+      SOME_VAR: redis-var
+    image: redis:latest
+    mem_limit: 4194304b
+    network_mode: host
+    networks:
+    - web
+    ports:
+    - '6379'
+    user: var-www
+    volumes:
+    - /var/redis:/var/redis
+  web:
+    dns:
+    - 8.8.4.4
+    - 8.8.8.8
+    dns_search:
+    - skuid.ink
+    entrypoint: /bin/bash
+    image: micahhausler/web
+    labels:
+    - com.example.department
+    - com.example.description
+    - com.example.label-with-empty-value
+    links:
+    - redis
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://127.0.0.1:12900
+        tag: web
+    mem_limit: 67108864b
+    network_mode: bridge
+    networks:
+    - web
+    ports:
+    - 5000:5000
+    volumes:
+    - /var/code:/code
+    - /opt/code:/opt:ro
+    working_dir: /var/www
+version: '2'
+

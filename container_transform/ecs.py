@@ -78,11 +78,14 @@ class ECSTransformer(BaseTransformer):
     def emit_containers(self, containers, verbose=True):
         """
         Emits the task definition and sorts containers by name
+
         :param containers: List of the container definitions
         :type containers: list of dict
+
         :param verbose: Print out newlines and indented JSON
         :type verbose: bool
-        :return: The text output
+
+        :returns: The text output
         :rtype: str
         """
         containers = sorted(containers, key=lambda c: c.get('name'))
@@ -110,11 +113,13 @@ class ECSTransformer(BaseTransformer):
     @staticmethod
     def _parse_port_mapping(mapping):
         output = {
-            'container_port': int(mapping['containerPort'])
+            'container_port': int(mapping['containerPort']),
+            'protocol': mapping.get('protocol', 'tcp')
         }
         host_port = mapping.get('hostPort')
         if host_port:
             output['host_port'] = host_port
+
         return output
 
     def ingest_port_mappings(self, port_mappings):
@@ -130,15 +135,19 @@ class ECSTransformer(BaseTransformer):
 
     @staticmethod
     def _emit_mapping(mapping):
-        if len(mapping) == 1:
-            return {
-                'containerPort': int(list(mapping.values())[0]),
-            }
-
-        return {
-            'hostPort': int(mapping['host_port']),
-            'containerPort': int(mapping['container_port']),
-        }
+        output = {}
+        if 'host_port' not in mapping:
+            output.update({
+                'containerPort': int(mapping.get('container_port')),
+            })
+        else:
+            output.update({
+                'hostPort': int(mapping['host_port']),
+                'containerPort': int(mapping['container_port']),
+            })
+        if mapping.get('protocol') == 'udp':
+            output['protocol'] = 'udp'
+        return output
 
     def emit_port_mappings(self, port_mappings):
         return [self._emit_mapping(mapping) for mapping in port_mappings]
@@ -175,19 +184,13 @@ class ECSTransformer(BaseTransformer):
         return ' '.join(command)
 
     def emit_command(self, command):
-        if isinstance(command, str):
-            return command.split()
-        else:
-            return command
+        return command.split()
 
     def ingest_entrypoint(self, entrypoint):
         return ' '.join(entrypoint)
 
     def emit_entrypoint(self, entrypoint):
-        if isinstance(entrypoint, str):
-            return entrypoint.split()
-        else:
-            return entrypoint
+        return entrypoint.split()
 
     def ingest_volumes_from(self, volumes_from):
         return [vol['sourceContainer'] for vol in volumes_from]

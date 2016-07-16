@@ -29,6 +29,20 @@
         },
         {
             "cpu": 200,
+            "essential": true,
+            "name": "dns",
+            "memory": 1024,
+            "image": "consul",
+            "portMappings": [
+                {
+                  "protocol": "udp",
+                  "hostPort": 53,
+                  "containerPort": 53
+                }
+            ]
+        },
+        {
+            "cpu": 200,
             "entryPoint": [
                 "uwsgi"
             ],
@@ -205,10 +219,14 @@
                 "logDriver": "gelf",
                 "options": {
                     "gelf-address": "udp://127.0.0.1:12900",
-                    "tag": "web"
+                    "tag": "redis"
                 }
             },
+            "entryPoint": [
+                "redis"
+            ],
             "image": "redis:latest"
+
         }
     ]
 }

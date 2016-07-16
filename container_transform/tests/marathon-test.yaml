@@ -1,0 +1,69 @@
+version: '2'
+services:
+  boring:
+    image: "boring"
+    network_mode: "host"
+  background_worker:
+    image: "worker"
+    mem_limit: 65m
+    volumes_from:
+      - web
+    logging:
+      driver: "json-file"
+  memcached:
+    image: "memcached"
+    ports:
+      - "11211"
+  web:
+    image: "micahhausler/web"
+    ports:
+      - "5000:5000"
+    mem_limit: 65536k
+    expose:
+      - "5000:5000"
+    volumes:
+     - "/var/code:/code"
+     - "/opt/code:/opt:ro"
+    labels:
+      com.example.description: "Accounting webapp"
+      com.example.department: "Finance"
+      com.example.label-with-empty-value: ""
+    logging:
+      driver: "gelf"
+      options:
+        tag: "web"
+        gelf-address: "udp://127.0.0.1:12900"
+    net_mode: "bridge"
+    links:
+      - redis
+    entrypoint: "/bin/bash"
+    networks:
+      - 'web'
+    dns_search: 'skuid.ink'
+    dns:
+      - '8.8.8.8'
+      - '8.8.4.4'
+    working_dir: "/var/www"
+  redis:
+    pid: 'host'
+    env_file:
+      - '/etc/default/redis.conf'
+    privileged: true
+    expose: 6379
+    image: "redis:latest"
+    mem_limit: 6k
+    cpu_shares: 200
+    ports:
+      - "6379"
+    network_mode: "host"
+    command: "/usr/local/bin/redis"
+    volumes:
+      - "/var/redis:/var/redis"
+    environment:
+      SOME_VAR: "redis-var"
+    user: "var-www"
+    network_mode: "host"
+    networks: 'web'
+    dns: '8.8.8.8'
+    dns_search:
+      - 'skuid.ink'

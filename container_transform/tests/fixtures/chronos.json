@@ -1,0 +1,65 @@
+{
+    "container": {
+        "forcePullImage": true,
+        "image": "ubuntu",
+        "network": "BRIDGE",
+        "parameters": [
+            {
+                "key": "env-file",
+                "value": "./web.env"
+            },
+            {
+                "key": "label",
+                "value": "com.example.department"
+            },
+            {
+                "key": "label",
+                "value": "com.example.description"
+            },
+            {
+                "key": "label",
+                "value": "com.example.label-with-empty-value"
+            },
+            {
+                "key": "log-driver",
+                "value": "gelf"
+            },
+            {
+                "key": "log-opt",
+                "value": "gelf-address=udp://127.0.0.1:12900"
+            },
+            {
+                "key": "log-opt",
+                "value": "tag=web"
+            },
+            {
+                "key": "pid",
+                "value": "host"
+            },
+            {
+                "key": "publish",
+                "value": "5000:5000"
+            },
+            {
+                "key": "publish",
+                "value": "53:53/udp"
+            }
+        ],
+        "type": "DOCKER",
+        "volumes": [
+            {
+                "containerPath": "/code",
+                "hostPath": ".",
+                "mode": "RW"
+            }
+        ]
+    },
+    "description": "",
+    "disabled": false,
+    "name": "web",
+    "owner": null,
+    "ownerName": null,
+    "schedule": "R/2016-05-31T18:14:14.346975/PT1H",
+    "shell": false,
+    "uris": []
+}
