@@ -53,7 +53,8 @@
             "essential": true,
             "name": "web2",
             "memory": 4,
-            "image": "me/myapp"
+            "image": "me/myapp",
+            "privileged": true
         },
         {
             "cpu": 200,

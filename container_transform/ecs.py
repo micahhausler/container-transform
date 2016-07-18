@@ -168,6 +168,12 @@ class ECSTransformer(BaseTransformer):
     def emit_cpu(self, cpu):
         return cpu
 
+    def ingest_privileged(self, privileged):
+        return privileged
+
+    def emit_privileged(self, privileged):
+        return privileged
+
     def ingest_environment(self, environment):
         output = {}
         for kv in environment:
