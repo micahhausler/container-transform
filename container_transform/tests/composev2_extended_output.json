@@ -8,6 +8,7 @@
             "essential": true,
             "image": "redis",
             "name": "redis",
+            "privileged": true,
             "portMappings": [
                 {
                     "containerPort": 6379
