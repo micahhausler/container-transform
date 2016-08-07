@@ -1,6 +1,11 @@
 Release Notes
 =============
 
+v1.1.5
+------
+
+* Added Kubernetes Support
+
 v1.1.4
 ------
 

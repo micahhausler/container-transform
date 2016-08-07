@@ -11,6 +11,7 @@ class TransformationTypes(Enum):
     SYSTEMD = 'systemd'
     MARATHON = 'marathon'
     CHRONOS = 'chronos'
+    KUBERNETES = 'kubernetes'
 
 
 class InputTransformationTypes(Enum):
@@ -18,6 +19,7 @@ class InputTransformationTypes(Enum):
     COMPOSE = 'compose'
     MARATHON = 'marathon'
     CHRONOS = 'chronos'
+    KUBERNETES = 'kubernetes'
 
 
 class OutputTransformationTypes(Enum):
@@ -26,6 +28,7 @@ class OutputTransformationTypes(Enum):
     SYSTEMD = 'systemd'
     MARATHON = 'marathon'
     CHRONOS = 'chronos'
+    KUBERNETES = 'kubernetes'
 
 
 ARG_MAP = OrderedDict({
@@ -50,6 +53,10 @@ ARG_MAP = OrderedDict({
             'name': 'container.image',
             'required': True,
         },
+        TransformationTypes.KUBERNETES.value: {
+            'name': 'image',
+            'required': True,
+        },
     },
     'name': {
         TransformationTypes.ECS.value: {
@@ -71,6 +78,10 @@ ARG_MAP = OrderedDict({
         TransformationTypes.CHRONOS.value: {
             'name': 'name',
             'required': True
+        },
+        TransformationTypes.KUBERNETES.value: {
+            'name': 'name',
+            'required': True,
         },
     },
     'cpu': {
@@ -94,6 +105,10 @@ ARG_MAP = OrderedDict({
             'name': 'cpus',
             'required': False
         },
+        TransformationTypes.KUBERNETES.value: {
+            'name': 'resources.limits.cpu',
+            'required': False,
+        },
     },
     'memory': {
         TransformationTypes.ECS.value: {
@@ -114,6 +129,10 @@ ARG_MAP = OrderedDict({
         },
         TransformationTypes.CHRONOS.value: {
             'name': 'mem',
+            'required': False,
+        },
+        TransformationTypes.KUBERNETES.value: {
+            'name': 'resources.limits.memory',
             'required': False,
         },
     },
@@ -139,6 +158,10 @@ ARG_MAP = OrderedDict({
             'required': False,
             'type': list,
         },
+        TransformationTypes.KUBERNETES.value: {
+            'name': None,
+            'required': False,
+        },
     },
     'port_mappings': {
         TransformationTypes.ECS.value: {
@@ -162,6 +185,11 @@ ARG_MAP = OrderedDict({
             'required': False,
             'type': list,
         },
+        TransformationTypes.KUBERNETES.value: {
+            'name': 'ports',
+            'required': False,
+        },
+
     },
     'environment': {
         TransformationTypes.ECS.value: {
@@ -182,6 +210,10 @@ ARG_MAP = OrderedDict({
         },
         TransformationTypes.CHRONOS.value: {
             'name': 'environmentVariables',
+            'required': False,
+        },
+        TransformationTypes.KUBERNETES.value: {
+            'name': 'env',
             'required': False,
         },
     },
@@ -206,6 +238,10 @@ ARG_MAP = OrderedDict({
             'name': 'container.parameters.entrypoint',
             'required': False,
         },
+        TransformationTypes.KUBERNETES.value: {
+            'name': 'command',
+            'required': False,
+        },
     },
     'command': {
         TransformationTypes.ECS.value: {
@@ -226,6 +262,10 @@ ARG_MAP = OrderedDict({
         },
         TransformationTypes.CHRONOS.value: {
             'name': 'arguments',
+            'required': False,
+        },
+        TransformationTypes.KUBERNETES.value: {
+            'name': 'args',
             'required': False,
         },
     },
@@ -249,6 +289,10 @@ ARG_MAP = OrderedDict({
         TransformationTypes.CHRONOS.value: {
             'name': None,
             'required': False
+        },
+        TransformationTypes.KUBERNETES.value: {
+            'name': None,
+            'required': False,
         },
     },
     'volumes_from': {
@@ -274,6 +318,10 @@ ARG_MAP = OrderedDict({
             'required': False,
             'type': list
         },
+        TransformationTypes.KUBERNETES.value: {
+            'name': None,
+            'required': False,
+        },
     },
     'volumes': {
         TransformationTypes.ECS.value: {
@@ -296,6 +344,10 @@ ARG_MAP = OrderedDict({
         TransformationTypes.CHRONOS.value: {
             'name': 'container.volumes',
             'required': False
+        },
+        TransformationTypes.KUBERNETES.value: {
+            'name': 'volumeMounts',
+            'required': False,
         },
     },
     'dns': {
@@ -321,6 +373,10 @@ ARG_MAP = OrderedDict({
             'required': False,
             'type': list
         },
+        TransformationTypes.KUBERNETES.value: {
+            'name': None,
+            'required': False,
+        },
     },
     'work_dir': {
         TransformationTypes.ECS.value: {
@@ -342,6 +398,10 @@ ARG_MAP = OrderedDict({
         TransformationTypes.CHRONOS.value: {
             'name': 'container.parameters.workdir',
             'required': False
+        },
+        TransformationTypes.KUBERNETES.value: {
+            'name': 'workingDir',
+            'required': False,
         },
     },
     'domain': {
@@ -367,6 +427,10 @@ ARG_MAP = OrderedDict({
             'required': False,
             'type': list
         },
+        TransformationTypes.KUBERNETES.value: {
+            'name': None,
+            'required': False,
+        },
     },
     'build': {
         TransformationTypes.ECS.value: {
@@ -386,6 +450,10 @@ ARG_MAP = OrderedDict({
             'required': False,
         },
         TransformationTypes.CHRONOS.value: {
+            'name': None,
+            'required': False,
+        },
+        TransformationTypes.KUBERNETES.value: {
             'name': None,
             'required': False,
         },
@@ -413,6 +481,10 @@ ARG_MAP = OrderedDict({
             'required': False,
             'type': list
         },
+        TransformationTypes.KUBERNETES.value: {
+            'name': None,
+            'required': False,
+        },
     },
     'network': {
         TransformationTypes.ECS.value: {
@@ -437,6 +509,10 @@ ARG_MAP = OrderedDict({
             'required': False,
             'type': list
         },
+        TransformationTypes.KUBERNETES.value: {
+            'name': None,
+            'required': False,
+        },
     },
     'net_mode': {
         TransformationTypes.ECS.value: {
@@ -457,6 +533,11 @@ ARG_MAP = OrderedDict({
         },
         TransformationTypes.CHRONOS.value: {
             'name': 'container.network',
+            'required': False,
+        },
+        # TODO Host Network
+        TransformationTypes.KUBERNETES.value: {
+            'name': None,
             'required': False,
         },
     },
@@ -482,6 +563,10 @@ ARG_MAP = OrderedDict({
             'required': False,
             'type': bool
         },
+        TransformationTypes.KUBERNETES.value: {
+            'name': 'securityContext.privileged',
+            'required': False,
+        },
     },
     'labels': {
         TransformationTypes.ECS.value: {
@@ -504,6 +589,11 @@ ARG_MAP = OrderedDict({
             'name': 'container.parameters.label',
             'required': False,
             'type': list
+        },
+        # TODO Labels for pod
+        TransformationTypes.KUBERNETES.value: {
+            'name': None,
+            'required': False,
         },
     },
     'logging': {
@@ -529,6 +619,10 @@ ARG_MAP = OrderedDict({
             'required': False,
             'type': list,
         },
+        TransformationTypes.KUBERNETES.value: {
+            'name': None,
+            'required': False,
+        },
     },
     'user': {
         TransformationTypes.ECS.value: {
@@ -550,6 +644,11 @@ ARG_MAP = OrderedDict({
         TransformationTypes.CHRONOS.value: {
             'name': 'container.parameters.user',
             'required': False
+        },
+        # TODO lookup UID?
+        TransformationTypes.KUBERNETES.value: {
+            'name': None,
+            'required': False,
         },
     },
     'env_file': {
@@ -575,6 +674,10 @@ ARG_MAP = OrderedDict({
             'required': False,
             'type': list,
         },
+        TransformationTypes.KUBERNETES.value: {
+            'name': None,
+            'required': False,
+        },
     },
     'pid': {
         TransformationTypes.ECS.value: {
@@ -595,6 +698,11 @@ ARG_MAP = OrderedDict({
         },
         TransformationTypes.CHRONOS.value: {
             'name': 'container.parameters.pid',
+            'required': False,
+        },
+        # TODO pods hostPID?
+        TransformationTypes.KUBERNETES.value: {
+            'name': None,
             'required': False,
         },
     },
@@ -619,5 +727,12 @@ ARG_MAP = OrderedDict({
             'name': 'uris',
             'required': False,
         },
+        TransformationTypes.KUBERNETES.value: {
+            'name': None,
+            'required': False,
+        },
     },
+    # TODO create an entry for forcePullImage
+    # TODO create an entry for healthChecks
+    # TODO create an entry for replicas/instances
 })

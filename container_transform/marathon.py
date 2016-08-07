@@ -220,7 +220,22 @@ class MarathonTransformer(BaseTransformer):
         container_data['container']['docker']['forcePullImage'] = True
         container_data['container']['type'] = 'DOCKER'
         container_data['acceptedResourceRoles'] = []
+        if container_data.get('container', {}).get('docker', {}).get('portMappings'):
+            container_data["healthChecks"] = [
+                {
+                    "protocol": "HTTP",
+                    "path": "/",
+                    "portIndex": 0,
+                    "gracePeriodSeconds": 300,
+                    "intervalSeconds": 60,
+                    "timeoutSeconds": 20,
+                    "maxConsecutiveFailures": 3
+                }
+            ]
+        container_data['cpus'] = container_data.get('cpus', float(1))
+        container_data['mem'] = container_data.get('mem', 128)
         container_data['fetch'] = []
+        container_data['instances'] = 1
 
         return container_data
 

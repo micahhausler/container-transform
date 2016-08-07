@@ -16,6 +16,7 @@ formats to one another.
 
 Currently, container-transform can parse and convert:
 
+* Kubernetes Pod specs
 * ECS task definitions
 * Docker-compose configuration files
 * Marathon Application Definitions or Groups of Applications
@@ -102,8 +103,8 @@ Quick Help
       followed by the full argument name.
 
     Options:
-      -i, --input-type [ecs|compose|marathon|chronos]
-      -o, --output-type [ecs|compose|systemd|marathon|chronos]
+      -i, --input-type [ecs|compose|marathon|chronos|kubernetes]
+      -o, --output-type [ecs|compose|systemd|marathon|chronos|kubernetes]
       -v, --verbose / --no-verbose    Expand/minify json output
       -q, --quiet                     Silence error messages
       --version                       Show the version and exit.

@@ -5,6 +5,7 @@ from .ecs import ECSTransformer
 from .systemd import SystemdTransformer
 from .marathon import MarathonTransformer
 from .chronos import ChronosTransformer
+from container_transform.kubernetes import KubernetesTransformer
 
 
 TRANSFORMER_CLASSES = {
@@ -13,6 +14,7 @@ TRANSFORMER_CLASSES = {
     TransformationTypes.SYSTEMD.value: SystemdTransformer,
     TransformationTypes.MARATHON.value: MarathonTransformer,
     TransformationTypes.CHRONOS.value: ChronosTransformer,
+    TransformationTypes.KUBERNETES.value: KubernetesTransformer,
 }
 
 

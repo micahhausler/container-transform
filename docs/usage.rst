@@ -19,13 +19,31 @@ Usage
       followed by the full argument name.
 
     Options:
-      -i, --input-type [ecs|compose|marathon|chronos]
-      -o, --output-type [ecs|compose|systemd|marathon|chronos]
+      -i, --input-type [ecs|compose|marathon|chronos|kubernetes]
+      -o, --output-type [ecs|compose|systemd|marathon|chronos|kubernetes]
       -v, --verbose / --no-verbose    Expand/minify json output
       -q, --quiet                     Silence error messages
       --version                       Show the version and exit.
       -h, --help                      Show this message and exit.
 
+
+Kubernetes Format
+-----------------
+
+When consuming Kubernetes input, container-transform supports the following object types:
+
+* ReplicaSet
+* Deployment
+* DaemonSet
+* Pod
+* ReplicationController
+
+and will only load the first of those objects in the file.
+
+`Kubernetes Pods`_ & `Kubernetes API Objects`_
+
+.. _Kubernetes Pods: http://kubernetes.io/docs/user-guide/pods/
+.. _Kubernetes API Objects: http://kubernetes.io/docs/api-reference/v1/definitions/
 
 ECS Format
 ----------

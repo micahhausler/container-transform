@@ -3,6 +3,16 @@
 API Documentation
 =================
 
+KubernetesTransformer
+---------------------
+
+.. automodule:: container_transform.kubernetes
+.. autoclass:: container_transform.kubernetes.KubernetesTransformer
+    :members:
+
+    .. automethod:: __init__
+
+
 ECSTransformer
 --------------
 
