@@ -7,6 +7,7 @@ formats to one another.
 
 Currently, container-transform can parse and convert:
 
+* Kubernetes Pod specs
 * ECS task definitions
 * Docker-compose configuration files
 * Marathon Application Definitions or Groups of Applications

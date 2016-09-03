@@ -5,6 +5,7 @@ from .ecs import ECSTransformer
 from .systemd import SystemdTransformer
 from .marathon import MarathonTransformer
 from .chronos import ChronosTransformer
+from container_transform.kubernetes import KubernetesTransformer
 
 
 TRANSFORMER_CLASSES = {
@@ -13,6 +14,7 @@ TRANSFORMER_CLASSES = {
     TransformationTypes.SYSTEMD.value: SystemdTransformer,
     TransformationTypes.MARATHON.value: MarathonTransformer,
     TransformationTypes.CHRONOS.value: ChronosTransformer,
+    TransformationTypes.KUBERNETES.value: KubernetesTransformer,
 }
 
 
@@ -49,10 +51,8 @@ class Converter(object):
         output_containers = []
 
         for container in containers:
-            validated = output_transformer.validate(container)
-
             converted_container = self._convert_container(
-                validated,
+                container,
                 input_transformer,
                 output_transformer
             )
@@ -80,6 +80,15 @@ class Converter(object):
 
             input_name = options.get(self.input_type, {}).get('name')
 
+            if container.get(input_name) and \
+                    hasattr(input_transformer, 'ingest_{}'.format(parameter)) and \
+                    output_name and hasattr(output_transformer, 'emit_{}'.format(parameter)):
+                # call transform_{}
+                ingest_func = getattr(input_transformer, 'ingest_{}'.format(parameter))
+                emit_func = getattr(output_transformer, 'emit_{}'.format(parameter))
+
+                output[output_name] = emit_func(ingest_func(container.get(input_name)))
+
             if not container.get(input_name) and output_required:
                 msg_template = 'Container {name} is missing required parameter "{output_name}".'
                 self.messages.add(
@@ -89,14 +98,5 @@ class Converter(object):
                         name=container.get('name', container)
                     )
                 )
-
-            if container.get(input_name) and \
-                    hasattr(input_transformer, 'ingest_{}'.format(parameter)) and \
-                    output_name and hasattr(output_transformer, 'emit_{}'.format(parameter)):
-                # call transform_{}
-                ingest_func = getattr(input_transformer, 'ingest_{}'.format(parameter))
-                emit_func = getattr(output_transformer, 'emit_{}'.format(parameter))
-
-                output[output_name] = emit_func(ingest_func(container.get(input_name)))
 
         return output

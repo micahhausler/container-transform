@@ -19,8 +19,10 @@
             },
             "type": "DOCKER"
         },
+        "cpus": 1.0,
         "fetch": [],
         "id": "background_worker",
+        "instances": 1,
         "mem": 65
     },
     {
@@ -33,8 +35,11 @@
             },
             "type": "DOCKER"
         },
+        "cpus": 1.0,
         "fetch": [],
-        "id": "boring"
+        "id": "boring",
+        "instances": 1,
+        "mem": 128
     },
     {
         "acceptedResourceRoles": [],
@@ -53,8 +58,22 @@
             },
             "type": "DOCKER"
         },
+        "cpus": 1.0,
         "fetch": [],
+        "healthChecks": [
+            {
+                "gracePeriodSeconds": 300,
+                "intervalSeconds": 60,
+                "maxConsecutiveFailures": 3,
+                "path": "/",
+                "portIndex": 0,
+                "protocol": "HTTP",
+                "timeoutSeconds": 20
+            }
+        ],
         "id": "memcached",
+        "instances": 1,
+        "mem": 128,
         "requirePorts": false
     },
     {
@@ -120,7 +139,19 @@
             "SOME_VAR": "redis-var"
         },
         "fetch": [],
+        "healthChecks": [
+            {
+                "gracePeriodSeconds": 300,
+                "intervalSeconds": 60,
+                "maxConsecutiveFailures": 3,
+                "path": "/",
+                "portIndex": 0,
+                "protocol": "HTTP",
+                "timeoutSeconds": 20
+            }
+        ],
         "id": "redis",
+        "instances": 1,
         "mem": 4,
         "ports": [
             6379
@@ -198,11 +229,24 @@
                 }
             ]
         },
+        "cpus": 1.0,
         "dependencies": [
             "/redis"
         ],
         "fetch": [],
+        "healthChecks": [
+            {
+                "gracePeriodSeconds": 300,
+                "intervalSeconds": 60,
+                "maxConsecutiveFailures": 3,
+                "path": "/",
+                "portIndex": 0,
+                "protocol": "HTTP",
+                "timeoutSeconds": 20
+            }
+        ],
         "id": "web",
+        "instances": 1,
         "labels": {
             "com.example.department": "Finance",
             "com.example.description": "Accounting webapp",

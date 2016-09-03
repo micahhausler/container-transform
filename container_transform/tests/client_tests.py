@@ -281,3 +281,72 @@ class ClientTests(TestCase):
             result.output,
             service_contents
         )
+
+    def test_prompt_k8s_to_compose_single_quiet(self):
+        runner = CliRunner()
+
+        input_file = '{}/k8s_tests/alpine.yaml'.format(os.path.dirname(__file__))
+
+        result = runner.invoke(
+            transform,
+            [input_file, '-q', '-i', 'kubernetes', '-o', 'compose'])
+        assert result.exit_code == 0
+
+        service_file = '{}/k8s_tests/alpine-out.yaml'.format(os.path.dirname(__file__))
+        service_contents = open(service_file).read()
+        self.assertEqual(
+            result.output,
+            service_contents
+        )
+
+    def test_prompt_compose_to_k8s_single_quiet(self):
+        runner = CliRunner()
+
+        input_file = '{}/k8s_tests/alpine-out.yaml'.format(os.path.dirname(__file__))
+
+        result = runner.invoke(
+            transform,
+            [input_file, '-q', '-i', 'compose', '-o', 'kubernetes'])
+        assert result.exit_code == 0
+
+        service_file = '{}/k8s_tests/alpine-out-again.yaml'.format(os.path.dirname(__file__))
+        service_contents = open(service_file).read()
+        self.assertEqual(
+            result.output,
+            service_contents
+        )
+
+    def test_prompt_k8s_to_compose_multiple_quiet(self):
+        runner = CliRunner()
+
+        input_file = '{}/k8s_tests/dns.yaml'.format(os.path.dirname(__file__))
+
+        result = runner.invoke(
+            transform,
+            [input_file, '-q', '-i', 'kubernetes', '-o', 'compose'])
+        assert result.exit_code == 0
+
+        service_file = '{}/k8s_tests/dns-compose.yaml'.format(os.path.dirname(__file__))
+        service_contents = open(service_file).read()
+        self.assertEqual(
+            result.output,
+            service_contents
+        )
+
+    def test_prompt_compose_to_k8s_multiple_quiet(self):
+        self.maxDiff = None
+        runner = CliRunner()
+
+        input_file = '{}/k8s_tests/dns-compose.yaml'.format(os.path.dirname(__file__))
+
+        result = runner.invoke(
+            transform,
+            [input_file, '-q', '-i', 'compose', '-o', 'kubernetes'])
+        assert result.exit_code == 0
+
+        service_file = '{}/k8s_tests/dns-k8s-out.yaml'.format(os.path.dirname(__file__))
+        service_contents = open(service_file).read()
+        self.assertEqual(
+            result.output,
+            service_contents
+        )

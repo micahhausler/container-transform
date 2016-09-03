@@ -273,7 +273,7 @@ class ComposeTransformer(BaseTransformer):
 
     @staticmethod
     def _emit_volume(volume):
-        volume_str = volume.get('host') + ':' + volume.get('container', ':')
+        volume_str = '{0}:{1}'.format(volume.get('host'), volume.get('container', ':'))
         volume_str = volume_str.strip(':')
 
         if volume.get('readonly') and len(volume_str):

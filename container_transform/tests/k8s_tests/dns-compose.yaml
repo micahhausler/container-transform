@@ -1,0 +1,41 @@
+services:
+  etcd:
+    cpu_shares: 102.4
+    entrypoint: /usr/local/bin/etcd -data-dir /var/etcd/data -listen-client-urls http://127.0.0.1:2379,http://127.0.0.1:4001
+      -advertise-client-urls http://127.0.0.1:2379,http://127.0.0.1:4001 -initial-cluster-token
+      skydns-etcd
+    image: gcr.io/google_containers/etcd-amd64:2.2.1
+    mem_limit: 524288000b
+    volumes:
+    - /usr/share/ca-certificates:/etc/ssl/certs
+  healthz:
+    command: -cmd=nslookup kubernetes.default.svc.cluster.local 127.0.0.1 >/dev/null
+      -port=8080
+    cpu_shares: 10.24
+    image: gcr.io/google_containers/exechealthz:1.0
+    mem_limit: 20971520b
+    ports:
+    - '8080'
+    volumes:
+    - /usr/share/ca-certificates:/etc/ssl/certs
+  kube2sky:
+    command: --kubecfg-file=/etc/kubernetes/worker-kubeconfig.yaml --domain=cluster.local
+    cpu_shares: 102.4
+    image: gcr.io/google_containers/kube2sky:1.14
+    mem_limit: 209715200b
+    volumes:
+    - /usr/share/ca-certificates:/etc/ssl/certs
+    - /etc/kubernetes/worker-kubeconfig.yaml:/etc/kubernetes/worker-kubeconfig.yaml:ro
+    - /etc/kubernetes/ssl:/etc/kubernetes/ssl:ro
+  skydns:
+    command: -machines=http://127.0.0.1:4001 -addr=0.0.0.0:53 -ns-rotate=false -domain=cluster.local.
+    cpu_shares: 102.4
+    image: gcr.io/google_containers/skydns:2015-10-13-8c72f8c
+    mem_limit: 209715200b
+    ports:
+    - 53/udp
+    - '53'
+    volumes:
+    - /usr/share/ca-certificates:/etc/ssl/certs
+version: '2'
+
