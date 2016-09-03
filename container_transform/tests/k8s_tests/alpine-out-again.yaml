@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: null
+    version: latest
+  name: null
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: null
+      version: latest
+  template:
+    metadata:
+      labels:
+        app: null
+        version: latest
+    spec:
+      containers:
+      - command:
+        - sleep
+        - '3600'
+        image: alpine
+        name: alpine
+

@@ -109,6 +109,7 @@ class MarathonTransformer(BaseTransformer):
         Accepts a marathon container and pulls out the nested values into the top level
         """
         for names in ARG_MAP.values():
+
             if names[TransformationTypes.MARATHON.value]['name'] and \
                             '.' in names[TransformationTypes.MARATHON.value]['name']:
                 marathon_dotted_name = names[TransformationTypes.MARATHON.value]['name']
@@ -166,7 +167,7 @@ class MarathonTransformer(BaseTransformer):
         container_name = container.get('id', str(uuid.uuid4()))
         container['id'] = container_name
 
-        container_data = defaultdict(lambda: defaultdict(dict))
+        container_data = defaultdict(lambda: defaultdict(dict))  # pragma: no coverage
         container_data.update(container)
 
         # Find keys with periods in the name, these are keys that we delete and

@@ -535,7 +535,6 @@ ARG_MAP = OrderedDict({
             'name': 'container.network',
             'required': False,
         },
-        # TODO Host Network
         TransformationTypes.KUBERNETES.value: {
             'name': None,
             'required': False,

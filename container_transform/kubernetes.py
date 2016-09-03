@@ -1,5 +1,4 @@
 import json
-import uuid
 
 from copy import deepcopy
 from functools import reduce
@@ -65,7 +64,7 @@ class KubernetesTransformer(BaseTransformer):
         self.stream = stream
         self.volumes_in = volumes_in
 
-        self.volumes = []
+        self.volumes = {}
 
     def _find_convertable_object(self, data):
         """
@@ -160,24 +159,41 @@ class KubernetesTransformer(BaseTransformer):
         """
         containers = sorted(containers, key=lambda c: c.get('name'))
 
-        if len(containers) == 1 and isinstance(containers, list):
-            containers = containers[0]
-
         output = {
-            'apiVersion': 'extensions/v1beta1',
             'kind': 'Deployment',
+            'apiVersion': 'extensions/v1beta1',
             'metadata': {
                 'name': None,
-                'namespace': 'default'
+                'namespace': 'default',
+                'labels': {
+                    'app': None,
+                    'version': 'latest',
+                },
             },
             'spec': {
                 'replicas': 1,
-                'restartPolicy': 'Always',
-                'containers': json.loads(json.dumps(containers))
+                'selector': {
+                    'matchLabels': {
+                        'app': None,
+                        'version': 'latest'
+                    }
+                },
+                'template': {
+                    'metadata': {
+                        'labels': {
+                            'app': None,
+                            'version': 'latest'
+                        }
+                    },
+                    'spec': {
+                        'containers': json.loads(json.dumps(containers))
+                    }
+                }
             }
         }
         if self.volumes:
-            output['spec']['volumes'] = self.volumes
+            volumes = sorted(self.volumes.values(), key=lambda x: x.get('name'))
+            output['spec']['template']['spec']['volumes'] = volumes
 
         noalias_dumper = yaml.dumper.SafeDumper
         noalias_dumper.ignore_aliases = lambda self, data: True
@@ -189,8 +205,8 @@ class KubernetesTransformer(BaseTransformer):
 
     def validate(self, container):
         # Ensure container name
-        container_name = container.get('name', str(uuid.uuid4()))
-        container['name'] = container_name
+        # container_name = container.get('name', str(uuid.uuid4()))
+        # container['name'] = container_name
 
         container_data = defaultdict(lambda: defaultdict(dict))
         container_data.update(container)
@@ -198,7 +214,7 @@ class KubernetesTransformer(BaseTransformer):
         # Find keys with periods in the name, these are keys that we delete and
         # create the corresponding entry for
         for key, value in deepcopy(container_data).items():
-            if '.' in key:
+            if key and '.' in key:
                 parts = key.split('.')
                 data = reduce(lambda x, y: {y: x}, reversed(parts + [value]))
                 update_nested_dict(container_data, data)
@@ -206,14 +222,11 @@ class KubernetesTransformer(BaseTransformer):
 
         return container_data
 
-    def ingest_name(self, name):
-        return name.split('/')[-1]
-
     @staticmethod
     def _parse_port_mapping(mapping):
         output = {
             'container_port': int(mapping['containerPort']),
-            'protocol': mapping.get('protocol', 'TCP'),
+            'protocol': mapping.get('protocol', 'TCP').lower(),
         }
         if 'hostPort' in mapping:
             output['host_port'] = int(mapping.get('hostPort'))
@@ -239,7 +252,7 @@ class KubernetesTransformer(BaseTransformer):
         for mapping in port_mappings:
             data = {
                 'containerPort': mapping['container_port'],
-                'protocol': mapping.get('protocol', 'tcp')
+                'protocol': mapping.get('protocol', 'tcp').upper()
             }
             if mapping.get('host_port'):
                 data['hostPort'] = mapping['host_port']
@@ -314,7 +327,7 @@ class KubernetesTransformer(BaseTransformer):
         return value
 
     def ingest_environment(self, environment):
-        return dict([(ev['name'], ev['value']) for ev in environment])
+        return dict([(ev['name'], ev.get('value', '')) for ev in environment])
 
     def emit_environment(self, environment):
         return [{'name': k, 'value': v} for k, v in environment.items()]
@@ -339,17 +352,20 @@ class KubernetesTransformer(BaseTransformer):
         """
         Given a generic volume definition, create the volumes element
         """
-        self.volumes.append({
+        self.volumes[self._build_volume_name(volume.get('host'))] = {
             'name': self._build_volume_name(volume.get('host')),
             'hostPath': {
                 'path': volume.get('host')
             }
-        })
-        return {
+        }
+        response = {
             'name': self._build_volume_name(volume.get('host')),
             'mountPath': volume.get('container'),
-            'readOnly': bool(volume.get('readonly', False)),
+
         }
+        if volume.get('readonly', False):
+            response['readOnly'] = bool(volume.get('readonly', False))
+        return response
 
     def emit_volumes(self, volumes):
         return [

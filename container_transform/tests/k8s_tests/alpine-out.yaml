@@ -1,0 +1,6 @@
+services:
+  alpine:
+    entrypoint: sleep 3600
+    image: alpine
+version: '2'
+
