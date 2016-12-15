@@ -231,7 +231,37 @@ class ComposeTransformer(BaseTransformer):
         return entrypoint
 
     def ingest_volumes_from(self, volumes_from):
-        return volumes_from
+        ingested_volumes_from = []
+        for vol in volumes_from:
+            ingested = {}
+            parts = vol.split(':')
+            rwo_value = None
+
+            assert len(parts) <= 3, \
+                "Volume string '{}' has too many colons".format(vol)
+
+            if len(parts) == 3:
+                # Is form 'service:name:ro' or 'container:name:ro'
+                # in new compose v2 format.
+                source_container, rwo_value = parts[1:]
+            elif len(parts) == 2:
+                # Is form 'name:ro' or 'service:name' (for >= v2)
+                if self.stream_version > 1 and parts[0] == 'service':
+                    source_container = parts[1]
+                else:
+                    assert(parts[1] in ['ro', 'rw'])
+                    source_container = parts[0]
+                    rwo_value = parts[1]
+            else:
+                source_container = parts[0]
+
+            if rwo_value == 'ro':
+                ingested['read_only'] = True
+
+            ingested['source_container'] = source_container
+            ingested_volumes_from.append(ingested)
+
+        return ingested_volumes_from
 
     def emit_volumes_from(self, volumes_from):
         return volumes_from
@@ -261,6 +291,11 @@ class ComposeTransformer(BaseTransformer):
                 'host': parts[0],
                 'container': parts[1],
                 'readonly': True
+            }
+        if len(parts) == 3 and parts[-1] == 'rw':
+            return {
+                'host': parts[0],
+                'container': parts[1],
             }
 
     def ingest_volumes(self, volumes):

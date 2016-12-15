@@ -68,6 +68,15 @@ web3:
   entrypoint: uwsgi
   command: --json uwsgi.json
   cpu_shares: 200
+web4:
+  image: me/myapp
+  mem_limit: 1024
+  entrypoint: uwsgi
+  command: --json uwsgi.json
+  cpu_shares: 200
+  volumes_from:
+    - web3:ro
+    - logs:rw
 dummy:
   image: me/myapp
   entrypoint: ["noop", "param0"]

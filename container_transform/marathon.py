@@ -314,7 +314,10 @@ class MarathonTransformer(BaseTransformer):
         return volumes_from
 
     def emit_volumes_from(self, volumes_from):
-        return [{'key': 'volumes-from', 'value': vol} for vol in volumes_from]
+        _emitted = []
+        for vol in volumes_from:
+            _emitted.append({'key': 'volumes-from', 'value': vol['source_container']})
+        return _emitted
 
     def _convert_volume(self, volume):
         """

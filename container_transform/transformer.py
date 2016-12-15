@@ -22,7 +22,7 @@ SCHEMA = {
     'environment': dict,  # A simple key: value dictionary
     'entrypoint': str,  # An unsplit string
     'command': str,  # An unsplit string
-    'volumes_from': list,  # A list of containers, ignoring read_only
+    'volumes_from': list,  # A list of containers
     'volumes': list,  # A list of dict {'host': '/path', 'container': '/path', 'readonly': True}
     'dns': list,
     'domain': list,

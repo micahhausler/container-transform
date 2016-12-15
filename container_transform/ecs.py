@@ -1,6 +1,6 @@
 import json
 import uuid
-
+from copy import copy
 
 from .schema import TransformationTypes
 from .transformer import BaseTransformer
@@ -202,7 +202,15 @@ class ECSTransformer(BaseTransformer):
         return [vol['sourceContainer'] for vol in volumes_from]
 
     def emit_volumes_from(self, volumes_from):
-        return [{'sourceContainer': vol} for vol in volumes_from]
+        emitted = []
+        volumes_from = copy(volumes_from)
+        for vol in volumes_from:
+            emit = {}
+            if vol.get('read_only'):
+                emit['readOnly'] = vol['read_only']
+            emit['sourceContainer'] = vol['source_container']
+            emitted.append(emit)
+        return emitted
 
     def ingest_volumes_param(self, volumes):
         """
