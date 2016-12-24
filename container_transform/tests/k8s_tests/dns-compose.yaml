@@ -9,7 +9,7 @@ services:
     volumes:
     - /usr/share/ca-certificates:/etc/ssl/certs
   healthz:
-    command: -cmd=nslookup kubernetes.default.svc.cluster.local 127.0.0.1 >/dev/null
+    command: -cmd="nslookup kubernetes.default.svc.cluster.local 127.0.0.1 >/dev/null"
       -port=8080
     cpu_shares: 10.24
     image: gcr.io/google_containers/exechealthz:1.0

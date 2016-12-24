@@ -1,5 +1,6 @@
 import json
 import uuid
+import shlex
 
 from copy import deepcopy
 from functools import reduce
@@ -299,10 +300,10 @@ class MarathonTransformer(BaseTransformer):
         return environment
 
     def ingest_command(self, command):
-        return ' '.join(command)
+        return self._list2cmdline(command)
 
     def emit_command(self, command):
-        return command.split()
+        return shlex.split(command)
 
     def ingest_entrypoint(self, entrypoint):
         return entrypoint

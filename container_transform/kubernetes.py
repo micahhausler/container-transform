@@ -1,4 +1,5 @@
 import json
+import shlex
 
 from copy import deepcopy
 from functools import reduce
@@ -333,16 +334,16 @@ class KubernetesTransformer(BaseTransformer):
         return [{'name': k, 'value': v} for k, v in environment.items()]
 
     def ingest_command(self, command):
-        return ' '.join(command)
+        return self._list2cmdline(command)
 
     def emit_command(self, command):
-        return command.split()
+        return shlex.split(command)
 
     def ingest_entrypoint(self, entrypoint):
-        return ' '.join(entrypoint)
+        return self._list2cmdline(entrypoint)
 
     def emit_entrypoint(self, entrypoint):
-        return entrypoint.split()
+        return shlex.split(entrypoint)
 
     @staticmethod
     def _build_volume_name(hostpath):

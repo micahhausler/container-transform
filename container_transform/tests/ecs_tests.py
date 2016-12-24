@@ -46,3 +46,25 @@ class ECSTransformerTests(TestCase):
             self.transformer.emit_cpu(cpu),
             cpu
         )
+
+    def test_command_list(self):
+        """
+        Test .ingest_command() should respect that list items are single command args
+        Test .emit_command() should split correctly if an argument contains a space
+        """
+        command = [
+            "/bin/echo",
+            "Hello world"
+        ]
+
+        self.assertEqual(
+            self.transformer.ingest_command(command),
+            "/bin/echo 'Hello world'"
+        )
+
+        command = "/bin/echo 'Hello world'"
+
+        self.assertEqual(
+            self.transformer.emit_command(command),
+            ["/bin/echo", "Hello world"]
+        )
