@@ -118,3 +118,17 @@ class ComposeTransformerTests(TestCase):
             self.transformer.emit_cpu(cpu),
             cpu
         )
+
+    def test_ingest_command_list(self):
+        """
+        Test .ingest_command() should respect that list items are single command args
+        """
+        command = [
+            "/bin/echo",
+            "Hello world"
+        ]
+
+        self.assertEqual(
+            self.transformer.ingest_command(command),
+            "/bin/echo 'Hello world'"
+        )

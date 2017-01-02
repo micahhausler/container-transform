@@ -16,6 +16,7 @@ def get_version():
     else:
         raise RuntimeError('Unable to find version string in {0}.'.format(VERSION_FILE))
 
+
 install_requires = [
     'PyYAML>=3.10,<4',
     'Jinja2>=2.7.0',

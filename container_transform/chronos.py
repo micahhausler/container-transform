@@ -1,5 +1,6 @@
 import json
 import uuid
+import shlex
 
 from datetime import datetime
 
@@ -295,10 +296,10 @@ class ChronosTransformer(BaseTransformer):
         return sorted(sorted_by_value, key=lambda p: p.get('name'))
 
     def ingest_command(self, command):
-        return ' '.join(command)
+        return self._list2cmdline(command)
 
     def emit_command(self, command):
-        return command.split()
+        return shlex.split(command)
 
     def ingest_entrypoint(self, entrypoint):
         return entrypoint

@@ -1,3 +1,4 @@
+import shlex
 from abc import ABCMeta, abstractmethod
 
 """The SCHEMA defines the argument format the .ingest_*() and .emit_*()
@@ -46,6 +47,21 @@ class BaseTransformer(object, metaclass=ABCMeta):
         normalized_keys = transformer.ingest_containers()
 
     """
+    @staticmethod
+    def _list2cmdline(commands):
+        def quote(cmd):
+            """
+            Make sure that each cmd in command list will be treated as a single token
+            :param cmd: str
+            :return:
+            """
+            if len(shlex.split(cmd)) == 1:
+                # Already a single token, do nothing
+                return cmd
+            else:
+                return shlex.quote(cmd)
+
+        return ' '.join(quote(cmd) for cmd in commands)
 
     def _read_file(self, filename):
         """

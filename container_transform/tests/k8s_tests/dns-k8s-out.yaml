@@ -39,10 +39,7 @@ spec:
         - mountPath: /etc/ssl/certs
           name: usr-share-ca-certificates
       - args:
-        - -cmd=nslookup
-        - kubernetes.default.svc.cluster.local
-        - 127.0.0.1
-        - '>/dev/null'
+        - -cmd=nslookup kubernetes.default.svc.cluster.local 127.0.0.1 >/dev/null
         - -port=8080
         image: gcr.io/google_containers/exechealthz:1.0
         name: healthz

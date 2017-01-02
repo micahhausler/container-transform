@@ -1,6 +1,7 @@
 import json
 import uuid
 from copy import copy
+import shlex
 
 from .schema import TransformationTypes
 from .transformer import BaseTransformer
@@ -187,16 +188,16 @@ class ECSTransformer(BaseTransformer):
         return output
 
     def ingest_command(self, command):
-        return ' '.join(command)
+        return self._list2cmdline(command)
 
     def emit_command(self, command):
-        return command.split()
+        return shlex.split(command)
 
     def ingest_entrypoint(self, entrypoint):
-        return ' '.join(entrypoint)
+        return self._list2cmdline(entrypoint)
 
     def emit_entrypoint(self, entrypoint):
-        return entrypoint.split()
+        return shlex.split(entrypoint)
 
     def ingest_volumes_from(self, volumes_from):
         return [vol['sourceContainer'] for vol in volumes_from]

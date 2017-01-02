@@ -216,7 +216,7 @@ class ComposeTransformer(BaseTransformer):
 
     def ingest_command(self, command):
         if isinstance(command, list):
-            command = ' '.join(command)
+            return self._list2cmdline(command)
         return command
 
     def emit_command(self, command):
@@ -224,7 +224,7 @@ class ComposeTransformer(BaseTransformer):
 
     def ingest_entrypoint(self, entrypoint):
         if isinstance(entrypoint, list):
-            entrypoint = ' '.join(entrypoint)
+            return self._list2cmdline(entrypoint)
         return entrypoint
 
     def emit_entrypoint(self, entrypoint):
