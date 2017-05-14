@@ -5,6 +5,10 @@ v1.1.5
 ------
 
 * Added Kubernetes Support
+* Updatd support for docker-compose and ECS
+* Properly split lines for cmd and entrypoint in ECS
+* Added automated deployment to Pypi
+* Bumped docker python to 3.6
 
 v1.1.4
 ------

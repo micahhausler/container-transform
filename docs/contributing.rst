@@ -101,7 +101,7 @@ Below is a rough checklist of creating a new transformer type:
 * Add client tests just to make sure the command doesn't blow up
 * Add documentation and API links on the :doc:`usage` page.
 * Update the usage text output on the ``README.rst`` and the :doc:`usage` page
-* Add the type to the format list on the :doc:`index` and ``README.rst`` 
+* Add the type to the format list on the :doc:`index` and ``README.rst``
 
 Possible Transformer implementations:
 

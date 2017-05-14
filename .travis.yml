@@ -1,17 +1,27 @@
 sudo: false
 language: python
 python:
-  - '3.5'
+- '3.5'
+- '3.6'
 install:
-  - pip install coveralls flake8 nose>=1.3.0
-  - pip install -e .[all]
+- pip install coveralls flake8 nose>=1.3.0
+- pip install -e .[all]
 script:
-  - flake8 .
-  - python setup.py nosetests
-  - python setup.py build_sphinx
-  - container-transform container_transform/tests/docker-compose.yml -v
-  - container-transform container_transform/tests/task.json --input-type ecs --output-type compose
-  - container-transform container_transform/tests/docker-compose.yml -v --output-type systemd
-  - container-transform container_transform/tests/task.json --input-type ecs --output-type systemd
-after_success:
-  coveralls
+- flake8 .
+- python setup.py nosetests
+- python setup.py build_sphinx
+- container-transform container_transform/tests/docker-compose.yml -v
+- container-transform container_transform/tests/task.json --input-type ecs --output-type compose
+- container-transform container_transform/tests/docker-compose.yml -v --output-type systemd
+- container-transform container_transform/tests/task.json --input-type ecs --output-type systemd
+after_success: coveralls
+deploy:
+  provider: pypi
+  user: micahhausler
+  password:
+    secure: M7eqS/P7xC/x9mjOo91Xr6DVyHyVpYTRoarmuVc8+oKdoEStja4lQyUJjJKClgzoHJ+stHOcyFYz3awdwzqAWVsPyB4Pulx3ZkcyxGdJYDZ8cMKj94U89AjrHaG0DUnO85JuLyOAtBU2pmt4Qvmp+5gihPByltGs/EkBzfsNF04=
+  on:
+    tags: true
+    distributions: sdist bdist_wheel
+    repo: micahhausler/container-transform
+    branch: master
