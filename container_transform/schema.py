@@ -380,7 +380,7 @@ ARG_MAP = OrderedDict({
     },
     'work_dir': {
         TransformationTypes.ECS.value: {
-            'name': None,
+            'name': 'workingDirectory',
             'required': False
         },
         TransformationTypes.COMPOSE.value: {
