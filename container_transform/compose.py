@@ -205,13 +205,17 @@ class ComposeTransformer(BaseTransformer):
         if type(environment) is list:
             for kv in environment:
                 index = kv.find('=')
-                output[str(kv[:index])] = str(kv[index + 1:])
+                output[str(kv[:index])] = str(kv[index + 1:]).replace('$$', '$')
         if type(environment) is dict:
             for key, value in environment.items():
-                output[str(key)] = str(value)
+                output[str(key)] = str(value).replace('$$', '$')
         return output
 
     def emit_environment(self, environment):
+        # Use double-dollar and avoid vairable substitution. Reference,
+        # https://docs.docker.com/compose/compose-file/compose-file-v2
+        for key, value in environment.items():
+            environment[key] = str(value).replace('$', '$$')
         return environment
 
     def ingest_command(self, command):

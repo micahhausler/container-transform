@@ -9,7 +9,7 @@ worker:
     - BROKER_URL=redis://redis:6379/0
     - DB_HOST=db
     - DB_NAME=postgres
-    - DB_PAS=postgres
+    - DB_PAS=po$$tgres
     - DB_USER=postgres
   links:
   - db

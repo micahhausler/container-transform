@@ -119,6 +119,34 @@ class ComposeTransformerTests(TestCase):
             cpu
         )
 
+    def test_ingest_environment(self):
+        environment = {
+            'DB_PAS': 'po$$tgres',
+            'DB_USER': 'postgres'
+        }
+        environment_exp = {
+            'DB_PAS': 'po$tgres',
+            'DB_USER': 'postgres'
+        }
+        self.assertEqual(
+            self.transformer.ingest_environment(environment),
+            environment_exp
+        )
+
+    def test_emit_environment(self):
+        environment = {
+            'DB_PAS': 'po$tgres',
+            'DB_USER': 'postgres'
+        }
+        environment_exp = {
+            'DB_PAS': 'po$$tgres',
+            'DB_USER': 'postgres'
+        }
+        self.assertEqual(
+            self.transformer.emit_environment(environment),
+            environment_exp
+        )
+
     def test_ingest_command_list(self):
         """
         Test .ingest_command() should respect that list items are single command args
